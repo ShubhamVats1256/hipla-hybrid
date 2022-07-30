@@ -6,7 +6,7 @@
     <string name="pantry">Pantry</string>
 
     <string name="cancel">Cancel</string>
-    <string name="continue">Continue</string>
+    <string name="continue_btn">Continue</string>
     <string name="register">Register</string>
     <string name="cheque_upload_photo">Upload Cheque Photo</string>
     <string name="upload">Upload</string>
@@ -19,7 +19,7 @@
     <string name="rtgs">RTGS</string>
     <string name="date">date</string>
     <string name="amount_payable">Amount Payable</string>
-    <string name="pan">Pan Card Number</string>
+    <string name="pan">Pan Card Number*</string>
     <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
 
     <string name="application_success">Your application is successful</string>
@@ -31,8 +31,10 @@
     <string name="channel_partner_otp">Channel Partner OTP</string>
 
     <string name="customer_otp">Customer OTP</string>
-    <string name="customer_first_name">Customer First Name</string>
-    <string name="customer_last_name">Customer Last Name</string>
+    <string name="customer_first_name">Customer First Name*</string>
+    <string name="customer_last_name">Customer Last Name*</string>
+    <string name="customer_no">Customer Number*</string>
     <string name="floor_pref">Floor Preference</string>
+    <string name="application_form">Application Form</string>
 
 </resources>

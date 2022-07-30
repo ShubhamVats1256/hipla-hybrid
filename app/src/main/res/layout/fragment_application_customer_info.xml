@@ -1,38 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/page_bg"
     android:layout_height="match_parent"
-    android:padding="40dp">
+    android:background="@color/page_bg"
+    android:padding="@dimen/page_margin">
+
+    <TextView
+        android:id="@+id/header"
+        style="@style/Hipla.Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/application_form"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:layout_width="0dp"
-        android:hint="@string/customer_first_name"
-        android:id="@+id/customer_first_name"
+        android:id="@+id/customerFirstName"
         style="@style/Hipla.EditText"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:layout_marginBottom="@dimen/form_item_space"
+        android:hint="@string/customer_first_name"
+        app:layout_constraintEnd_toStartOf="@id/customerLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <EditText
+        android:id="@+id/customerLastName"
+        style="@style/Hipla.EditText"
+        android:layout_height="wrap_content"
+        android:hint="@string/customer_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/customerFirstName"
+        app:layout_constraintTop_toTopOf="@id/customerFirstName" />
+
+    <EditText
+        android:id="@+id/customerNumber"
+        style="@style/Hipla.EditText"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_item_space"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:hint="@string/customer_no"
+        app:layout_constraintEnd_toStartOf="@id/panCardNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerFirstName" />
+
+    <EditText
+        android:id="@+id/panCardNumber"
+        style="@style/Hipla.EditText"
+        android:layout_height="wrap_content"
+        android:hint="@string/pan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/customerNumber"
+        app:layout_constraintTop_toTopOf="@id/customerNumber" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_bg"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:boxStrokeWidth="0dp"
+        android:layout_marginTop="@dimen/form_item_space"
+        app:endIconDrawable="@android:drawable/arrow_down_float"
+        app:endIconMode="custom"
+        android:hint="@string/floor_pref"
+        app:endIconTint="@color/primary"
+        app:layout_constraintEnd_toEndOf="@id/customerNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerNumber">
+
+        <AutoCompleteTextView
+            android:id="@+id/filled_exposed_dropdown"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/edit_text_size"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:inputType="none"
+            android:padding="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/register"
         style="@style/PrimaryButton"
-        tools:text="Register"
         android:text="@string/cancel"
-        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cancel" />
+        app:layout_constraintStart_toEndOf="@id/cancel"
+        tools:text="Register" />
 
     <TextView
         android:id="@+id/cancel"
         style="@style/SecondaryButton"
-        tools:text="Cancel"
+        android:layout_marginEnd="@dimen/form_item_space"
         android:text="@string/cancel"
-        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/register"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Cancel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

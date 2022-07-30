@@ -24,5 +24,11 @@
     <color name="secondary_btn_text_color">@color/primary_btn</color>
 
     <color name="edit_text_border">#668BC8</color>
+    <color name="edit_text_hint">#333333</color>
+
+    <color name="spinner_border">#668BC8</color>
+    <color name="spinner_text_hint">#333333</color>
+
+    <color name="header">#333333</color>
 
 </resources>

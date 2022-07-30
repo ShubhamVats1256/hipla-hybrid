@@ -56,7 +56,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 APPLICATION -> ApplicationFlowFragment()
-                else -> ApplicationFlowFragment()
+                else -> ApplicationCustomerInfoFragment()
             }
         }
     }
