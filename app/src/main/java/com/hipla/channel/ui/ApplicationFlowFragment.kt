@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
+import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.screenHeightInDp
@@ -36,12 +37,12 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         salesRecyclerAdapter = SalesRecyclerAdapter(salesUserList);
         val salesGridItemInDp: Int =
             (resources.getDimension(R.dimen.sales_grid_item_width) / resources.displayMetrics.density).toInt()
-        Log.d("testfx", " sales grid item in dp :$salesGridItemInDp")
-        Log.d("testfx", "screen width in dp :${requireContext().screenHeightInDp()}")
+        Log.d(LogConstant.FLOW_APP, " sales grid item in dp :$salesGridItemInDp")
+        Log.d(LogConstant.FLOW_APP, "screen width in dp :${requireContext().screenHeightInDp()}")
         val numColumns: Int = (requireContext().screenWidthDp() / salesGridItemInDp)
-        Log.d("testfx", " screen width :${requireContext().screenWidthDp()}")
+        Log.d(LogConstant.FLOW_APP, " screen width :${requireContext().screenWidthDp()}")
         Toast.makeText(requireContext(), "$numColumns", Toast.LENGTH_LONG).show()
-        binding.salesGridView.run {
+        binding.salesRecyclerView.run {
             layoutManager = GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
             adapter = salesRecyclerAdapter
             addItemDecoration(SalesGridItemDecoration())
