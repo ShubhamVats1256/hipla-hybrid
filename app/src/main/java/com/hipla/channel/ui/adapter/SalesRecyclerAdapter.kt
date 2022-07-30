@@ -11,13 +11,18 @@ import com.hipla.channel.databinding.SalesGridItemBinding
 import com.hipla.channel.entity.SalesUser
 
 
-class SalesRecyclerAdapter(private val salesUserList: List<SalesUser>) :
+class SalesRecyclerAdapter(
+    private val salesUserList: List<SalesUser>,
+    private val onItemClicked: (Int) -> Unit
+) :
     RecyclerView.Adapter<SalesRecyclerAdapter.RecyclerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.sales_grid_item, parent, false)
-        return RecyclerViewHolder(view)
+        return RecyclerViewHolder(view) {
+            onItemClicked(it)
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
@@ -29,8 +34,15 @@ class SalesRecyclerAdapter(private val salesUserList: List<SalesUser>) :
 
     override fun getItemCount(): Int = salesUserList.size
 
-    class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RecyclerViewHolder(itemView: View, onItemClicked: (Int) -> Unit) :
+        RecyclerView.ViewHolder(itemView) {
         val binding = DataBindingUtil.bind<SalesGridItemBinding>(itemView)
+
+        init {
+            binding?.root?.setOnClickListener {
+                onItemClicked(adapterPosition);
+            }
+        }
     }
 
 }

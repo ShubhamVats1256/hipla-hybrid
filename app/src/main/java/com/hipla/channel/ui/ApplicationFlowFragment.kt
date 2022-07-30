@@ -18,7 +18,6 @@ import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.MainViewModel
 
-
 class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
 
     private lateinit var viewModel: MainViewModel
@@ -34,7 +33,9 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
 
     private fun displayGrid() {
         val salesUserList = Utils.getSampleSalesUserList()
-        salesRecyclerAdapter = SalesRecyclerAdapter(salesUserList);
+        salesRecyclerAdapter = SalesRecyclerAdapter(salesUserList) {
+            Toast.makeText(requireContext(), "item clicked $it", Toast.LENGTH_LONG).show()
+        }
         val salesGridItemInDp: Int =
             (resources.getDimension(R.dimen.sales_grid_item_width) / resources.displayMetrics.density).toInt()
         Log.d(LogConstant.FLOW_APP, " sales grid item in dp :$salesGridItemInDp")
