@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.ApplicationFlowFragment">
+    tools:context=".ui.ApplicationFlowFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pageDivider1"

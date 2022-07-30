@@ -3,19 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    tools:layout_margin="32dp"
+    android:background="@drawable/sales_grid_item_bg"
+    android:layout_width="@dimen/sales_grid_item_width"
+    android:layout_height="@dimen/sales_grid_item_height"
     tools:context=".ui.ApplicationFlowFragment">
 
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        style="@style/Sales.User.ProfileImage"
+        android:layout_marginStart="@dimen/sales_grid_item_image_margin_start"
+        android:layout_marginEnd="@dimen/sales_grid_item_image_margin_end"
+        android:layout_marginTop="@dimen/sales_grid_item_image_margin_top"
+        android:layout_marginBottom="@dimen/sales_grid_item_image_margin_bottom"
+        android:background="@color/teal_200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/name"
+        android:contentDescription="profile pic" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Test fragment"
+        android:text="Johny \n luckose"
+        android:textStyle="bold"
+        android:textSize="36sp"
         android:gravity="center"
+        android:id="@+id/name"
+        android:maxLines="2"
+        android:layout_marginStart="@dimen/sales_grid_item_name_margin_start"
+        android:layout_marginEnd="@dimen/sales_grid_item_name_margin_end"
+        android:layout_marginBottom="@dimen/sales_grid_item_image_margin_bottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

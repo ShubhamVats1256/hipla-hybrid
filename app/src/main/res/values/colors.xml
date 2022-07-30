@@ -8,12 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
-    #E6E6E6
-
     <color name="primary">#29559E</color>
     <color name="view_pager_bg">#E6E6E6</color>
 
-    #E6E6E6
+    <!-- application flow-->
+    <color name="sales_grid_item_bg">#FFFFFF</color>
+    <color name="sales_grid_item_border">#A0B9E8</color>
 
 </resources>
