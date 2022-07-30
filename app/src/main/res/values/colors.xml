@@ -23,4 +23,6 @@
     <color name="secondary_btn">#E6E6E6</color>
     <color name="secondary_btn_text_color">@color/primary_btn</color>
 
+    <color name="edit_text_border">#668BC8</color>
+
 </resources>

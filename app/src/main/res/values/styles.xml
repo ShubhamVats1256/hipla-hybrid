@@ -2,21 +2,31 @@
 <resources>
 
 
-    <style name="Button">
+    <style name="Hipla"/>
+
+    <style name="Hipla.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/btn_text_size</item>
-        <item name="android:paddingTop">@dimen/btn_padding</item>
-        <item name="android:paddingBottom">@dimen/btn_padding</item>
+        <item name="android:padding">@dimen/btn_padding</item>
     </style>
 
-    <style name="PrimaryButton" parent="Button">
+    <style name="Hipla.EditText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:padding">@dimen/btn_padding</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Hipla.Button">
         <item name="android:textColor">@color/primary_btn_text_color</item>
         <item name="android:background">@drawable/primary_btn_bg</item>
     </style>
 
-    <style name="SecondaryButton" parent="Button">
+    <style name="SecondaryButton" parent="Hipla.Button">
         <item name="android:textColor">@color/secondary_btn_text_color</item>
         <item name="android:background">@drawable/secondary_button</item>
     </style>
@@ -31,8 +41,5 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
-
-
-
 
 </resources>

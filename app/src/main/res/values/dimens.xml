@@ -9,7 +9,7 @@
 
     <dimen name="rounded_image_default_corner_radius">12dp</dimen>
 
-    <dimen name="btn_corner_radius">12dp</dimen>
+    <dimen name="btn_corner_radius">20dp</dimen>
     <dimen name="btn_text_size">40sp</dimen>
     <dimen name="btn_padding">20dp</dimen>
 
@@ -27,5 +27,8 @@
     <dimen name="sales_grid_item_name_margin_end">32dp</dimen>
     <dimen name="sales_grid_item_name_margin_top">24dp</dimen>
     <dimen name="sales_grid_item_name_margin_bottom">25dp</dimen>
+
+    <dimen name="edit_text_corner_radius">20dp</dimen>
+
 
 </resources>
