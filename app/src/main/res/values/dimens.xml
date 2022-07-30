@@ -7,6 +7,10 @@
     <dimen name="appbar_padding_top">8dp</dimen>
 
 
+
+    <dimen name="rounded_image_default_corner_radius">12dp</dimen>
+
+
     <dimen name="sales_grid_item_width">328dp</dimen>
     <dimen name="sales_grid_item_height">374dp</dimen>
     <dimen name="sales_grid_item_corner_radius">32dp</dimen>

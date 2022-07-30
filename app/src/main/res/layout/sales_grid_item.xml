@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="@dimen/sales_grid_item_width"
+        android:layout_height="@dimen/sales_grid_item_height"
+        android:background="@drawable/sales_grid_item_bg"
+        tools:context=".ui.ApplicationFlowFragment"
+        tools:layout_margin="32dp">
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            style="@style/Sales.User.ProfileImage"
+            android:layout_marginStart="@dimen/sales_grid_item_image_margin_start"
+            android:layout_marginTop="@dimen/sales_grid_item_image_margin_top"
+            android:layout_marginEnd="@dimen/sales_grid_item_image_margin_end"
+            android:layout_marginBottom="@dimen/sales_grid_item_image_margin_bottom"
+            android:background="@color/teal_200"
+            android:contentDescription="profile pic"
+            app:layout_constraintBottom_toTopOf="@id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sales_grid_item_name_margin_start"
+            android:layout_marginEnd="@dimen/sales_grid_item_name_margin_end"
+            android:layout_marginBottom="@dimen/sales_grid_item_image_margin_bottom"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Johny \n luckose"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -15,4 +15,7 @@
     <color name="sales_grid_item_bg">#FFFFFF</color>
     <color name="sales_grid_item_border">#A0B9E8</color>
 
+    <color name="image_placeholder">@android:color/darker_gray</color>
+
+    image_placeholder
 </resources>
