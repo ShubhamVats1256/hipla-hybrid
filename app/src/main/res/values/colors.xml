@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="primary">#29559E</color>
-    <color name="view_pager_bg">#E6E6E6</color>
+    <color name="page_bg">#E6E6E6</color>
 
     <!-- application flow-->
     <color name="sales_grid_item_bg">#FFFFFF</color>
@@ -17,5 +17,10 @@
 
     <color name="image_placeholder">@android:color/darker_gray</color>
 
-    image_placeholder
+    <color name="primary_btn">#2958A6</color>
+    <color name="primary_btn_text_color">#FFFFFF</color>
+
+    <color name="secondary_btn">#E6E6E6</color>
+    <color name="secondary_btn_text_color">@color/primary_btn</color>
+
 </resources>

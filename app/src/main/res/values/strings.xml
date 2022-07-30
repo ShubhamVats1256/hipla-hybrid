@@ -1,6 +1,38 @@
 <resources>
-    <string name="app_name">Hipla Channel</string>
-    <string name="title_activity_channel">Channel</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="app_name">Hipla</string>
+    <string name="powered">Powered by Hipla</string>
+    <string name="application">Application</string>
+    <string name="inventory">Inventory</string>
+    <string name="pantry">Pantry</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="continue">Continue</string>
+    <string name="register">Register</string>
+    <string name="cheque_upload_photo">Upload Cheque Photo</string>
+    <string name="upload">Upload</string>
+    <string name="submit">Submit</string>
+    <string name="congrats">Congratulations</string>
+
+    <string name="cheque">Cheque</string>
+    <string name="cheque_no">Cheque Number</string>
+    <string name="your_cheque_photo">Your Cheque Photo</string>
+    <string name="rtgs">RTGS</string>
+    <string name="date">date</string>
+    <string name="amount_payable">Amount Payable</string>
+    <string name="pan">Pan Card Number</string>
+    <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
+
+    <string name="application_success">Your application is successful</string>
+    <string name="application_confirm_msg">Confirmation for Application No:</string>
+    <string name="your_application_no">Your application no:</string>
+
+    <string name="channel_partner">Channel Partner</string>
+    <string name="channel_partner_name">Channel Partner Name</string>
+    <string name="channel_partner_otp">Channel Partner OTP</string>
+
+    <string name="customer_otp">Customer OTP</string>
+    <string name="customer_first_name">Customer First Name</string>
+    <string name="customer_last_name">Customer Last Name</string>
+    <string name="floor_pref">Floor Preference</string>
+
 </resources>

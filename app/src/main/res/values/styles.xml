@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <style name="Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:paddingTop">@dimen/btn_padding</item>
+        <item name="android:paddingBottom">@dimen/btn_padding</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Button">
+        <item name="android:textColor">@color/primary_btn_text_color</item>
+        <item name="android:background">@drawable/primary_btn_bg</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Button">
+        <item name="android:textColor">@color/secondary_btn_text_color</item>
+        <item name="android:background">@drawable/secondary_button</item>
+    </style>
+
     <style name="Sales"/>
 
     <style name="Sales.User"/>
@@ -11,5 +31,8 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
+
+
+
 
 </resources>
