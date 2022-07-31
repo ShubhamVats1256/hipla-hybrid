@@ -20,8 +20,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+            buildConfigField "String", "BASE_URL", "\"https://api.coindesk.com\""
+            buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
+        }
         release {
             minifyEnabled false
+            buildConfigField "String", "BASE_URL", "\"https://api.coindesk.com\""
+            buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -58,6 +65,27 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    //koin
+    implementation "io.insert-koin:koin-android:$versions.koin"
+    implementation "io.insert-koin:koin-androidx-scope:$versions.koin"
+    implementation "io.insert-koin:koin-androidx-viewmodel:$versions.koin"
+
+    //logging
+    implementation "com.jakewharton.timber:timber:4.7.1"
+
+    //rest api
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.logging_interceptor"
+
+    //moshi
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-adapters:$versions.moshi"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.moshi_converter"
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
