@@ -31,4 +31,7 @@
 
     <color name="header">#333333</color>
 
+    <color name="confirm_otp_action_bar_color">#DFE9FC</color>
+
+
 </resources>
