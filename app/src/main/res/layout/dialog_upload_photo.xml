@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:layout_width="600dp"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/cameraIconDividerTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.37" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/cameraIconDividerBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rightDivider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/close" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:id="@+id/chequePhoto"
+        app:layout_constraintTop_toTopOf="@id/topDivider"
+        app:layout_constraintStart_toStartOf="@id/leftDivider"
+        app:layout_constraintEnd_toEndOf="@id/rightDivider"
+        android:background="@drawable/cheque_photo_bg"
+        app:layout_constraintBottom_toBottomOf="@id/centerDivider"
+        android:layout_height="0dp">
+    </ImageView>
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintTop_toBottomOf="@id/chequePhoto"
+        android:padding="24dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/your_cheque"
+        android:background="@drawable/your_cheque_bg"
+        android:textColor="@color/primary_dark"
+        app:layout_constraintStart_toStartOf="@id/leftDivider"
+        app:layout_constraintEnd_toEndOf="@id/rightDivider"
+        android:text="@string/your_cheque_photo"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/cameraIcon"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:paddingBottom="-30dp"
+        android:src="@drawable/icon_camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cameraIconDividerTop"
+        app:layout_constraintBottom_toBottomOf="@id/cameraIconDividerBottom"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/upload_cheque_instruction_bg"
+        app:layout_constraintBottom_toBottomOf="@id/cheque_instruction"
+        app:layout_constraintEnd_toEndOf="@id/rightDivider"
+        app:layout_constraintStart_toStartOf="@id/leftDivider"
+        app:layout_constraintTop_toTopOf="@id/cheque_instruction" />
+
+    <TextView
+        android:id="@+id/cheque_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.2"
+        android:padding="14dp"
+        android:text="@string/take_cheque_instruction"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/icon_bulb"
+        app:layout_constraintBottom_toTopOf="@id/upload"
+        app:layout_constraintEnd_toEndOf="@id/rightDivider"
+        app:layout_constraintStart_toStartOf="@id/leftDivider"
+        app:layout_constraintTop_toBottomOf="@id/your_cheque" />
+
+    <TextView
+        android:id="@+id/upload"
+        style="@style/PrimaryButton"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightDivider"
+        app:layout_constraintStart_toStartOf="@id/leftDivider" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

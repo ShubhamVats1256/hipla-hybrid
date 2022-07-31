@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_bg"
@@ -37,10 +36,35 @@
         android:layout_marginEnd="@dimen/form_item_space"
         android:layout_marginBottom="@dimen/form_item_space"
         android:hint="@string/amount_payable"
-        app:layout_constraintVertical_weight="0.5"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintVertical_weight="0.5" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/payment_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_item_space"
+        android:background="@drawable/toggle_group_bg"
+        app:checkedButton="@id/rtgs"
+        app:layout_constraintBottom_toTopOf="@id/chequeNumber"
+        app:layout_constraintStart_toStartOf="@id/amount_payable"
+        app:layout_constraintTop_toBottomOf="@id/amount_payable"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cheque"
+            style="@style/ToggleButton.Style"
+            android:text="@string/cheque" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rtgs"
+            style="@style/ToggleButton.Style"
+            android:enabled="false"
+            android:text="@string/rtgs" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
     <EditText
@@ -52,26 +76,26 @@
         android:hint="@string/cheque_no"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount_payable" />
+        app:layout_constraintTop_toBottomOf="@id/payment_toggle" />
 
     <TextView
         android:id="@+id/date"
         style="@style/Hipla.EditText"
-        android:gravity="center"
-        android:drawablePadding="24dp"
         android:layout_height="wrap_content"
+        android:drawablePadding="24dp"
+        android:gravity="center"
         android:hint="@string/date"
+        app:drawableEndCompat="@drawable/icon_date"
+        app:drawableTint="@color/primary"
         app:layout_constraintEnd_toEndOf="@id/pageDivider2"
         app:layout_constraintStart_toEndOf="@+id/pageDivider1"
-        app:layout_constraintTop_toTopOf="@id/chequeNumber"
-        app:drawableEndCompat="@drawable/icon_date"
-        app:drawableTint="@color/primary" />
+        app:layout_constraintTop_toTopOf="@id/chequeNumber" />
 
     <AutoCompleteTextView
         android:id="@+id/channel_partner_name"
+        style="@style/Hipla.AutoComplete"
         android:layout_marginTop="@dimen/form_item_space"
         android:hint="@string/channel_partner_name"
-        style="@style/Hipla.AutoComplete"
         app:layout_constraintEnd_toEndOf="@id/chequeNumber"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chequeNumber" />
@@ -80,12 +104,11 @@
         android:id="@+id/uploadCheque"
         style="@style/SecondaryButton"
         android:layout_marginEnd="@dimen/form_item_space"
-        android:text="@string/cheque_upload_photo"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/cancel"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Cancel" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <TextView
@@ -94,7 +117,6 @@
         android:text="@string/cheque_upload_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/uploadCheque"
-      />
+        app:layout_constraintStart_toEndOf="@id/uploadCheque" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

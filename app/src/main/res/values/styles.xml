@@ -67,4 +67,19 @@
         <item name="android:adjustViewBounds">true</item>
     </style>
 
+
+    <style name="ToggleButton.Style" parent="Widget.Material3.Button">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@color/toggle_background_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+
+    </style>
+
 </resources>

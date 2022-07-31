@@ -14,14 +14,46 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalDividerLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalDividerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:text="@string/application"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:padding="14dp"
+        app:layout_constraintStart_toStartOf="@id/verticalDividerLeft"
+        app:layout_constraintEnd_toEndOf="@id/verticalDividerRight"
+        android:textStyle="bold"
+        android:background="@drawable/tab_item_selected"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navHost"
+        android:layout_height="wrap_content"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navHost"

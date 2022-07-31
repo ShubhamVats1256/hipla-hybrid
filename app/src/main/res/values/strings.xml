@@ -42,6 +42,7 @@
 
     <string name="demo_otp_confirm_header">Confirmation for Application No: 1 \nCustomer name: Sreyansh Kumar \nChannel partner: Deepak Dev</string>
     <string name="enter_the_otp_info">Enter the OTP you just received via mobile</string>
+    <string name="take_cheque_instruction">Take your cheque photo and\nUpload to submit</string>
 
 
 </resources>
