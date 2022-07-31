@@ -1,13 +1,12 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdk 32
+    buildToolsVersion build_versions.tools
 
     defaultConfig {
         applicationId "com.hipla.channel"
@@ -22,12 +21,12 @@ android {
     buildTypes {
         debug {
             versionNameSuffix "-debug"
-            buildConfigField "String", "BASE_URL", "\"https://api.coindesk.com\""
+            buildConfigField "String", "BASE_URL", "\"https://catfact.ninja\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {
             minifyEnabled false
-            buildConfigField "String", "BASE_URL", "\"https://api.coindesk.com\""
+            buildConfigField "String", "BASE_URL", "\"https://catfact.ninja\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -66,6 +65,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
     //koin
     implementation "io.insert-koin:koin-android:$versions.koin"
@@ -83,10 +83,14 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$versions.moshi"
     implementation "com.squareup.moshi:moshi-adapters:$versions.moshi"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.moshi_converter"
+    annotationProcessor  "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

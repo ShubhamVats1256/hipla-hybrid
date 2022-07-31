@@ -1,6 +1,7 @@
 package com.hipla.channel
 
 import android.app.Application
+import android.util.Log
 import com.hipla.channel.di.apiModule
 import com.hipla.channel.di.repoModule
 import org.koin.android.ext.koin.androidContext
@@ -16,10 +17,9 @@ class HiplaApp : Application() {
         initApp()
     }
 
-
     private fun initApp() {
-        setUpKoin()
         setUpTimber()
+        setUpKoin()
     }
 
     private fun setUpTimber() {

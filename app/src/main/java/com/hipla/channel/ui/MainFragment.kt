@@ -21,6 +21,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding = FragmentMainBinding.bind(view)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setupViewPager()
+        loadData()
+    }
+
+    private fun loadData() {
+        viewModel.loadUsers()
     }
 
     private fun setupViewPager() {
