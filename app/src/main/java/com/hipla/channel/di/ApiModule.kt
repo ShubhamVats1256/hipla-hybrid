@@ -4,12 +4,11 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.hipla.channel.BuildConfig
-import com.hipla.channel.common.adapter.JSONObjectAdapter
 import com.hipla.channel.safeProceed
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -52,7 +51,7 @@ val apiModule = module {
     // moshi
     single {
         Moshi.Builder()
-            .add(JSONObjectAdapter)
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 
