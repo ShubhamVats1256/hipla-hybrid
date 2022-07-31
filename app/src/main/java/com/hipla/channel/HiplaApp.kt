@@ -2,6 +2,7 @@ package com.hipla.channel
 
 import android.app.Application
 import com.hipla.channel.di.apiModule
+import com.hipla.channel.di.repoModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -19,7 +20,6 @@ class HiplaApp : Application() {
     private fun initApp() {
         setUpKoin()
         setUpTimber()
-        //handleUncaughtException()
     }
 
     private fun setUpTimber() {
@@ -27,6 +27,7 @@ class HiplaApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
+
     private fun setUpKoin() {
         startKoin {
             androidLogger(Level.ERROR)
@@ -34,6 +35,7 @@ class HiplaApp : Application() {
             modules(
                 listOf(
                     apiModule,
+                    repoModule
                 )
             )
         }
