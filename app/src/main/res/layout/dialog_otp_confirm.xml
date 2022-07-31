@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="500dp"
+    android:layout_margin="24dp"
+    android:layout_height="wrap_content">
 
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/confirm_otp_action_bar_color"
+        android:background="@drawable/enter_otp_header_bg"
         app:layout_constraintBottom_toBottomOf="@id/headerDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <ImageView
         android:id="@+id/back"
@@ -53,9 +54,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:minWidth="75dp"
+        android:minWidth="100dp"
         android:textColor="@color/primary"
         android:textSize="24sp"
+        android:text="34"
+        android:gravity="center"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="@id/headerDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -102,7 +106,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/confirm_otp_action_bar_color"
+        android:background="@drawable/enter_otp_footer_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
