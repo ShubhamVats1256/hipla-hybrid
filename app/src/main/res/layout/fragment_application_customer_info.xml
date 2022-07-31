@@ -58,16 +58,9 @@
 
     <AutoCompleteTextView
         android:id="@+id/floor_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_item_space"
-        android:background="@drawable/edit_text_bg"
-        android:drawableEnd="@android:drawable/arrow_down_float"
-        android:drawableTint="@color/primary"
         android:hint="@string/floor_pref"
-        android:inputType="none"
-        android:padding="20dp"
-        android:textSize="@dimen/edit_text_size"
+        style="@style/Hipla.AutoComplete"
         app:layout_constraintEnd_toEndOf="@id/customerNumber"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/customerNumber" />
