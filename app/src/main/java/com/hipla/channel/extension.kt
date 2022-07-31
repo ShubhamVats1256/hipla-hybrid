@@ -7,7 +7,7 @@ import android.view.WindowManager
 import com.hipla.channel.common.ApiErrorCode
 import com.hipla.channel.common.CLIENT_ERROR_NO_INTERNET
 import com.hipla.channel.common.CLIENT_GENERIC
-import com.hipla.channel.entity.ApiErrorMessage
+import com.hipla.channel.api.ApiErrorMessage
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor

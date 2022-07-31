@@ -1,4 +1,4 @@
-package com.hipla.channel.api_service
+package com.hipla.channel.api
 
 import retrofit2.Response
 import retrofit2.http.GET

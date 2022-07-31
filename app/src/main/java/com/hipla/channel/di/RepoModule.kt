@@ -1,6 +1,6 @@
 package com.hipla.channel.di
 
-import com.hipla.channel.api_service.HiplaApiService
+import com.hipla.channel.api.HiplaApiService
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.dsl.module
 import retrofit2.Retrofit
