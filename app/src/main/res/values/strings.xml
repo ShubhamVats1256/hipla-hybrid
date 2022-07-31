@@ -11,23 +11,23 @@
     <string name="cheque_upload_photo">Upload Cheque Photo</string>
     <string name="upload">Upload</string>
     <string name="submit">Submit</string>
-    <string name="congrats">Congratulations</string>
+    <string name="congrats">Congratulations!</string>
 
     <string name="cheque">Cheque</string>
     <string name="cheque_no">Cheque Number</string>
     <string name="your_cheque_photo">Your Cheque Photo</string>
     <string name="rtgs">RTGS</string>
-    <string name="date">date</string>
+    <string name="date">Date</string>
     <string name="amount_payable">Amount Payable</string>
     <string name="pan">Pan Card Number*</string>
     <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
 
     <string name="application_success">Your application is successful</string>
     <string name="application_confirm_msg">Confirmation for Application No:</string>
-    <string name="your_application_no">Your application no:</string>
+    <string name="your_application_no">Your application no:22323232313</string>
 
     <string name="channel_partner">Channel Partner</string>
-    <string name="channel_partner_name">Channel Partner Name</string>
+    <string name="channel_partner_name">Channel Partner Name*</string>
     <string name="channel_partner_otp">Channel Partner OTP</string>
 
     <string name="customer_otp">Customer OTP</string>
@@ -36,6 +36,7 @@
     <string name="customer_no">Customer Number*</string>
     <string name="floor_pref">Floor Preference</string>
     <string name="application_form">Application Form</string>
+    <string name="payment_info">Payment information</string>
 
 
     <string name="demo_otp_confirm_header">Confirmation for Application No: 1 \nCustomer name: Sreyansh Kumar \nChannel partner: Deepak Dev</string>

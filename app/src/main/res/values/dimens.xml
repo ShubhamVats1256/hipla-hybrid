@@ -40,10 +40,10 @@
 
     <dimen name="application_otp_confirm_customer_top_margin">20dp</dimen>
 
-
+p
     <dimen name="form_item_space">32dp</dimen>
 
-    <dimen name="header_text_size">36dp</dimen>
+    <dimen name="header_text_size">32sp</dimen>
     <dimen name="header_padding">20dp</dimen>
 
 </resources>

@@ -14,11 +14,13 @@
 
     <style name="Hipla.AutoComplete">
         <item name="android:background">@drawable/autocomplete_bg</item>
-        <item name="android:drawableEnd">@android:drawable/arrow_down_float</item>
-        <item name="android:drawableTint">@color/primary</item>
+        <item name="drawableEndCompat">@drawable/icon_drop_down</item>
+        <item name="drawableTint">@color/primary</item>
+        <item name="drawableSize">16dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/header</item>
+        <item name="android:textColorHint">@color/header</item>
         <item name="android:textSize">@dimen/header_text_size</item>
         <item name="android:padding">@dimen/drop_down_padding</item>
         <item name="android:inputType">none</item>
