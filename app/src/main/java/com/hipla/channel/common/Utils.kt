@@ -1,9 +1,9 @@
 package com.hipla.channel.common
 
-import android.util.Log
 import android.view.View
 import com.hipla.channel.common.LogConstant.APP_EXCEPTION
 import com.hipla.channel.entity.SalesUser
+import timber.log.Timber
 
 object Utils {
 
@@ -70,7 +70,7 @@ object Utils {
         try {
             block.invoke()
         } catch (e: Exception) {
-            Log.e(APP_EXCEPTION, e.toString())
+            Timber.tag(APP_EXCEPTION).e(e.toString())
         }
     }
 

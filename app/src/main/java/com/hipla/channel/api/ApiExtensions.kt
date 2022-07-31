@@ -4,6 +4,7 @@ import com.hipla.channel.getKoinInstance
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
 import retrofit2.Response
+import timber.log.Timber
 
 fun <T> Response<T>.asResource(): Resource<T> {
     return try {
@@ -20,6 +21,7 @@ fun <T> Response<T>.asResource(): Resource<T> {
             )
         }
     } catch (e: Exception) {
+        Timber.e(e.toString())
         ResourceError(e, this.code())
     }
 }
