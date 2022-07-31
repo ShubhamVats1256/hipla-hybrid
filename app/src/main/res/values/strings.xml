@@ -37,4 +37,8 @@
     <string name="floor_pref">Floor Preference</string>
     <string name="application_form">Application Form</string>
 
+
+    <string name="demo_otp_confirm_header">Confirmation for Application No: 1 \nCustomer name: Sreyansh Kumar \nChannel partner: Deepak Dev</string>
+
+
 </resources>
