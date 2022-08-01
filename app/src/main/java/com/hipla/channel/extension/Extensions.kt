@@ -128,6 +128,9 @@ fun ApplicationRequest.toRequestMap(): Map<String, String> {
     if (unitId >= 0) {
         requestMap["unitId"] = unitId.toString()
     }
+    if (floorPreferenceId > 0) {
+        requestMap["floorId"] = floorPreferenceId.toString()
+    }
     return requestMap
 }
 

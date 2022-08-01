@@ -12,6 +12,7 @@ class ApplicationRequest(
     val paymentType: PaymentType,
     val paymentDetails: String,
     val paymentProofImageUrl: String,
+    val floorPreferenceId: Int = -1,
     val ownerId: Int,
     val createdBy: Int,
 )

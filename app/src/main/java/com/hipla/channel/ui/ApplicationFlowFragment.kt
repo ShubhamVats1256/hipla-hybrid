@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
+import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.SalesUser
@@ -45,6 +46,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         salesRecyclerAdapter = SalesRecyclerAdapter {
             viewModel.generateOTP(it)
             showOTPDialog(it)
+            launchCustomerInfoFragment(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -109,10 +111,14 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         }
     }
 
-    private fun launchCustomerInfoFragment() {
+    private fun launchCustomerInfoFragment(salesUser: SalesUser) {
         findNavController().run {
             if (isCurrentDestination(R.id.mainFragment)) {
-                navigate(R.id.action_mainFragment_to_customerInfoFragment)
+                navigate(
+                    resId = R.id.action_mainFragment_to_customerInfoFragment,
+                    args = Bundle().apply {
+                        putString(KEY_SALES_USER_ID, salesUser.id.toString())
+                    })
             }
         }
     }

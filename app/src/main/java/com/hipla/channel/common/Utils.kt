@@ -2,7 +2,6 @@ package com.hipla.channel.common
 
 import android.view.View
 import com.hipla.channel.common.LogConstant.APP_EXCEPTION
-import com.hipla.channel.entity.SalesUser
 import timber.log.Timber
 
 object Utils {
@@ -25,6 +24,10 @@ object Utils {
 
     fun View.invisible() {
         visibility = View.INVISIBLE
+    }
+
+    fun getFloorPreference() {
+
     }
 
 }
