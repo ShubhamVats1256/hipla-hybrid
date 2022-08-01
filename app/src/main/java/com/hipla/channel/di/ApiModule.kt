@@ -4,6 +4,7 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.hipla.channel.BuildConfig
+import com.hipla.channel.moshi.adapter.PaymentTypeAdapter
 import com.hipla.channel.safeProceed
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -52,6 +53,7 @@ val apiModule = module {
     single {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
+            .add(PaymentTypeAdapter)
             .build()
     }
 

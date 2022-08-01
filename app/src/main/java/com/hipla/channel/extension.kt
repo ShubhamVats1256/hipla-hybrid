@@ -4,10 +4,11 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
+import com.hipla.channel.api.ApiErrorMessage
+import com.hipla.channel.api.ApplicationRequest
 import com.hipla.channel.common.ApiErrorCode
 import com.hipla.channel.common.CLIENT_ERROR_NO_INTERNET
 import com.hipla.channel.common.CLIENT_GENERIC
-import com.hipla.channel.api.ApiErrorMessage
 import com.hipla.channel.common.Utils.tryCatch
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -99,4 +100,24 @@ fun CoroutineScope.launchSafely(
     tryCatch {
         block.invoke()
     }
+}
+
+fun ApplicationRequest.toRequestMap(): Map<String, String> {
+    val requestMap = mutableMapOf<String, String>()
+    requestMap["tag"] = tag
+    requestMap["type"] = type
+    requestMap["identifier"] = identifier
+    requestMap["customerName"] = customerName
+    requestMap["customerPhoneNumber"] = customerPhoneNumber
+    requestMap["panNumber"] = panNumber
+    requestMap["channelPartnerId"] = channelPartnerId
+    requestMap["paymentTypeById"] = paymentType.typeId.toString()
+    requestMap["paymentDetails"] = paymentDetails
+    requestMap["paymentProofImageUrl"] = paymentProofImageUrl
+    requestMap["ownerId"] = ownerId.toString()
+    requestMap["createdBy"] = createdBy.toString()
+    if (unitId >= 0) {
+        requestMap["unitId"] = unitId.toString()
+    }
+    return requestMap
 }

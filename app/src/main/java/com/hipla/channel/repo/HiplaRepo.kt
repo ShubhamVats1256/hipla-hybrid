@@ -19,5 +19,33 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
+    suspend fun verifyOtp(otp: String, userId : String, referenceId : String): Resource<Unit> {
+        return try {
+            return hiplaApiService.generateOTP(
+                otpRequestMap = mutableMapOf<String, String>().apply {
+                    put("otp", otp)
+                    put("userId", userId)
+                    put("referenceId", referenceId)
+                }
+            ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
+    suspend fun createApplication(otp: String, userId : String, referenceId : String): Resource<Unit> {
+        return try {
+            return hiplaApiService.generateOTP(
+                otpRequestMap = mutableMapOf<String, String>().apply {
+                    put("otp", otp)
+                    put("userId", userId)
+                    put("referenceId", referenceId)
+                }
+            ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
 
 }

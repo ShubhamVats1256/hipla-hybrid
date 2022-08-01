@@ -9,4 +9,7 @@ interface HiplaApiService {
     @POST("business/v1/user/generateOtp")
     suspend fun generateOTP(@Body otpRequestMap: Map<String, String>): Response<Unit>
 
+    @POST("notification/v1/verifyAnonymousOTP")
+    suspend fun verifyOtp(@Body otpRequestMap: Map<String, String>): Response<Unit>
+
 }
