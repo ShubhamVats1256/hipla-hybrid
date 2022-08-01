@@ -12,9 +12,9 @@ class SalesGridItemDecoration() : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.top = 50
-        outRect.bottom = 50
-        outRect.left = 50
-        outRect.right = 50
+        outRect.top = 16
+        outRect.bottom = 16
+        outRect.left = 16
+        outRect.right = 16
     }
 }

@@ -11,6 +11,7 @@
     <color name="primary">#29559E</color>
     <color name="primary_dark">#2958A6</color>
     <color name="page_bg">#E6E6E6</color>
+    <color name="text_color_light_black">#333333</color>
 
     <color name="blue_light">#DFE9FC</color>
 
@@ -27,12 +28,12 @@
     <color name="secondary_btn_text_color">@color/primary_btn</color>
 
     <color name="edit_text_border">#668BC8</color>
-    <color name="edit_text_hint">#333333</color>
+    <color name="edit_text_hint">@color/text_color_light_black</color>
 
     <color name="spinner_border">#668BC8</color>
-    <color name="spinner_text_hint">#333333</color>
+    <color name="spinner_text_hint">@color/text_color_light_black</color>
 
-    <color name="header">#333333</color>
+    <color name="header">@color/text_color_light_black</color>
 
     <color name="confirm_otp_action_bar_color">#DFE9FC</color>
     <color name="close">#4059A2</color>

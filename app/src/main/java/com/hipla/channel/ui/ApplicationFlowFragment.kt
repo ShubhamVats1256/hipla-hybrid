@@ -2,52 +2,81 @@ package com.hipla.channel.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.SalesUser
-import com.hipla.channel.extension.screenWidthDp
+import com.hipla.channel.extension.canLoadNextGridPage
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
-import com.hipla.channel.viewmodel.MainViewModel
+import com.hipla.channel.viewmodel.ApplicationFlowViewModel
+import kotlinx.coroutines.launch
 
 class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
+    private val scrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (recyclerView.canLoadNextGridPage(newState)) {
+                    viewModel.loadUsers()
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentApplicationBinding.bind(view)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        displayGrid()
+        viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
+        salesRecyclerAdapter = SalesRecyclerAdapter {
+
+        }
+        setRecyclerView()
+        observeViewModel()
+        loadData()
     }
 
-    private fun displayGrid() {
-        val salesUserList = arrayListOf<SalesUser>();
-        salesRecyclerAdapter = SalesRecyclerAdapter(salesUserList) {
-            Toast.makeText(requireContext(), "item clicked $it", Toast.LENGTH_LONG).show()
-        }
+    private fun setRecyclerView() {
         binding.salesRecyclerView.run {
-            layoutManager = GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                4,
+                RecyclerView.VERTICAL,
+                false
+            )
             adapter = salesRecyclerAdapter
             addItemDecoration(SalesGridItemDecoration())
+            addOnScrollListener(scrollListener)
         }
     }
 
-    fun getNumberOfColumns(): Int {
-        val salesGridItemInDp: Int =
-            (resources.getDimension(R.dimen.sales_grid_item_width) / resources.displayMetrics.density).toInt()
-        //Log.d(LogConstant.FLOW_APP, " sales grid item in dp :$salesGridItemInDp")
-        //Log.d(LogConstant.FLOW_APP, "screen width in dp :${requireContext().screenHeightInDp()}")
-        val numColumns: Int = (requireContext().screenWidthDp() / salesGridItemInDp)
-        // Log.d(LogConstant.FLOW_APP, " screen width :${requireContext().screenWidthDp()}")
-        Toast.makeText(requireContext(), "$numColumns", Toast.LENGTH_LONG).show()
+    private fun loadData() = viewModel.loadUsers()
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                observeSalesUserList()
+            }
+        }
+    }
+
+    private fun observeSalesUserList() {
+        viewModel.salesUsersLiveData.observe(viewLifecycleOwner) {
+            displaySalesUserList(it)
+        }
+    }
+
+    private fun displaySalesUserList(salesUserList: List<SalesUser>) {
+        salesRecyclerAdapter.append(salesUserList)
     }
 
 }

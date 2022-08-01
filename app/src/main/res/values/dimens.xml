@@ -23,24 +23,25 @@
     <dimen name="drop_down_padding">22dp</dimen>
     <dimen name="drop_down_text_size">32sp</dimen>
 
-    <dimen name="sales_grid_item_width">328dp</dimen>
-    <dimen name="sales_grid_item_height">374dp</dimen>
-    <dimen name="sales_grid_item_corner_radius">32dp</dimen>
+    <dimen name="sales_grid_item_width">246dp</dimen>
+    <dimen name="sales_grid_item_height">270dp</dimen>
+    <dimen name="sales_grid_item_corner_radius">16dp</dimen>
 
-    <dimen name="sales_grid_item_image">200dp</dimen>
-    <dimen name="sales_grid_item_image_margin_start">64dp</dimen>
-    <dimen name="sales_grid_item_image_margin_end">64dp</dimen>
-    <dimen name="sales_grid_item_image_margin_top">44dp</dimen>
-    <dimen name="sales_grid_item_image_margin_bottom">25dp</dimen>
+    <dimen name="sales_grid_item_image">135dp</dimen>
+    <dimen name="sales_grid_item_image_margin_start">20dp</dimen>
+    <dimen name="sales_grid_item_image_margin_end">20dp</dimen>
+    <dimen name="sales_grid_item_image_margin_top">12dp</dimen>
+    <dimen name="sales_grid_item_image_margin_bottom">4dp</dimen>
 
-    <dimen name="sales_grid_item_name_margin_start">32dp</dimen>
-    <dimen name="sales_grid_item_name_margin_end">32dp</dimen>
+    <dimen name="sales_grid_item_name_margin_start">24dp</dimen>
+    <dimen name="sales_grid_item_name_margin_end">24dp</dimen>
     <dimen name="sales_grid_item_name_margin_top">24dp</dimen>
-    <dimen name="sales_grid_item_name_margin_bottom">25dp</dimen>
+    <dimen name="sales_grid_item_name_margin_bottom">16dp</dimen>
+
+    <dimen name="sales_grid_item_name_text_size">24sp</dimen>
 
     <dimen name="application_otp_confirm_customer_top_margin">20dp</dimen>
 
-p
     <dimen name="form_item_space">32dp</dimen>
 
     <dimen name="header_text_size">32sp</dimen>

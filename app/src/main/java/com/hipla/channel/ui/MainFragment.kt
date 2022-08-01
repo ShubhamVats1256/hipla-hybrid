@@ -8,24 +8,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.hipla.channel.R
 import com.hipla.channel.databinding.FragmentMainBinding
-import com.hipla.channel.viewmodel.MainViewModel
+import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
-    private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentMainBinding
     private var mainPageAdapter: MainPageAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMainBinding.bind(view)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setupViewPager()
-        loadData()
-    }
-
-    private fun loadData() {
-        viewModel.loadUsers()
     }
 
     private fun setupViewPager() {

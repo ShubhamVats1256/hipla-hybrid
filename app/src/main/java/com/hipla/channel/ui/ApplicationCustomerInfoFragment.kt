@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hipla.channel.R
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
-import com.hipla.channel.viewmodel.MainViewModel
+import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 
 
 class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_customer_info) {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationCustomerInfoBinding
     private var floorList =
         arrayOf("First floor", "Second floor", "Third floor", "Fourth floor", "First floor", "Second floor", "Third floor", "Fourth floor")
@@ -21,7 +21,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentApplicationCustomerInfoBinding.bind(view)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         setFloorPreference()
     }
 
