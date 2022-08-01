@@ -10,11 +10,10 @@ class MainViewModel : BaseViewModel() {
 
     fun loadUsers() {
         launchIO {
-             val test = hiplaRepo.fetchTest().ifSuccessful {
-                Timber.tag("testfx").d(it.fact)
+            hiplaRepo.generateOtp("9962222626").ifSuccessful {
+                Timber.tag("testfx").d("otp generated successfully")
             }
         }
     }
-
 
 }

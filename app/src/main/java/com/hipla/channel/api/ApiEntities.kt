@@ -12,3 +12,4 @@ data class ApiErrorMessage(
     @ApiErrorCode val code: String,
     val payload: List<String>? = null
 )
+

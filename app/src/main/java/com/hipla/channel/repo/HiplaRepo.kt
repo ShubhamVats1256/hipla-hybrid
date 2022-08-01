@@ -4,14 +4,16 @@ import com.hipla.channel.api.HiplaApiService
 import com.hipla.channel.api.Resource
 import com.hipla.channel.api.ResourceError
 import com.hipla.channel.api.asResource
-import com.hipla.channel.entity.Test
-import org.json.JSONObject
 
 class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
-    suspend fun fetchTest(): Resource<Test> {
+    suspend fun generateOtp(phoneNo: String): Resource<Unit> {
         return try {
-            return hiplaApiService.fetchTest().asResource()
+            return hiplaApiService.generateOTP(
+                otpRequestMap = mutableMapOf<String, String>().apply {
+                    put("id", phoneNo)
+                }
+            ).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }

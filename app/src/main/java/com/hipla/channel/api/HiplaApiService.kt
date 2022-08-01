@@ -1,13 +1,12 @@
 package com.hipla.channel.api
 
-import com.hipla.channel.entity.Test
-import org.json.JSONObject
 import retrofit2.Response
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface HiplaApiService {
 
-    @GET("fact")
-    suspend fun fetchTest(): Response<Test>
+    @POST("business/v1/user/generateOtp")
+    suspend fun generateOTP(@Body otpRequestMap: Map<String, String>): Response<Unit>
 
 }

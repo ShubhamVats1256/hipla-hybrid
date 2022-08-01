@@ -21,12 +21,12 @@ android {
     buildTypes {
         debug {
             versionNameSuffix "-debug"
-            buildConfigField "String", "BASE_URL", "\"https://catfact.ninja\""
+            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {
             minifyEnabled false
-            buildConfigField "String", "BASE_URL", "\"https://catfact.ninja\""
+            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
