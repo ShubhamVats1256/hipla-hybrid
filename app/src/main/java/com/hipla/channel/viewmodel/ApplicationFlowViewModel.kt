@@ -48,6 +48,11 @@ class ApplicationFlowViewModel : BaseViewModel() {
         }
     }
 
+    private fun generateOTP(salesUser: SalesUser) {
+        launchIO {
+            hiplaRepo.generateOtp("9962222626")
+        }
+    }
 
     private fun canDownload(): Boolean {
         return isDownloading.get() || currentPage <= totalPage

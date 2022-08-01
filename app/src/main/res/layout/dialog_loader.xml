@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="250dp"
+        android:layout_height="240dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/enter_otp_header_bg"
+            app:layout_constraintBottom_toBottomOf="@id/headerDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loader"
+            style="@style/Widget.Material3.CircularProgressIndicator.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:indicatorSize="60dp"
+            app:layout_constraintBottom_toTopOf="@id/hipla"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/headerDivider"
+            app:trackColor="@color/primary_dark" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/headerDivider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/headerDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:text="Downloading" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/enter_otp_footer_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/footerDivider" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/footerDivider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.80" />
+
+        <TextView
+            android:id="@+id/hipla"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/app_name"
+            android:textColor="@color/primary"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/icon_hipla_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/footerDivider"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

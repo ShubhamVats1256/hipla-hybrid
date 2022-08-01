@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
+import android.widget.EditText
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.common.ApiErrorCode
@@ -124,15 +126,23 @@ fun ApplicationRequest.toRequestMap(): Map<String, String> {
     return requestMap
 }
 
-
 fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     if (newScrollState != RecyclerView.SCROLL_STATE_IDLE) {
         return false
     }
     val layoutManager = layoutManager
     return if (layoutManager is GridLayoutManager) {
-        layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount -  ((AppConfig.PAGE_DOWNLOAD_SIZE) / 2)
+        layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - ((AppConfig.PAGE_DOWNLOAD_SIZE) / 2)
     } else {
         false
     }
+}
+
+fun EditText.hasValidPhone(): Boolean {
+    return this.text.toString().length == 10
+}
+
+fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
+    this ?: return false
+    return currentDestination?.id == destinationId
 }

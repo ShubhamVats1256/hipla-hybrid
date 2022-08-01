@@ -12,16 +12,16 @@ import com.hipla.channel.entity.SalesUser
 
 
 class SalesRecyclerAdapter(
-    private val onItemClicked: (Int) -> Unit
-) :
-    RecyclerView.Adapter<SalesRecyclerAdapter.RecyclerViewHolder>() {
+    private val onItemClicked: (SalesUser) -> Unit
+) : RecyclerView.Adapter<SalesRecyclerAdapter.RecyclerViewHolder>() {
 
     private val salesUserList = mutableListOf<SalesUser>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.list_item_sales_user, parent, false)
-        return RecyclerViewHolder(view) {
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_sales_user, parent, false)
+        return RecyclerViewHolder(view, salesUserList) {
             onItemClicked(it)
         }
     }
@@ -41,13 +41,17 @@ class SalesRecyclerAdapter(
         notifyItemRangeInserted(startPosition, salesUserList.size)
     }
 
-    class RecyclerViewHolder(itemView: View, onItemClicked: (Int) -> Unit) :
+    class RecyclerViewHolder(
+        itemView: View,
+        salesUserList: List<SalesUser>,
+        onItemClicked: (SalesUser) -> Unit
+    ) :
         RecyclerView.ViewHolder(itemView) {
         val binding = DataBindingUtil.bind<ListItemSalesUserBinding>(itemView)
 
         init {
             binding?.root?.setOnClickListener {
-                onItemClicked(adapterPosition);
+                onItemClicked(salesUserList[adapterPosition])
             }
         }
     }

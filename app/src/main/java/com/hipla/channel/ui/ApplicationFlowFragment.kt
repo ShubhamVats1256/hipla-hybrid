@@ -2,17 +2,21 @@ package com.hipla.channel.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
+import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.SalesUser
 import com.hipla.channel.extension.canLoadNextGridPage
+import com.hipla.channel.extension.isCurrentDestination
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
@@ -38,7 +42,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-
+            showOTPDialog(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -77,6 +81,41 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
 
     private fun displaySalesUserList(salesUserList: List<SalesUser>) {
         salesRecyclerAdapter.append(salesUserList)
+    }
+
+    private fun showOTPDialog(salesUser: SalesUser) {
+        if (requireActivity().isDestroyed.not()) {
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val alertDialog: AlertDialog? = null
+            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
+            dialogBuilder.setView(dialogBinding.root)
+            dialogBinding.identification.text = salesUser.id.toString()
+            dialogBinding.submit.setOnClickListener {
+                launchCustomerInfoFragment()
+            }
+
+            dialogBuilder.setOnCancelListener {
+                if (requireActivity().isDestroyed) {
+                    alertDialog?.dismiss()
+                    return@setOnCancelListener
+                }
+            }
+            dialogBuilder.setOnDismissListener {
+                if (requireActivity().isDestroyed) {
+                    alertDialog?.dismiss()
+                    return@setOnDismissListener
+                }
+            }
+            dialogBuilder.show()
+        }
+    }
+
+    private fun launchCustomerInfoFragment() {
+        findNavController().run {
+            if (isCurrentDestination(R.id.mainFragment)) {
+                navigate(R.id.action_mainFragment_to_customerInfoFragment)
+            }
+        }
     }
 
 }
