@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.TextView.OnEditorActionListener
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +36,7 @@ import org.koin.core.qualifier.Qualifier
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+
 
 fun Context.getDeviceMetrics(): DisplayMetrics {
     val metrics = DisplayMetrics()
@@ -142,6 +145,24 @@ fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
 
 fun EditText.hasValidPhone(): Boolean {
     return this.text.toString().length == 10
+}
+
+fun EditText.hasValidData(): Boolean {
+    return this.text.trim().isEmpty().not()
+}
+
+fun EditText.content(): String {
+    return this.text.trim().toString()
+}
+
+fun EditText.onSubmit(block: () -> Unit) {
+    setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            block.invoke()
+            return@OnEditorActionListener true
+        }
+        false
+    })
 }
 
 fun NavController?.isCurrentDestination(destinationId: Int): Boolean {

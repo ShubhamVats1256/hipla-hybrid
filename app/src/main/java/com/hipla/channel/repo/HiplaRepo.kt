@@ -5,6 +5,7 @@ import com.hipla.channel.entity.api.Resource
 import com.hipla.channel.entity.api.ResourceError
 import com.hipla.channel.api.asResource
 import com.hipla.channel.entity.response.SalesPageResponse
+import com.hipla.channel.entity.response.VerifyOTPResponse
 
 class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
@@ -20,9 +21,9 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun verifyOtp(otp: String, userId : String, referenceId : String): Resource<Unit> {
+    suspend fun verifyOtp(otp: String, userId : String, referenceId : String): Resource<VerifyOTPResponse> {
         return try {
-            return hiplaApiService.generateOTP(
+            return hiplaApiService.verifyOtp(
                 otpRequestMap = mutableMapOf<String, String>().apply {
                     put("otp", otp)
                     put("userId", userId)

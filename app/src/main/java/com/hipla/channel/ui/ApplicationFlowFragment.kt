@@ -15,9 +15,7 @@ import com.hipla.channel.R
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.SalesUser
-import com.hipla.channel.extension.canLoadNextGridPage
-import com.hipla.channel.extension.isCurrentDestination
-import com.hipla.channel.extension.toILoader
+import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
@@ -28,6 +26,8 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
+    var otpConfirmDialog: AlertDialog? = null
+
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -43,6 +43,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
+            viewModel.generateOTP(it)
             showOTPDialog(it)
         }
         setRecyclerView()
@@ -87,26 +88,31 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
     private fun showOTPDialog(salesUser: SalesUser) {
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val alertDialog: AlertDialog? = null
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.identification.text = salesUser.id.toString()
             dialogBinding.submit.setOnClickListener {
-                requireActivity().toILoader().showLoader("Verifying")
+                //requireActivity().toILoader().showLoader("Verifying")
+                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
+                }
+            }
+            dialogBinding.otpEdit.onSubmit {
+                otpConfirmDialog?.dismiss()
+                viewModel.verifyOtp(salesUser, dialogBinding.otpEdit.content())
             }
             dialogBuilder.setOnCancelListener {
                 if (requireActivity().isDestroyed) {
-                    alertDialog?.dismiss()
+                    otpConfirmDialog?.dismiss()
                     return@setOnCancelListener
                 }
             }
             dialogBuilder.setOnDismissListener {
                 if (requireActivity().isDestroyed) {
-                    alertDialog?.dismiss()
+                    otpConfirmDialog?.dismiss()
                     return@setOnDismissListener
                 }
             }
-            dialogBuilder.show()
+            otpConfirmDialog = dialogBuilder.show()
         }
     }
 

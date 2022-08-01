@@ -80,12 +80,14 @@
 
 
         <EditText
-            android:id="@+id/customerOtp"
+            android:id="@+id/otp_edit"
             style="@style/Hipla.EditText"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/form_item_space"
+            android:inputType="number"
+            android:imeOptions="actionDone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/otp_info" />
@@ -97,9 +99,10 @@
             android:layout_marginTop="64dp"
             android:layout_marginEnd="@dimen/form_item_space"
             android:text="@string/submit"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/customerOtp" />
+            app:layout_constraintTop_toBottomOf="@id/otp_edit" />
 
 
         <View

@@ -9,6 +9,7 @@ import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ApplicationFlowViewModel : BaseViewModel() {
@@ -48,9 +49,27 @@ class ApplicationFlowViewModel : BaseViewModel() {
         }
     }
 
-    private fun generateOTP(salesUser: SalesUser) {
+    fun generateOTP(salesUser: SalesUser) {
         launchIO {
-            hiplaRepo.generateOtp("9962222626")
+            hiplaRepo.generateOtp(salesUser.phoneNumber.toString())
+        }
+    }
+
+    fun verifyOtp(salesUser: SalesUser, otp: String) {
+        Timber.tag(LogConstant.FLOW_APP).d("verify otp: $otp for userId : ${salesUser.id}")
+        launchIO {
+            hiplaRepo.verifyOtp(
+                otp = otp,
+                userId = salesUser.id.toString(),
+                referenceId = UUID.randomUUID().toString()
+            ).run {
+                ifSuccessful {
+                    Timber.tag(LogConstant.FLOW_APP).d("otp verification successful")
+                }
+                ifError {
+                    Timber.tag(LogConstant.FLOW_APP).d("otp verification failed")
+                }
+            }
         }
     }
 
