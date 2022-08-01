@@ -1,5 +1,6 @@
 package com.hipla.channel.extension
 
+import android.app.Activity
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
@@ -13,6 +14,7 @@ import com.hipla.channel.common.AppConfig
 import com.hipla.channel.common.CLIENT_ERROR_NO_INTERNET
 import com.hipla.channel.common.CLIENT_GENERIC
 import com.hipla.channel.common.Utils.tryCatch
+import com.hipla.channel.contract.ILoader
 import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.ApiErrorMessage
 import com.squareup.moshi.JsonAdapter
@@ -146,3 +148,5 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
     this ?: return false
     return currentDestination?.id == destinationId
 }
+
+fun Activity.toILoader() = this as ILoader

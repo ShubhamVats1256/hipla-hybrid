@@ -1,6 +1,7 @@
 package com.hipla.channel
 
 import android.os.Bundle
+import android.view.Window
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.hipla.channel.contract.ILoader

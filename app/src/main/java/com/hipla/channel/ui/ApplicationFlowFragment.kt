@@ -17,6 +17,7 @@ import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.SalesUser
 import com.hipla.channel.extension.canLoadNextGridPage
 import com.hipla.channel.extension.isCurrentDestination
+import com.hipla.channel.extension.toILoader
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
@@ -91,9 +92,8 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.identification.text = salesUser.id.toString()
             dialogBinding.submit.setOnClickListener {
-                launchCustomerInfoFragment()
+                requireActivity().toILoader().showLoader("Verifying")
             }
-
             dialogBuilder.setOnCancelListener {
                 if (requireActivity().isDestroyed) {
                     alertDialog?.dismiss()
