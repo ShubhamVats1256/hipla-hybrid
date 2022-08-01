@@ -1,5 +1,6 @@
 package com.hipla.channel.api
 
+import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.SalesPageResponse
 import com.hipla.channel.entity.response.VerifyOTPResponse
 import retrofit2.Response
@@ -17,7 +18,7 @@ interface HiplaApiService {
     ): Response<SalesPageResponse>
 
     @POST("business/v1/user/generateOtp")
-    suspend fun generateOTP(@Body otpRequestMap: Map<String, String>): Response<Unit>
+    suspend fun generateOTP(@Body otpRequestMap: Map<String, String>): Response<GenerateOTPResponse>
 
     @POST("notification/v1/verifyAnonymousOTP")
     suspend fun verifyOtp(@Body otpRequestMap: Map<String, String>): Response<VerifyOTPResponse>

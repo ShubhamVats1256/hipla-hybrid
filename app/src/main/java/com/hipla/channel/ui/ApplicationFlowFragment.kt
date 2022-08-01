@@ -96,23 +96,16 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
                 dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
                 }
             }
+            dialogBinding.back.setOnClickListener {
+                otpConfirmDialog?.dismiss()
+            }
             dialogBinding.otpEdit.onSubmit {
                 otpConfirmDialog?.dismiss()
                 viewModel.verifyOtp(salesUser, dialogBinding.otpEdit.content())
             }
-            dialogBuilder.setOnCancelListener {
-                if (requireActivity().isDestroyed) {
-                    otpConfirmDialog?.dismiss()
-                    return@setOnCancelListener
-                }
-            }
-            dialogBuilder.setOnDismissListener {
-                if (requireActivity().isDestroyed) {
-                    otpConfirmDialog?.dismiss()
-                    return@setOnDismissListener
-                }
-            }
             otpConfirmDialog = dialogBuilder.show()
+            otpConfirmDialog?.setCancelable(false)
+            otpConfirmDialog?.setCanceledOnTouchOutside(false)
         }
     }
 
