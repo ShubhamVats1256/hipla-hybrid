@@ -48,9 +48,9 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun fetchSalesUserList() : Resource<SalesPageResponse> {
+    suspend fun fetchSalesUserList(currentPage: Int, pageSize: Int): Resource<SalesPageResponse> {
         return try {
-            return hiplaApiService.fetchSalesUserList().asResource()
+            return hiplaApiService.fetchSalesUserList(currentPage, pageSize).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }
