@@ -68,11 +68,11 @@
     <TextView
         android:id="@+id/register"
         style="@style/PrimaryButton"
-        android:text="@string/register"
+        android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cancel"
-        tools:text="Register" />
+      />
 
     <TextView
         android:id="@+id/cancel"
