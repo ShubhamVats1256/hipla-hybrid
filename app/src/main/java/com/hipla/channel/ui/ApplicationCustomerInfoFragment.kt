@@ -3,11 +3,13 @@ package com.hipla.channel.ui
 import android.os.Bundle
 import android.view.KeyEvent.ACTION_UP
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hipla.channel.R
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
+import com.hipla.channel.entity.generateFloors
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 
 
@@ -15,8 +17,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
 
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationCustomerInfoBinding
-    private var floorList =
-        arrayOf("First floor", "Second floor", "Third floor", "Fourth floor", "First floor", "Second floor", "Third floor", "Fourth floor")
+    private var floorList = generateFloors();
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,7 +28,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
 
     private fun setFloorPreference() {
         val floorAdapter: ArrayAdapter<String> =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_list_item, floorList)
+            ArrayAdapter(
+                requireContext(),
+                R.layout.autocomplete_list_item,
+                floorList.map { it.name })
         binding.floorPreference.run {
             setAdapter(floorAdapter)
             setOnTouchListener { _, motionEvent ->
@@ -35,6 +39,9 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                     showDropDown()
                 }
                 return@setOnTouchListener false;
+            }
+            onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+
             }
         }
     }

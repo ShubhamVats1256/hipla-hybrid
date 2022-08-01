@@ -9,7 +9,7 @@ import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 
 
-class ApplicationPaymentInfo : Fragment(R.layout.fragment_application_payment_info) {
+class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_payment_info) {
 
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationPaymentInfoBinding
@@ -18,5 +18,9 @@ class ApplicationPaymentInfo : Fragment(R.layout.fragment_application_payment_in
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentApplicationPaymentInfoBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
+        setUI()
+    }
+
+    private fun setUI() {
     }
 }

@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -174,3 +175,11 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
 }
 
 fun Activity.toILoader() = this as ILoader
+
+fun Context.ShowToastShortDuration(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.ShowToastLongDuration(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
