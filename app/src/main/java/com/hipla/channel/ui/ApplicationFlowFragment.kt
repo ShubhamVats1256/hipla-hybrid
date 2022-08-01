@@ -148,15 +148,6 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
                 uploadChequeDialog?.dismiss()
             }
             uploadChequeDialog = dialogBuilder.show()
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-            val displayWidth = displayMetrics.widthPixels
-            val displayHeight = displayMetrics.heightPixels
-            val layoutParams = WindowManager.LayoutParams()
-            layoutParams.copyFrom(uploadChequeDialog?.window?.attributes)
-            layoutParams.width = ((displayWidth * 0.5f).toInt())
-            layoutParams.height = ((displayHeight * 1f).toInt())
-            uploadChequeDialog?.window?.attributes = layoutParams
             uploadChequeDialog?.setCancelable(false)
             uploadChequeDialog?.setCanceledOnTouchOutside(false)
         }
