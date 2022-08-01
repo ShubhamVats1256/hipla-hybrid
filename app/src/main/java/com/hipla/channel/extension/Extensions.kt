@@ -1,15 +1,15 @@
-package com.hipla.channel
+package com.hipla.channel.extension
 
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.WindowManager
-import com.hipla.channel.api.ApiErrorMessage
-import com.hipla.channel.api.ApplicationRequest
 import com.hipla.channel.common.ApiErrorCode
 import com.hipla.channel.common.CLIENT_ERROR_NO_INTERNET
 import com.hipla.channel.common.CLIENT_GENERIC
 import com.hipla.channel.common.Utils.tryCatch
+import com.hipla.channel.entity.ApplicationRequest
+import com.hipla.channel.entity.api.ApiErrorMessage
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
@@ -90,7 +90,6 @@ inline fun <reified T> getKoinInstance(qualifier: Qualifier? = null): T {
         val value: T by inject(qualifier = qualifier)
     }.value
 }
-
 
 fun CoroutineScope.launchSafely(
     context: CoroutineContext = EmptyCoroutineContext,

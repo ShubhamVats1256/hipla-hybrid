@@ -1,6 +1,8 @@
 package com.hipla.channel.api
 
-import com.hipla.channel.getKoinInstance
+import com.hipla.channel.common.Constant
+import com.hipla.channel.entity.api.*
+import com.hipla.channel.extension.getKoinInstance
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
 import retrofit2.Response
@@ -16,12 +18,13 @@ fun <T> Response<T>.asResource(): Resource<T> {
             ResourceError(
                 throwable = ApiException(
                     this.code(),
-                    jsonAdapter.fromJson(this.errorBody()!!.string())
+                    //jsonAdapter.fromJson(this.errorBody()!!.string())
                 ), code = this.code()
             )
         }
     } catch (e: Exception) {
-        Timber.e(e.toString())
+        e.printStackTrace()
+        Timber.tag(Constant.API_ERROR).e(e.toString())
         ResourceError(e, this.code())
     }
 }

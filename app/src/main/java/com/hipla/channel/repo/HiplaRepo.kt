@@ -1,9 +1,10 @@
 package com.hipla.channel.repo
 
 import com.hipla.channel.api.HiplaApiService
-import com.hipla.channel.api.Resource
-import com.hipla.channel.api.ResourceError
+import com.hipla.channel.entity.api.Resource
+import com.hipla.channel.entity.api.ResourceError
 import com.hipla.channel.api.asResource
+import com.hipla.channel.entity.response.SalesPageResponse
 
 class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
@@ -42,6 +43,14 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
                     put("referenceId", referenceId)
                 }
             ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
+    suspend fun fetchSalesUserList() : Resource<SalesPageResponse> {
+        return try {
+            return hiplaApiService.fetchSalesUserList().asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }

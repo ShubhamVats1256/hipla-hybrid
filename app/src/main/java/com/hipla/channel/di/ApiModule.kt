@@ -5,7 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.hipla.channel.BuildConfig
 import com.hipla.channel.moshi.adapter.PaymentTypeAdapter
-import com.hipla.channel.safeProceed
+import com.hipla.channel.extension.safeProceed
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -44,7 +44,7 @@ val apiModule = module {
             val requestBuilder = chain.request().newBuilder()
             requestBuilder.header("Content-Type", "application/json")
             requestBuilder.header("Accept", "application/json")
-            //requestBuilder.header("Authorization", BuildConfig.TOKEN)
+            requestBuilder.header("Authorization", BuildConfig.TOKEN)
             chain.safeProceed(requestBuilder.build())
         }.build()
     }

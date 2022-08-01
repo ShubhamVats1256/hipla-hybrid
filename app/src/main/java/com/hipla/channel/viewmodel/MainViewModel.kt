@@ -1,6 +1,7 @@
 package com.hipla.channel.viewmodel
 
-import com.hipla.channel.api.ifSuccessful
+import com.hipla.channel.entity.api.ifError
+import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
@@ -10,8 +11,13 @@ class MainViewModel : BaseViewModel() {
 
     fun loadUsers() {
         launchIO {
-            hiplaRepo.generateOtp("9962222626").ifSuccessful {
-                Timber.tag("testfx").d("otp generated successfully")
+            with(hiplaRepo.fetchSalesUserList()) {
+                ifSuccessful {
+                    Timber.tag("testfx").d("loading user successful ${it.salesUserList?.size}")
+                }
+                ifError {
+                    Timber.tag("testfx").e("load user error")
+                }
             }
         }
     }

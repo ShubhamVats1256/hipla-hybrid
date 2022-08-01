@@ -1,6 +1,5 @@
-package com.hipla.channel.api
+package com.hipla.channel.entity.api
 
-import timber.log.Timber
 
 /**
  * A utility class used to wrap success and error results, relieving the developer of need to use callbacks when calling some API for example

@@ -28,7 +28,7 @@ class SalesRecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         salesUserList[position].run {
             holder.binding?.name?.text = this.name
-            holder.binding?.profilePic?.setCircularImage(this.profileImage)
+            //holder.binding?.profilePic?.setCircularImage(this.profilePic)
         }
     }
 

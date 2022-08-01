@@ -12,8 +12,9 @@ import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils
 import com.hipla.channel.databinding.FragmentApplicationBinding
-import com.hipla.channel.screenHeightInDp
-import com.hipla.channel.screenWidthDp
+import com.hipla.channel.entity.SalesUser
+import com.hipla.channel.extension.screenHeightInDp
+import com.hipla.channel.extension.screenWidthDp
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.MainViewModel
@@ -32,7 +33,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
     }
 
     private fun displayGrid() {
-        val salesUserList = Utils.getSampleSalesUserList()
+        val salesUserList = arrayListOf<SalesUser>();
         salesRecyclerAdapter = SalesRecyclerAdapter(salesUserList) {
             Toast.makeText(requireContext(), "item clicked $it", Toast.LENGTH_LONG).show()
         }
