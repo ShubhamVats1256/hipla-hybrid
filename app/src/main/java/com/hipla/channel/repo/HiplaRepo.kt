@@ -4,6 +4,8 @@ import com.hipla.channel.api.HiplaApiService
 import com.hipla.channel.entity.api.Resource
 import com.hipla.channel.entity.api.ResourceError
 import com.hipla.channel.api.asResource
+import com.hipla.channel.entity.ApplicationRequest
+import com.hipla.channel.entity.response.CreateApplicationResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.SalesPageResponse
 import com.hipla.channel.entity.response.VerifyOTPResponse
@@ -36,13 +38,13 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-/*    suspend fun createApplication(otp: String, userId : String, referenceId : String): Resource<Unit> {
+    suspend fun createApplication(applicationRequest: ApplicationRequest): Resource<CreateApplicationResponse> {
         return try {
-
+            return hiplaApiService.createApplication(applicationRequest).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }
-    }*/
+    }
 
     suspend fun fetchSalesUserList(currentPage: Int, pageSize: Int): Resource<SalesPageResponse> {
         return try {

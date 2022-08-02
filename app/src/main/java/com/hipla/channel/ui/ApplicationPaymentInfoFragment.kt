@@ -56,8 +56,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun takePicture() {
         Timber.tag(LogConstant.FLOW_APP).d("capture image")
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {

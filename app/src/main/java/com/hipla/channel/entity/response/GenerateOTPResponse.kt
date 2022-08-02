@@ -1,10 +1,15 @@
 package com.hipla.channel.entity.response
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class GenerateOTPResponse(
     val referenceId: String,
-    @Json(name = "record") val salesUserReference: SalesUserReference
+    @Json(name = "record") val userReference: UserReference
 )
 
-class SalesUserReference(val id: String)
+class UserReference(
+    val id: Int,
+    val name: String? = null,
+)

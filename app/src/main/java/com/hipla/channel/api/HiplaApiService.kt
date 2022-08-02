@@ -1,5 +1,7 @@
 package com.hipla.channel.api
 
+import com.hipla.channel.entity.ApplicationRequest
+import com.hipla.channel.entity.response.CreateApplicationResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.SalesPageResponse
 import com.hipla.channel.entity.response.VerifyOTPResponse
@@ -22,5 +24,8 @@ interface HiplaApiService {
 
     @POST("notification/v1/verifyAnonymousOTP")
     suspend fun verifyOtp(@Body otpRequestMap: Map<String, String>): Response<VerifyOTPResponse>
+
+    @POST("business/v1/extra/transactionInfo")
+    suspend fun createApplication(applicationRequest: ApplicationRequest): Response<CreateApplicationResponse>
 
 }

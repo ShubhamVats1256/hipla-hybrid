@@ -46,7 +46,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // viewModel.generateOTP(it)
-            // showOTPDialog(it)
+             showOTPDialog(it)
             //launchCustomerInfoFragment(it)
         }
         setRecyclerView()
@@ -104,7 +104,8 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
             }
             dialogBinding.otpEdit.onSubmit {
                 otpConfirmDialog?.dismiss()
-                viewModel.verifyOtp(salesUser, dialogBinding.otpEdit.content())
+                // viewModel.verifyOtp(salesUser, dialogBinding.otpEdit.content())
+                launchCustomerInfoFragment(salesUser)
             }
             otpConfirmDialog = dialogBuilder.show()
             otpConfirmDialog?.setCancelable(false)
