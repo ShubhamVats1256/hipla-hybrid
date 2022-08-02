@@ -42,6 +42,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                     Timber.tag(LogConstant.CUSTOMER_INFO)
                         .e(it.throwable?.message.toString())
                 }
+                appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_COMPLETE))
             }
         }
     }
@@ -59,6 +60,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                 ).run {
                     ifSuccessful {
                         if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                             Timber.tag(LogConstant.CUSTOMER_INFO).d("customer OTP verified")
                             createApplicationInServer()
                         } else {
@@ -69,12 +71,12 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                         Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP verification failed")
                         appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                     }
-                    appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
                 }
             } else {
                 appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                 Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP server referenceId not found")
             }
+            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
         }
     }
 

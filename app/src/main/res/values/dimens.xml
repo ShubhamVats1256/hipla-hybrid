@@ -8,7 +8,7 @@
 
     <dimen name="rounded_image_default_corner_radius">12dp</dimen>
 
-    <dimen name="page_margin">16dp</dimen>
+    <dimen name="page_margin">32dp</dimen>
 
     <dimen name="component_corner_radius">20dp</dimen>
     <dimen name="component_padding">22dp</dimen>
@@ -41,7 +41,7 @@
 
     <dimen name="application_otp_confirm_customer_top_margin">20dp</dimen>
 
-    <dimen name="form_item_space">20dp</dimen>
+    <dimen name="form_item_space">28dp</dimen>
 
     <dimen name="header_text_size">26sp</dimen>
     <dimen name="header_padding">16dp</dimen>

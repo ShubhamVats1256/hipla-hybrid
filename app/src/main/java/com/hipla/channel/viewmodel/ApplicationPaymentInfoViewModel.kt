@@ -27,12 +27,12 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         }
     }
 
-    fun verifyChannelParnetOTP(otp: String) {
+    fun verifyChannelPartnerOTP(otp: String) {
         Timber.tag(LogConstant.PAYMENT_INFO)
             .d("verify OTP: $otp for userId : ${generateOTPResponse?.recordReference?.id}")
         launchIO {
-            appEvent.tryEmit(AppEvent(OTP_VERIFYING))
             if (generateOTPResponse != null) {
+                appEvent.tryEmit(AppEvent(OTP_VERIFYING))
                 hiplaRepo.verifyOtp(
                     otp = otp,
                     userId = generateOTPResponse!!.recordReference.id.toString(),
@@ -40,8 +40,16 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                 ).run {
                     ifSuccessful {
                         if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
+                            Timber.tag(LogConstant.PAYMENT_INFO)
+                                .d(" OTP verified, channel partner user ID : ${generateOTPResponse?.recordReference?.id}")
+                            applicationRequest?.channelPartnerId =
+                                generateOTPResponse?.recordReference?.id.toString()
+                            Timber.tag(LogConstant.PAYMENT_INFO)
+                                .d("channel partnerId updated to application request")
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                             Timber.tag(LogConstant.PAYMENT_INFO).d("customer OTP verified")
                         } else {
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP invalid")
                         }
                     }
@@ -49,12 +57,12 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                         Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP verification failed")
                         appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                     }
-                    appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
                 }
             } else {
                 appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                 Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP server referenceId not found")
             }
+            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
         }
     }
 
@@ -85,5 +93,35 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         }
     }
 
+    fun updateApplicationRequest(
+        amountPayable: String,
+        paymentType: PaymentType,
+        chequeNo: String,
+    ): ApplicationRequest? {
+        return applicationRequest?.apply {
+            this.channelPartnerId = generateOTPResponse?.recordReference?.id.toString()
+            this.amountPayable = amountPayable
+            this.paymentDetails = chequeNo
+            this.paymentType = paymentType
+            Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
+        }?.also {
+            patchApplicationRequestData(it)
+        }
+    }
+
+    private fun patchApplicationRequestData(applicationRequest: ApplicationRequest) {
+        launchIO {
+            with(hiplaRepo.updateApplication(applicationRequest)) {
+                ifSuccessful {
+                    Timber.tag(LogConstant.PAYMENT_INFO)
+                        .d("application updated successfully for id : ${applicationRequest.id}")
+                }
+                ifError {
+                    Timber.tag(LogConstant.PAYMENT_INFO)
+                        .e("application updated failed for id : ${applicationRequest.id}")
+                }
+            }
+        }
+    }
 
 }

@@ -54,7 +54,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                     )
                 )
             } else {
-                //launchPaymentInfoFragment(applicationRequest)
                 Timber.tag(LogConstant.CUSTOMER_INFO)
                     .e("validation failed, cannot create application")
             }
@@ -141,7 +140,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             requireContext().showToastLongDuration("Application creation failed")
                         }
                         OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
+                            //requireActivity().toILoader().showLoader("Verifying OTP")
                         }
                         OTP_GENERATING -> {
                             requireActivity().toILoader().showLoader("Generating OTP")
@@ -153,11 +152,14 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
                             showOTPDialog(appEventData?.extras.toString())
                         }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
+                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE-> {
                             requireActivity().toILoader().dismiss()
                         }
+                        OTP_VERIFICATION_INVALID -> {
+                            requireContext().showToastLongDuration("Wrong OTP")
+                        }
                         OTP_VERIFICATION_FAILED -> {
-                            requireContext().showToastLongDuration("OTP verification failed")
+                            requireContext().showToastLongDuration("Unable to verify, server error")
                         }
                     }
                 }

@@ -12,6 +12,7 @@ data class ApplicationRequest(
     var customerPhoneNumber: String? = null,
     var panNumber: String? = null,
     var channelPartnerId: String? = null,
+    var amountPayable: String? = null,
     var identifier: String? = null,
     var paymentType: PaymentType = PaymentType.Unknown(),
     var paymentDetails: String? = null,

@@ -47,6 +47,7 @@
     <string name="take_cheque_instruction">Take your cheque photo and\nUpload to submit</string>
     <string name="verify_customer_otp">Verifying customer OTP</string>
     <string name="verifying">Verifying</string>
+    <string name="verify_channel_partner_otp">Verifying partner OTP</string>
 
 
 </resources>

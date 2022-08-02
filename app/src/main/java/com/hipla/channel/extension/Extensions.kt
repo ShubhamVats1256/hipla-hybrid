@@ -29,6 +29,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.internal.EMPTY_REQUEST
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.Qualifier
@@ -118,7 +119,7 @@ fun ApplicationRequest.toCreateApplicationRequestMap(): Map<String, String> {
     return requestMap
 }
 
-/*fun ApplicationRequest.toRequestMap(): Map<String, String> {
+fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     val requestMap = mutableMapOf<String, String>()
     requestMap["tag"] = tag
     requestMap["type"] = type
@@ -126,10 +127,10 @@ fun ApplicationRequest.toCreateApplicationRequestMap(): Map<String, String> {
     requestMap["customerName"] = customerName!!
     requestMap["customerPhoneNumber"] = customerPhoneNumber!!
     requestMap["panNumber"] = panNumber!!
-    requestMap["channelPartnerId"] = channelPartnerId ?: Constant.EMPTY_STRING
+    requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
-    requestMap["paymentDetails"] = paymentDetails
-    requestMap["paymentProofImageUrl"] = paymentProofImageUrl
+    requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
+   // requestMap["paymentProofImageUrl"] = Constant.EMPTY_STRING
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
     if (unitId >= 0) {
@@ -139,7 +140,7 @@ fun ApplicationRequest.toCreateApplicationRequestMap(): Map<String, String> {
         requestMap["floorId"] = floorPreferenceId.toString()
     }
     return requestMap
-}*/
+}
 
 fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     if (newScrollState != RecyclerView.SCROLL_STATE_IDLE) {
