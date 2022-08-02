@@ -11,7 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
+import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
@@ -51,20 +53,36 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         panNo = binding.panCardNumber.content()
                     )
                 )
-                showOTPDialog();
             } else {
+                //launchPaymentInfoFragment(applicationRequest)
                 Timber.tag(LogConstant.CUSTOMER_INFO)
                     .e("validation failed, cannot create application")
             }
         }
     }
 
-    private fun showOTPDialog() {
+    private fun launchPaymentInfoFragment(applicationRequest: ApplicationRequest?) {
+        findNavController().run {
+            if (isCurrentDestination(R.id.customerInfoFragment)) {
+                navigate(
+                    resId = R.id.action_customerInfoFragment_to_paymentInfoFragment,
+                    Bundle().apply {
+                        putString(
+                            KEY_APP_REQ,
+                            applicationRequest?.toJsonString()
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    private fun showOTPDialog(customerUserId: String) {
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
-
+            dialogBinding.identification.text = customerUserId
             dialogBinding.title.text = getString(R.string.verify_customer_otp)
             dialogBinding.back.setOnClickListener {
                 otpConfirmDialog?.dismiss()
@@ -112,19 +130,33 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 applicationCustomerInfoViewModel.appEvent.collect {
                     when (it.id) {
-                        APP_EVENT_APPLICATION_CREATED -> {
+                        APP_EVENT_APPLICATION_SUCCESS -> {
                             requireActivity().toILoader().dismiss()
-                            launchPaymentInfoFragment()
+                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                            val applicationRequest = appEventData?.extras as? ApplicationRequest
+                            launchPaymentInfoFragment(applicationRequest)
                         }
                         APP_EVENT_APPLICATION_FAILED -> {
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Application creation failed")
                         }
-                        APP_EVENT_CUSTOMER_OTP_GENERATE_FAILED  -> {
+                        OTP_VERIFYING -> {
+                            requireActivity().toILoader().showLoader("Verifying OTP")
+                        }
+                        OTP_GENERATING -> {
+                            requireActivity().toILoader().showLoader("Generating OTP")
+                        }
+                        OTP_GENERATE_FAILED -> {
                             requireContext().showToastLongDuration("OTP generation failed, Please try again")
                         }
-                        APP_EVENT_CUSTOMER_OTP_VERIFICATION_FAILED  -> {
+                        OTP_SHOW_VERIFICATION_DIALOG -> {
+                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                            showOTPDialog(appEventData?.extras.toString())
+                        }
+                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
                             requireActivity().toILoader().dismiss()
+                        }
+                        OTP_VERIFICATION_FAILED -> {
                             requireContext().showToastLongDuration("OTP verification failed")
                         }
                     }
@@ -133,10 +165,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
-    private fun launchPaymentInfoFragment() {
-        Timber.tag(LogConstant.CUSTOMER_INFO)
-            .d("ready for payment information")
-    }
 
     private fun setFloorPreference() {
         val floorAdapter: ArrayAdapter<String> =
@@ -152,10 +180,12 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                 }
                 return@setOnTouchListener false;
             }
-            onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                Timber.tag(LogConstant.CUSTOMER_INFO).d("floor preference ${floorList[position].name}")
-                selectedFloorPreference = floorList[position]
-            }
+            onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    Timber.tag(LogConstant.CUSTOMER_INFO)
+                        .d("floor preference ${floorList[position].name}")
+                    selectedFloorPreference = floorList[position]
+                }
         }
     }
 

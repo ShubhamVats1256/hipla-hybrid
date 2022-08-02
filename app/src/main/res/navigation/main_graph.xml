@@ -15,11 +15,21 @@
         android:name="com.hipla.channel.ui.ApplicationCustomerInfoFragment"
         android:label="Home" />
 
+    <fragment
+        android:id="@+id/paymentInfoFragment"
+        android:name="com.hipla.channel.ui.ApplicationPaymentInfoFragment"
+        android:label="Home" />
 
     <action
         android:id="@+id/action_mainFragment_to_customerInfoFragment"
         app:destination="@id/customerInfoFragment"
         app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_customerInfoFragment_to_paymentInfoFragment"
+        app:destination="@id/paymentInfoFragment"
+        app:popUpTo="@+id/customerInfoFragment"
         app:popUpToInclusive="true" />
 
 </navigation>

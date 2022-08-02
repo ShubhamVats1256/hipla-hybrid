@@ -32,6 +32,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.Qualifier
+import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -189,4 +190,24 @@ fun Context.showToastLongDuration(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
+fun String.toApplicationRequest(): ApplicationRequest? {
+    return try {
+        val applicationReqJsonAdapter =
+            getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java)
+        applicationReqJsonAdapter.fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
 
+fun ApplicationRequest.toJsonString(): String? {
+    return try {
+        val applicationReqJsonAdapter =
+            getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java)
+        applicationReqJsonAdapter.toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}

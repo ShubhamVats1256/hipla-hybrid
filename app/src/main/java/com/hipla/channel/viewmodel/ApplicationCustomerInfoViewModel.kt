@@ -25,7 +25,12 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
 
                     if ((applicationRequest?.id ?: 0) > 0) {
                         Timber.tag(LogConstant.CUSTOMER_INFO).d("customer info collection complete")
-                        appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_CREATED))
+                        appEvent.tryEmit(
+                            AppEventWithData(
+                                APP_EVENT_APPLICATION_SUCCESS,
+                                extras = applicationRequest
+                            )
+                        )
                     } else {
                         appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_FAILED))
                         Timber.tag(LogConstant.CUSTOMER_INFO)
@@ -45,6 +50,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         Timber.tag(LogConstant.CUSTOMER_INFO)
             .d("verify OTP: $otp for userId : ${generateOTPResponse?.recordReference?.id}")
         launchIO {
+            appEvent.tryEmit(AppEvent(OTP_VERIFYING))
             if (generateOTPResponse != null) {
                 hiplaRepo.verifyOtp(
                     otp = otp,
@@ -61,10 +67,12 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                     }
                     ifError {
                         Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP verification failed")
+                        appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                     }
-                    appEvent.tryEmit(AppEvent(APP_EVENT_CUSTOMER_OTP_VERIFICATION_FAILED))
+                    appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
                 }
             } else {
+                appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                 Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP server referenceId not found")
             }
         }
@@ -86,18 +94,26 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
 
     fun generateCustomerOTP(applicationRequest: ApplicationRequest) {
         launchIO {
+            appEvent.tryEmit(AppEvent(OTP_GENERATING))
             applicationRequest.customerPhoneNumber?.let { customerPhoneNo ->
                 hiplaRepo.generateOtp("9916555886").run {
                     ifSuccessful {
                         Timber.tag(LogConstant.CUSTOMER_INFO)
                             .d("generate OTP successful for customer name ${applicationRequest.customerName}, referenceId:${it.referenceId}")
                         generateOTPResponse = it
+                        appEvent.tryEmit(
+                            AppEventWithData<String>(
+                                OTP_SHOW_VERIFICATION_DIALOG,
+                                it.recordReference.id.toString()
+                            )
+                        )
                     }
                     ifError {
-                        appEvent.tryEmit(AppEvent(APP_EVENT_CUSTOMER_OTP_GENERATE_FAILED))
+                        appEvent.tryEmit(AppEvent(OTP_GENERATE_FAILED))
                         Timber.tag(LogConstant.CUSTOMER_INFO)
                             .e("generate OTP failed for customer name ${applicationRequest.customerName}")
                     }
+                    appEvent.tryEmit(AppEvent(OTP_GENERATE_COMPLETE))
                 }
             } ?: Timber.tag(LogConstant.CUSTOMER_INFO)
                 .e("generate OTP failed as customer phone no not found")

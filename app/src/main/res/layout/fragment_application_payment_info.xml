@@ -53,6 +53,13 @@
         app:layout_constraintTop_toBottomOf="@id/amount_payable"
         app:singleSelection="true">
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cash"
+            style="@style/ToggleButton.Style"
+            android:enabled="false"
+            android:text="@string/cash" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cheque"
             style="@style/ToggleButton.Style"
@@ -91,14 +98,18 @@
         app:layout_constraintStart_toEndOf="@+id/pageDivider1"
         app:layout_constraintTop_toTopOf="@id/chequeNumber" />
 
-    <AutoCompleteTextView
-        android:id="@+id/channel_partner_name"
-        style="@style/Hipla.AutoComplete"
+    <EditText
+        android:id="@+id/channelPartnerMobileNo"
         android:layout_marginTop="@dimen/form_item_space"
         android:hint="@string/channel_partner_name"
+        style="@style/Hipla.EditText"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:layout_marginBottom="@dimen/form_item_space"
         app:layout_constraintEnd_toEndOf="@id/chequeNumber"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chequeNumber" />
+
 
     <TextView
         android:id="@+id/uploadCheque"

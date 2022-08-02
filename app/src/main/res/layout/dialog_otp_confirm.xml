@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/enter_otp"
             android:textColor="@color/primary"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/headerDivider"
             app:layout_constraintEnd_toStartOf="@id/identification"

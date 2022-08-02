@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), ILoader {
             }
             dialogLoaderBinding?.message?.text = message
             loaderDialog = dialogBuilder?.show()
+            loaderDialog?.setCancelable(false)
+            loaderDialog?.setCanceledOnTouchOutside(false)
         }
     }
 
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity(), ILoader {
         checkPermission()
     }
 
-    fun checkPermission() {
+    private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 "android.permission.CAMERA"

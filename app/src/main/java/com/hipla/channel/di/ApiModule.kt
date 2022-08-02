@@ -52,8 +52,8 @@ val apiModule = module {
     // moshi
     single {
         Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(PaymentTypeAdapter)
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 

@@ -26,3 +26,4 @@ const val KEY_PAYMENT_REFERENCE_NO = "payment_ref"
 const val KEY_PAYMENT_DATE = "payment_date"
 const val KEY_PARTNER_NAME  = "partner_name"
 
+const val KEY_APP_REQ = "app_req"

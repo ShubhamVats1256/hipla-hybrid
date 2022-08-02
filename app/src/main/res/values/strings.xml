@@ -18,6 +18,7 @@
     <string name="cheque_no">Cheque Number</string>
     <string name="your_cheque_photo">Your Cheque Photo</string>
     <string name="rtgs">RTGS</string>
+    <string name="cash">Cash</string>
     <string name="date">Date</string>
     <string name="amount_payable">Amount Payable</string>
     <string name="pan">Pan Card Number*</string>
