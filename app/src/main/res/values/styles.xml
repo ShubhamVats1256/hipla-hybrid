@@ -70,10 +70,9 @@
     </style>
 
 
-    <style name="ToggleButton.Style" parent="Widget.Material3.Button">
-        <item name="android:textSize">22sp</item>
+    <style name="ToggleButton.Style" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:backgroundTint">@color/toggle_background_selector</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/header</item>

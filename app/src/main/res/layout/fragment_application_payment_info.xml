@@ -47,18 +47,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_item_space"
+        app:singleSelection="true"
+        android:backgroundTint="@color/confirm_otp_action_bar_color"
+        app:checkedButton="@+id/cheque"
         android:background="@drawable/toggle_group_bg"
-        app:checkedButton="@id/rtgs"
         app:layout_constraintBottom_toTopOf="@id/chequeNumber"
         app:layout_constraintStart_toStartOf="@id/amount_payable"
         app:layout_constraintTop_toBottomOf="@id/amount_payable"
-        app:singleSelection="true">
-
+        >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cash"
             style="@style/ToggleButton.Style"
-            android:enabled="false"
             android:text="@string/cash" />
 
         <com.google.android.material.button.MaterialButton
@@ -69,7 +69,6 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/rtgs"
             style="@style/ToggleButton.Style"
-            android:enabled="false"
             android:text="@string/rtgs" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
