@@ -10,17 +10,17 @@
 
     <dimen name="page_margin">16dp</dimen>
 
-    <dimen name="edit_text_corner_radius">20dp</dimen>
-    <dimen name="edit_text_padding">20dp</dimen>
-    <dimen name="edit_text_size">24sp</dimen>
+    <dimen name="component_corner_radius">20dp</dimen>
+    <dimen name="component_padding">22dp</dimen>
+    <dimen name="component_text_size">24sp</dimen>
 
-    <dimen name="btn_corner_radius">@dimen/edit_text_corner_radius</dimen>
+    <dimen name="btn_corner_radius">@dimen/component_corner_radius</dimen>
     <dimen name="btn_text_size">26sp</dimen>
-    <dimen name="btn_padding">@dimen/edit_text_padding</dimen>
+    <dimen name="btn_padding">@dimen/component_padding</dimen>
 
-    <dimen name="drop_down_corner_radius">@dimen/edit_text_corner_radius</dimen>
-    <dimen name="drop_down_padding">@dimen/edit_text_padding</dimen>
-    <dimen name="drop_down_text_size">@dimen/edit_text_size</dimen>
+    <dimen name="drop_down_corner_radius">@dimen/component_corner_radius</dimen>
+    <dimen name="drop_down_padding">@dimen/component_padding</dimen>
+    <dimen name="drop_down_text_size">@dimen/component_text_size</dimen>
 
     <dimen name="sales_grid_item_width">246dp</dimen>
     <dimen name="sales_grid_item_height">270dp</dimen>

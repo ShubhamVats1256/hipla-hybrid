@@ -20,6 +20,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     fun extractArguments(arguments: Bundle?) {
         launchIO {
             arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
+                this.applicationRequest = it
                 Timber.tag(LogConstant.PAYMENT_INFO)
                     .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
             }

@@ -43,7 +43,7 @@
         <item name="android:textColorHint">@color/edit_text_hint</item>
         <item name="android:textSize">@dimen/btn_text_size</item>
         <item name="android:background">@drawable/edit_text_bg</item>
-        <item name="android:padding">@dimen/edit_text_padding</item>
+        <item name="android:padding">@dimen/component_padding</item>
     </style>
 
     <style name="PrimaryButton" parent="Hipla.Button">
@@ -71,14 +71,14 @@
 
 
     <style name="ToggleButton.Style" parent="Widget.Material3.Button">
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:backgroundTint">@color/toggle_background_selector</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/header</item>
-        <item name="android:paddingLeft">32dp</item>
-        <item name="android:paddingRight">32dp</item>
+        <item name="android:paddingLeft">26dp</item>
+        <item name="android:paddingRight">26dp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">16dp</item>
 

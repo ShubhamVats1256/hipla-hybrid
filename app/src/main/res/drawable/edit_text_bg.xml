@@ -3,5 +3,5 @@
         android:width="2dp"
         android:color="@color/edit_text_border" />
     <solid android:color="@android:color/transparent"/>
-    <corners android:radius="@dimen/edit_text_corner_radius"/>
+    <corners android:radius="@dimen/component_corner_radius"/>
 </shape>

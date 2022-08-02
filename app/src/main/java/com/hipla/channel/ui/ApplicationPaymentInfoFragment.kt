@@ -16,7 +16,6 @@ import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
 import com.hipla.channel.extension.hasValidData
 import com.hipla.channel.extension.showToastLongDuration
-import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
 import timber.log.Timber
 
