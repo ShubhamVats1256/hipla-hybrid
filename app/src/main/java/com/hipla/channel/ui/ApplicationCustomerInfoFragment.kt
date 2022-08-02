@@ -50,7 +50,8 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         customerFirstName = binding.customerFirstName.content(),
                         customerLastName = binding.customerLastName.content(),
                         customerPhone = binding.customerNumber.content(),
-                        panNo = binding.panCardNumber.content()
+                        panNo = binding.panCardNumber.content(),
+                        floorId = selectedFloorPreference?.id ?: 0
                     )
                 )
             } else {
@@ -77,6 +78,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun showOTPDialog(customerUserId: String) {
+        Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
@@ -150,7 +152,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         }
                         OTP_SHOW_VERIFICATION_DIALOG -> {
                             val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
-                            showOTPDialog(appEventData?.extras.toString())
+                            showOTPDialog((appEventData?.extras) as String)
                         }
                         OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE-> {
                             requireActivity().toILoader().dismiss()

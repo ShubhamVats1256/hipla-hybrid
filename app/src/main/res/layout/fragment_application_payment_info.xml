@@ -36,6 +36,7 @@
         android:layout_marginEnd="@dimen/form_item_space"
         android:layout_marginBottom="@dimen/form_item_space"
         android:hint="@string/amount_payable"
+        android:inputType="number"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
@@ -81,6 +82,7 @@
         android:layout_marginTop="@dimen/form_item_space"
         android:layout_marginEnd="@dimen/form_item_space"
         android:hint="@string/cheque_no"
+        android:inputType="number"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/payment_toggle" />
@@ -100,7 +102,7 @@
     <EditText
         android:id="@+id/channelPartnerMobileNo"
         android:layout_marginTop="@dimen/form_item_space"
-        android:hint="@string/channel_partner_name"
+        android:hint="@string/channel_partner_mobile_no"
         style="@style/Hipla.EditText"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/form_item_space"

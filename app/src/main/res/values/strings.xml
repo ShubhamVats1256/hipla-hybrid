@@ -20,7 +20,7 @@
     <string name="rtgs">RTGS</string>
     <string name="cash">Cash</string>
     <string name="date">Date</string>
-    <string name="amount_payable">Amount Payable</string>
+    <string name="amount_payable">Amount Payable*</string>
     <string name="pan">Pan Card Number*</string>
     <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
 
@@ -31,6 +31,7 @@
     <string name="channel_partner">Channel Partner</string>
     <string name="channel_partner_name">Channel Partner Name*</string>
     <string name="channel_partner_otp">Channel Partner OTP</string>
+    <string name="channel_partner_mobile_no">Channel Partner Mobile No*</string>
 
     <string name="customer_otp">Customer OTP</string>
     <string name="customer_first_name">Customer First Name*</string>

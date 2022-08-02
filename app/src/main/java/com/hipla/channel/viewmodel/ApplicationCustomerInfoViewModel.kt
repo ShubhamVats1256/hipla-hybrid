@@ -20,6 +20,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                 ifSuccessful {
                     applicationRequest?.id = it.userReference.id
                     applicationRequest?.ownerId = generateOTPResponse?.recordReference?.id
+                    applicationRequest?.paymentProofImageUrl = it.userReference.applicationRecordExtraInfo.paymentProofImageUrl
                     Timber.tag(LogConstant.CUSTOMER_INFO)
                         .d("application ID : :${applicationRequest?.id} created for ${applicationRequest?.customerName}")
 
@@ -85,11 +86,13 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         customerLastName: String,
         panNo: String,
         customerPhone: String,
+        floorId : Int,
     ): ApplicationRequest {
         applicationRequest = ApplicationRequest().apply {
             this.customerName = "$customerFirstName $customerLastName"
             this.customerPhoneNumber = customerPhone
             this.panNumber = panNo
+            this.floorPreferenceId = floorId
         }
         return applicationRequest!!
     }
@@ -105,8 +108,8 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                         generateOTPResponse = it
                         appEvent.tryEmit(
                             AppEventWithData<String>(
-                                OTP_SHOW_VERIFICATION_DIALOG,
-                                it.recordReference.id.toString()
+                                id = OTP_SHOW_VERIFICATION_DIALOG,
+                                extras = it.recordReference.id.toString()
                             )
                         )
                     }

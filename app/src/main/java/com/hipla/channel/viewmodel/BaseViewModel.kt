@@ -14,7 +14,10 @@ import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel() {
 
-    val appEvent = MutableSharedFlow<AppEvent>(replay = 0, extraBufferCapacity = Int.MAX_VALUE, BufferOverflow.SUSPEND)
+    val appEvent = MutableSharedFlow<AppEvent>(
+        replay = 0,
+        extraBufferCapacity = Int.MAX_VALUE,
+        BufferOverflow.SUSPEND)
 
     fun launchIO(block: suspend () -> Unit): Job {
         return viewModelScope.launch(Dispatchers.IO) {

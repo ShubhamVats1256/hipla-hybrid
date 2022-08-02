@@ -76,9 +76,9 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                             .d("generate OTP successful for mobile $phoneNo, referenceId:${it.referenceId}")
                         generateOTPResponse = it
                         appEvent.tryEmit(
-                            AppEventWithData<String>(
-                                OTP_SHOW_VERIFICATION_DIALOG,
-                                it.recordReference.id.toString()
+                            AppEventWithData(
+                                id = OTP_SHOW_VERIFICATION_DIALOG,
+                                extras = it.recordReference.id.toString()
                             )
                         )
                     }

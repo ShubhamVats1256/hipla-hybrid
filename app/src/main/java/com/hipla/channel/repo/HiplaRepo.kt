@@ -50,7 +50,10 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
     suspend fun updateApplication(applicationRequest: ApplicationRequest): Resource<ApplicationResponse> {
         return try {
-            return hiplaApiService.updateApplication(applicationRequest.toUpdateApplicationRequestMap()).asResource()
+            return hiplaApiService.updateApplication(
+                applicationRequest.id,
+                applicationRequest.toUpdateApplicationRequestMap()
+            ).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }

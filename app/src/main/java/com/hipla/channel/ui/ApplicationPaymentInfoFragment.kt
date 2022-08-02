@@ -111,6 +111,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
                 viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
             }
+
         }
     }
 
@@ -127,6 +128,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         if (binding.channelPartnerMobileNo.hasValidData().not()) {
             binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
             requireContext().showToastLongDuration("Channel partner mobile number is mandatory")
+            return false
+        }
+        if (binding.amountPayable.hasValidData().not()) {
+            binding.amountPayable.error = "Amount payable is mandatory";
+            requireContext().showToastLongDuration("Amount payable is mandatory")
             return false
         }
         return true

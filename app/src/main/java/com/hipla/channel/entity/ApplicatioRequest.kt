@@ -9,6 +9,7 @@ data class ApplicationRequest(
     val type: String = "TransactionDetailsDto",
     var unitId: Int = -1,
     var customerName: String? = null,
+    var customerLastName: String? = null,
     var customerPhoneNumber: String? = null,
     var panNumber: String? = null,
     var channelPartnerId: String? = null,

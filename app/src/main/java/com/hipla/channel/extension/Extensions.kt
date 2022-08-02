@@ -125,12 +125,14 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["type"] = type
     requestMap["identifier"] = identifier ?: Constant.EMPTY_STRING
     requestMap["customerName"] = customerName!!
+    requestMap["customerLastName"] = customerLastName!!
     requestMap["customerPhoneNumber"] = customerPhoneNumber!!
     requestMap["panNumber"] = panNumber!!
     requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
-    requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
-   // requestMap["paymentProofImageUrl"] = Constant.EMPTY_STRING
+   // requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
+    requestMap["paymentProofImageUrl"] = this.paymentProofImageUrl!!
+    requestMap["amountPayable"] = this.amountPayable!!
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
     if (unitId >= 0) {

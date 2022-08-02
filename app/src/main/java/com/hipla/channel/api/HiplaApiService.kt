@@ -24,7 +24,9 @@ interface HiplaApiService {
     @POST("business/v1/extra/transactionInfo")
     suspend fun createApplication(@Body createApplicationRequestMap: Map<String, String>): Response<ApplicationResponse>
 
-    @PATCH("business/v1/extra/transactionInfo")
-    suspend fun updateApplication(@Body createApplicationRequestMap: Map<String, String>): Response<ApplicationResponse>
+    @PATCH("business/v1/extra/transactionInfo/{applicationId}")
+    suspend fun updateApplication(
+        @Path("applicationId") applicationId: Int,
+        @Body createApplicationRequestMap: Map<String, String>): Response<ApplicationResponse>
 
 }
