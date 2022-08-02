@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/enter_otp_header_bg"
-            app:layout_constraintBottom_toBottomOf="@id/headerDivider"
+            app:layout_constraintBottom_toBottomOf="@id/message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -21,39 +21,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            app:indicatorSize="60dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="40dp"
+            app:indicatorSize="50dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@id/hipla"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/headerDivider"
             app:trackColor="@color/primary_dark" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/headerDivider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
 
         <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/primary"
-            android:textSize="20sp"
-            android:maxLines="1"
+            android:textSize="24sp"
+            android:maxLines="2"
+            android:gravity="center"
             android:textStyle="bold"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/headerDivider"
+            android:padding="16dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription"
-            tools:text="Downloading" />
+            tools:text="Downloading image" />
 
         <View
             android:layout_width="0dp"
