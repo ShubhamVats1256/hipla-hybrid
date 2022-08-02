@@ -9,6 +9,7 @@ import com.hipla.channel.entity.response.CreateApplicationResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.SalesPageResponse
 import com.hipla.channel.entity.response.VerifyOTPResponse
+import com.hipla.channel.extension.toCreateApplicationRequestMap
 
 class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
@@ -40,7 +41,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
     suspend fun createApplication(applicationRequest: ApplicationRequest): Resource<CreateApplicationResponse> {
         return try {
-            return hiplaApiService.createApplication(applicationRequest).asResource()
+            return hiplaApiService.createApplication(applicationRequest.toCreateApplicationRequestMap()).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }

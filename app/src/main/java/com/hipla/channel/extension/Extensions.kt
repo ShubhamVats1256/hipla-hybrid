@@ -12,10 +12,8 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hipla.channel.common.*
 import com.hipla.channel.common.ApiErrorCode
-import com.hipla.channel.common.AppConfig
-import com.hipla.channel.common.CLIENT_ERROR_NO_INTERNET
-import com.hipla.channel.common.CLIENT_GENERIC
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.ILoader
 import com.hipla.channel.entity.ApplicationRequest
@@ -112,15 +110,22 @@ fun CoroutineScope.launchSafely(
     }
 }
 
-fun ApplicationRequest.toRequestMap(): Map<String, String> {
+fun ApplicationRequest.toCreateApplicationRequestMap(): Map<String, String> {
     val requestMap = mutableMapOf<String, String>()
     requestMap["tag"] = tag
     requestMap["type"] = type
-    requestMap["identifier"] = identifier
-    requestMap["customerName"] = customerName
-    requestMap["customerPhoneNumber"] = customerPhoneNumber
-    requestMap["panNumber"] = panNumber
-    requestMap["channelPartnerId"] = channelPartnerId
+    return requestMap
+}
+
+/*fun ApplicationRequest.toRequestMap(): Map<String, String> {
+    val requestMap = mutableMapOf<String, String>()
+    requestMap["tag"] = tag
+    requestMap["type"] = type
+    requestMap["identifier"] = identifier ?: Constant.EMPTY_STRING
+    requestMap["customerName"] = customerName!!
+    requestMap["customerPhoneNumber"] = customerPhoneNumber!!
+    requestMap["panNumber"] = panNumber!!
+    requestMap["channelPartnerId"] = channelPartnerId ?: Constant.EMPTY_STRING
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
     requestMap["paymentDetails"] = paymentDetails
     requestMap["paymentProofImageUrl"] = paymentProofImageUrl
@@ -133,7 +138,7 @@ fun ApplicationRequest.toRequestMap(): Map<String, String> {
         requestMap["floorId"] = floorPreferenceId.toString()
     }
     return requestMap
-}
+}*/
 
 fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     if (newScrollState != RecyclerView.SCROLL_STATE_IDLE) {
@@ -176,10 +181,12 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
 
 fun Activity.toILoader() = this as ILoader
 
-fun Context.ShowToastShortDuration(message: String) {
+fun Context.showToastShortDuration(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.ShowToastLongDuration(message: String) {
+fun Context.showToastLongDuration(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
+
+

@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
 
         <!-- full screen settings -->
+        <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 

@@ -24,8 +24,8 @@
 
         <ImageButton
             android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:src="@drawable/icon_back"
             android:background="@android:color/transparent"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/enter_otp"
             android:textColor="@color/primary"
-            android:textSize="32sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/headerDivider"
             app:layout_constraintEnd_toStartOf="@id/identification"

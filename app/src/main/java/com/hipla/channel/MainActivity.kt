@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.contract.ILoader
 import com.hipla.channel.databinding.DialogLoaderBinding
-import com.hipla.channel.extension.ShowToastLongDuration
+import com.hipla.channel.extension.showToastLongDuration
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), ILoader {
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), ILoader {
                     Timber.tag(LogConstant.HIPLA).d("camera permission granted by user")
                 } else {
                     Timber.tag(LogConstant.HIPLA).d("camera permission denied by user")
-                    ShowToastLongDuration("Camera permission is mandatory")
+                    showToastLongDuration("Camera permission is mandatory")
                     finish()
                 }
                 return

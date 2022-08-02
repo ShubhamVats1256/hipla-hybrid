@@ -28,7 +28,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
-    var otpConfirmDialog: AlertDialog? = null
+    private var otpConfirmDialog: AlertDialog? = null
 
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -45,9 +45,9 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-            // viewModel.generateOTP(it)
-             showOTPDialog(it)
-            //launchCustomerInfoFragment(it)
+             //viewModel.generateOTP(it)
+             //showOTPDialog(it)
+            launchCustomerInfoFragment(it)
         }
         setRecyclerView()
         observeViewModel()

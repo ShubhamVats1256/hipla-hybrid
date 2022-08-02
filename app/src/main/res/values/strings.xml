@@ -12,6 +12,7 @@
     <string name="upload">Upload</string>
     <string name="submit">Submit</string>
     <string name="congrats">Congratulations!</string>
+    <string name="back">Back</string>
 
     <string name="cheque">Cheque</string>
     <string name="cheque_no">Cheque Number</string>
@@ -43,6 +44,8 @@
     <string name="demo_otp_confirm_header">Confirmation for Application No: 1 \nCustomer name: Sreyansh Kumar \nChannel partner: Deepak Dev</string>
     <string name="enter_the_otp_info">Enter the OTP you just received via mobile</string>
     <string name="take_cheque_instruction">Take your cheque photo and\nUpload to submit</string>
+    <string name="verify_customer_otp">Verifying customer OTP</string>
+    <string name="verifying">Verifying</string>
 
 
 </resources>

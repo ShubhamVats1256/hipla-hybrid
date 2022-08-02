@@ -14,7 +14,7 @@ import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
-import com.hipla.channel.extension.ShowToastLongDuration
+import com.hipla.channel.extension.showToastLongDuration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 import timber.log.Timber
 
@@ -59,7 +59,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
-            requireContext().ShowToastLongDuration("This device does not have camera application to proceed")
+            requireContext().showToastLongDuration("This device does not have camera application to proceed")
         }
     }
 
@@ -71,7 +71,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 val bitmap = data?.extras?.get("data") as Bitmap
                 showUploadChequeDialog(bitmap)
             } else {
-                requireContext().ShowToastLongDuration("Photo capture cancelled")
+                requireContext().showToastLongDuration("Photo capture cancelled")
             }
         }
     }

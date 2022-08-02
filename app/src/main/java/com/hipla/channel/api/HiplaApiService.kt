@@ -26,6 +26,6 @@ interface HiplaApiService {
     suspend fun verifyOtp(@Body otpRequestMap: Map<String, String>): Response<VerifyOTPResponse>
 
     @POST("business/v1/extra/transactionInfo")
-    suspend fun createApplication(applicationRequest: ApplicationRequest): Response<CreateApplicationResponse>
+    suspend fun createApplication(@Body createApplicationRequestMap: Map<String, String>): Response<CreateApplicationResponse>
 
 }

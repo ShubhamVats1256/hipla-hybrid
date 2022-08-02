@@ -6,10 +6,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 class GenerateOTPResponse(
     val referenceId: String,
-    @Json(name = "record") val userReference: UserReference
+    @Json(name = "record") val recordReference: RecordReference
 )
 
-class UserReference(
+@JsonClass(generateAdapter = true)
+class RecordReference(
     val id: Int,
     val name: String? = null,
 )
