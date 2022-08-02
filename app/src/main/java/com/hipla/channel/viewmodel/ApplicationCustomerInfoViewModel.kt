@@ -89,7 +89,8 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         floorId : Int,
     ): ApplicationRequest {
         applicationRequest = ApplicationRequest().apply {
-            this.customerName = "$customerFirstName $customerLastName"
+            this.customerName =  customerFirstName
+            this.customerLastName =  customerLastName
             this.customerPhoneNumber = customerPhone
             this.panNumber = panNo
             this.floorPreferenceId = floorId
