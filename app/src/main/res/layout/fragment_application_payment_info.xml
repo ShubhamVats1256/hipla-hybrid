@@ -111,10 +111,10 @@
         app:layout_constraintTop_toBottomOf="@id/chequeNumber" />
 
     <TextView
-        android:id="@+id/cancelBtn"
+        android:id="@+id/backBtn"
         style="@style/SecondaryButton"
         android:layout_marginEnd="@dimen/form_item_space"
-        android:text="@string/cancel"
+        android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/continueBtn"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -127,6 +127,6 @@
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cancelBtn" />
+        app:layout_constraintStart_toEndOf="@id/backBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

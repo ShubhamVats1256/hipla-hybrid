@@ -42,6 +42,9 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setUI() {
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
         binding.continueBtn.setOnClickListener {
             launchPaymentInfoFragment(
                 ApplicationRequest(
@@ -164,7 +167,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
                             showOTPDialog((appEventData?.extras) as String)
                         }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE-> {
+                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
                             requireActivity().toILoader().dismiss()
                         }
                         OTP_VERIFICATION_INVALID -> {

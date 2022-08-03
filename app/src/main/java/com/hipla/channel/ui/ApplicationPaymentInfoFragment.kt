@@ -139,6 +139,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 }
             }
         }
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun getPaymentTypeFromCheckedId(): PaymentType {

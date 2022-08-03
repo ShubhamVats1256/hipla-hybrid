@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
@@ -39,6 +40,9 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         binding.continueBtn.setOnClickListener {
             viewModel.updateApplication()
         }
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun showApplicationSuccessful(applicationRequest: ApplicationRequest) {
@@ -49,7 +53,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.close.setOnClickListener {
-                applicationSuccessDailog?.dismiss()
+                findNavController().popBackStack(R.id.mainFragment, false)
             }
             dialogBinding.appInfo.text = getString(
                 R.string.application_confirm_application_no,
