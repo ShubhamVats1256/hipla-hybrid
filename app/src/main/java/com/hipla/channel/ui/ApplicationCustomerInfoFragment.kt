@@ -106,7 +106,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                 dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
                     Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
                     applicationCustomerInfoViewModel.verifyCustomerOTP(it.content())
-                    requireActivity().toILoader().showLoader(getString(R.string.verifying))
                 }
             }
             otpConfirmDialog = dialogBuilder.show()
@@ -160,7 +159,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         OTP_GENERATING -> {
                             requireActivity().toILoader().showLoader("Generating OTP")
                         }
-                        OTP_GENERATE_FAILED -> {
+                        OTP_VERIFICATION_SUCCESS -> {
+                            requireActivity().toILoader().dismiss()
+                        }
+                        OTP_GENERATE_FAILED,  -> {
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("OTP generation failed, Please try again")
                         }

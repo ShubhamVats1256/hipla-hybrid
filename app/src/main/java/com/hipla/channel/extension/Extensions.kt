@@ -220,9 +220,8 @@ fun ApplicationRequest.toJsonString(): String? {
 
 fun AppEvent.toApplicationRequest(): ApplicationRequest? {
     (this as? AppEventWithData<*>)?.let { appRequestEventData ->
-        Timber.tag(LogConstant.APP_CONFIRM).d("args extracted")
         appRequestEventData.extras?.let { appRequest ->
-            return appRequest as ApplicationRequest
+            return appRequest as? ApplicationRequest
         } ?: Timber.tag(LogConstant.APP_CONFIRM).e("application request casting failed")
     }
     return null

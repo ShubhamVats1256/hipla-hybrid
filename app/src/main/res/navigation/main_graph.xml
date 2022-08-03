@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_graph"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
     app:startDestination="@id/mainFragment">
 
     <fragment
@@ -27,14 +27,12 @@
     <action
         android:id="@+id/action_mainFragment_to_customerInfoFragment"
         app:destination="@id/customerInfoFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true" />
+        app:popUpTo="@+id/mainFragment" />
 
     <action
         android:id="@+id/action_customerInfoFragment_to_paymentInfoFragment"
         app:destination="@id/paymentInfoFragment"
-        app:popUpTo="@+id/customerInfoFragment"
-        app:popUpToInclusive="true" />
+        app:popUpTo="@+id/customerInfoFragment" />
 
     <action
         android:id="@+id/action_home"
@@ -46,7 +44,6 @@
     <action
         android:id="@+id/action_paymentInfoFragment_to_applicationConfirmFragment"
         app:destination="@id/applicationConfirmFragment"
-        app:popUpTo="@+id/paymentInfoFragment"
-        app:popUpToInclusive="true" />
+        app:popUpTo="@+id/paymentInfoFragment" />
 
 </navigation>

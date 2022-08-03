@@ -6,7 +6,6 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
-import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
@@ -14,23 +13,16 @@ import timber.log.Timber
 
 class ApplicationConfirmationViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
-    private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
 
-    fun extractArguments(arguments: Bundle?) {
-        launchIO {
-            arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
-                this.applicationRequest = it
-                appEvent.tryEmit(
-                    AppEventWithData(
-                        id = APPLICATION_ARGS_EXTRACTED,
-                        extras = applicationRequest!!
-                    )
-                )
-                Timber.tag(LogConstant.PAYMENT_INFO)
-                    .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
-            }
+    fun extractArguments(arguments: Bundle?): ApplicationRequest? {
+        arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
+            this.applicationRequest = it
+            Timber.tag(LogConstant.APP_CONFIRM)
+                .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
+            return applicationRequest
         }
+        return null
     }
 
     fun updateApplication() {
@@ -39,7 +31,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
             if (applicationRequest != null) {
                 with(hiplaRepo.updateApplication(applicationRequest!!)) {
                     ifSuccessful {
-                        Timber.tag(LogConstant.PAYMENT_INFO)
+                        Timber.tag(LogConstant.APP_CONFIRM)
                             .d("application updated successfully for id : ${applicationRequest!!.id}")
                         appEvent.tryEmit(
                             AppEventWithData(
@@ -50,13 +42,13 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                     }
                     ifError {
                         appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
-                        Timber.tag(LogConstant.PAYMENT_INFO)
+                        Timber.tag(LogConstant.APP_CONFIRM)
                             .e("application update failed for id : ${applicationRequest!!.id}")
                     }
                 }
             } else {
                 appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
-                Timber.tag(LogConstant.PAYMENT_INFO)
+                Timber.tag(LogConstant.APP_CONFIRM)
                     .e("application request argument not found failed for id : ${applicationRequest!!.id}")
             }
         }

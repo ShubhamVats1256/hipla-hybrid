@@ -50,7 +50,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 viewModel.appEvent.collect {
                     when (it.id) {
                         OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
+                            //requireActivity().toILoader().showLoader("Verifying OTP")
                         }
                         OTP_GENERATING -> {
                             requireActivity().toILoader().showLoader("Generating OTP")
@@ -67,6 +67,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             requireActivity().toILoader().dismiss()
                         }
                         OTP_VERIFICATION_SUCCESS -> {
+                            requireActivity().toILoader().dismiss()
                             viewModel.updateApplicationRequest(
                                 amountPayable = binding.amountPayable.content(),
                                 chequeNo = binding.chequeNumber.content(),

@@ -52,8 +52,8 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         Timber.tag(LogConstant.CUSTOMER_INFO)
             .d("verify OTP: $otp for userId : ${generateOTPResponse?.recordReference?.id}")
         launchIO {
-            appEvent.tryEmit(AppEvent(OTP_VERIFYING))
             if (generateOTPResponse != null) {
+                appEvent.tryEmit(AppEvent(OTP_VERIFYING))
                 hiplaRepo.verifyOtp(
                     otp = otp,
                     userId = generateOTPResponse!!.recordReference.id.toString(),

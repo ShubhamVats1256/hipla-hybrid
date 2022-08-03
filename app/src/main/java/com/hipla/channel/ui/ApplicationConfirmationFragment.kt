@@ -33,7 +33,10 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         viewModel = ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
         observeViewModel()
         setUI()
-        viewModel.extractArguments(arguments)
+        viewModel.extractArguments(arguments)?.let {
+            setHeader(it)
+        }
+        requireActivity().toILoader().dismiss()
     }
 
     private fun setUI() {
@@ -89,13 +92,6 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Application updating failed")
                         }
-                        APPLICATION_ARGS_EXTRACTED -> {
-                            it.toApplicationRequest()?.let { appRequest ->
-                                Timber.tag(LogConstant.APP_CONFIRM)
-                                    .d("application request extracted")
-                                setHeader(appRequest)
-                            }
-                        }
                     }
                 }
             }
@@ -103,6 +99,8 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setHeader(applicationRequest: ApplicationRequest) {
+        Timber.tag(LogConstant.APP_CONFIRM).d("setting info customer name ${applicationRequest.customerName}r")
+        Timber.tag(LogConstant.APP_CONFIRM).d("setting info application no ${applicationRequest.id}r")
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "
