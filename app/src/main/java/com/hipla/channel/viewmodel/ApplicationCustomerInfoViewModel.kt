@@ -6,6 +6,7 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
@@ -15,6 +16,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     private var salesUserId: String? = null
     private var selectedFloorPreference: FloorDetails? = null
     var floorList: List<FloorDetails> = generateFloors()
+    var applicationCreateResponse : ApplicationCreateResponse? = null
 
     fun extractArguments(arguments: Bundle?) {
         salesUserId = arguments?.getString(KEY_SALES_USER_ID);
@@ -35,6 +37,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_CREATING))
             with(hiplaRepo.createApplication(applicationRequest!!)) {
                 ifSuccessful {
+                    applicationCreateResponse = it
                     applicationRequest.id = it.userReference.id
                     applicationRequest.paymentProofImageUrl =
                         it.userReference.applicationRecordExtraInfo.paymentProofImageUrl

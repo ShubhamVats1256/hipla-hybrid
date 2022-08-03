@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
+import com.hipla.channel.common.KEY_APPLICATION_SERVER_INF0
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
@@ -68,6 +69,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         putString(
                             KEY_APP_REQ,
                             applicationRequest?.toJsonString()
+                        )
+                        putString(
+                            KEY_APPLICATION_SERVER_INF0,
+                            applicationCustomerInfoViewModel.applicationCreateResponse?.toJsonString()
                         )
                     }
                 )

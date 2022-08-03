@@ -19,7 +19,7 @@ import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.ApiErrorMessage
-import com.hipla.channel.entity.api.Status
+import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.entity.response.RecordStatus
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -208,15 +208,21 @@ fun String.toApplicationRequest(): ApplicationRequest? {
 
 fun ApplicationRequest.toJsonString(): String? {
     return try {
-        val applicationReqJsonAdapter =
-            getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java)
-        applicationReqJsonAdapter.toJson(this)
+        getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
     }
 }
 
+fun ApplicationCreateResponse.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java).toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
 
 fun AppEvent.toApplicationRequest(): ApplicationRequest? {
     (this as? AppEventWithData<*>)?.let { appRequestEventData ->

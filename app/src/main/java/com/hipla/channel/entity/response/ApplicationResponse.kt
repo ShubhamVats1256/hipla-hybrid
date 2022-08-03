@@ -14,7 +14,7 @@ class ApplicationRecordReference(
     val name: String? = null,
     @Json(name = "extraInfo") val applicationRecordExtraInfo: ApplicationRecordExtraInfo,
     val imageUploadUrl: String?,
-    val imageReaddUrl: String?
+    val imageReadUrl: String?
 )
 
 @JsonClass(generateAdapter = true)

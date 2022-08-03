@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -170,7 +171,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
-            if (isMandatoryInfoFilled()) {
+            takePicture()
+            // dev setting
+/*            if (isMandatoryInfoFilled()) {
                 if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())
                         .not()
                 ) {
@@ -179,7 +182,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 } else {
                     takePicture()
                 }
-            }
+            }*/
         }
     }
 
@@ -237,8 +240,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         Timber.tag(LogConstant.PAYMENT_INFO).d("on activity result")
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                Timber.tag(LogConstant.PAYMENT_INFO).d("picture taken successfully")
                 val bitmap = data?.extras?.get("data") as Bitmap
+                val imageUri: Uri? = data.data
+                Timber.tag(LogConstant.PAYMENT_INFO).d("picture taken successfully : $imageUri")
                 showUploadChequeDialog(bitmap)
             } else {
                 requireContext().showToastLongDuration("Photo capture cancelled")
