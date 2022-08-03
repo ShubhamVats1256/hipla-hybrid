@@ -23,10 +23,10 @@
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/back" />
+            app:layout_constraintStart_toEndOf="@id/backBtn" />
 
         <TextView
-            android:id="@+id/back"
+            android:id="@+id/backBtn"
             style="@style/SecondaryButton"
             android:layout_marginEnd="@dimen/form_item_space"
             android:text="@string/back"
