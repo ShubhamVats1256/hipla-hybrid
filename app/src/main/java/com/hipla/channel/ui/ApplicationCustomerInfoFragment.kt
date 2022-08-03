@@ -104,22 +104,24 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                applicationCustomerInfoViewModel.appEvent.collect {
-                    when (it.id) {
-                        APP_EVENT_APPLICATION_SUCCESS -> {
-                            requireActivity().toILoader().dismiss()
-                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
-                            val applicationRequest = appEventData?.extras as? ApplicationRequest
-                            launchPaymentInfoFragment(applicationRequest)
-                        }
-                        APP_EVENT_APPLICATION_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Application creation failed")
-                        }
-                        APP_EVENT_APPLICATION_COMPLETE -> {
-                            requireActivity().toILoader().dismiss()
+                launchSafely {
+                    applicationCustomerInfoViewModel.appEvent.collect {
+                        when (it.id) {
+                            APP_EVENT_APPLICATION_SUCCESS -> {
+                                requireActivity().toILoader().dismiss()
+                                val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                                val applicationRequest = appEventData?.extras as? ApplicationRequest
+                                launchPaymentInfoFragment(applicationRequest)
+                            }
+                            APP_EVENT_APPLICATION_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Application creation failed")
+                            }
+                            APP_EVENT_APPLICATION_COMPLETE -> {
+                                requireActivity().toILoader().dismiss()
+                            }
                         }
                     }
                 }

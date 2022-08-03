@@ -79,40 +79,42 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
     }
 
     private fun observeAppEvents() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.appEvent.collect {
-                    when (it.id) {
-                        APP_EVENT_START_APPLICATION_FLOW -> {
-                            requireActivity().toILoader().dismiss()
-                            launchCustomerInfoFragment(it.toSalesUserId())
-                        }
-                        OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
-                        }
-                        OTP_GENERATING -> {
-                            requireActivity().toILoader().showLoader("Generating OTP")
-                        }
-                        OTP_VERIFICATION_SUCCESS -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_GENERATE_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
-                        }
-                        OTP_SHOW_VERIFICATION_DIALOG -> {
-                            showOTPDialog(it.toSalesUserId());
-                        }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_VERIFICATION_INVALID -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Wrong OTP")
-                        }
-                        OTP_VERIFICATION_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Unable to verify, server error")
+                launchSafely {
+                    viewModel.appEvent.collect {
+                        when (it.id) {
+                            APP_EVENT_START_APPLICATION_FLOW -> {
+                                requireActivity().toILoader().dismiss()
+                                launchCustomerInfoFragment(it.toSalesUserId())
+                            }
+                            OTP_VERIFYING -> {
+                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                            }
+                            OTP_GENERATING -> {
+                                requireActivity().toILoader().showLoader("Generating OTP")
+                            }
+                            OTP_VERIFICATION_SUCCESS -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_GENERATE_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                            }
+                            OTP_SHOW_VERIFICATION_DIALOG -> {
+                                showOTPDialog(it.toSalesUserId());
+                            }
+                            OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_VERIFICATION_INVALID -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Wrong OTP")
+                            }
+                            OTP_VERIFICATION_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Unable to verify, server error")
+                            }
                         }
                     }
                 }

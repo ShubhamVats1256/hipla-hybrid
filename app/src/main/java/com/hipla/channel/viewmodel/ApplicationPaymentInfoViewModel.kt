@@ -16,6 +16,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
+    private val phoneNoUserIdMap: MutableMap<String, String> = mutableMapOf()
 
     fun extractArguments(arguments: Bundle?) {
         launchIO {
@@ -27,7 +28,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         }
     }
 
-    fun verifyChannelPartnerOTP(otp: String) {
+    fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         Timber.tag(LogConstant.PAYMENT_INFO)
             .d("verify OTP: $otp for userId : ${generateOTPResponse?.recordReference?.id}")
         launchIO {
@@ -44,26 +45,32 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                                 .d(" OTP verified, channel partner user ID : ${generateOTPResponse?.recordReference?.id}")
                             applicationRequest?.channelPartnerId =
                                 generateOTPResponse?.recordReference?.id.toString()
+                            phoneNoUserIdMap[channelPartnerMobileNo] =
+                                applicationRequest?.channelPartnerId!!
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d("channel partnerId updated to application request")
+                            Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
-                            Timber.tag(LogConstant.PAYMENT_INFO).d("customer OTP verified")
                         } else {
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
-                            Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP invalid")
+                            Timber.tag(LogConstant.PAYMENT_INFO).e("channel OTP invalid")
                         }
                     }
                     ifError {
-                        Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP verification failed")
+                        Timber.tag(LogConstant.PAYMENT_INFO).e("channel OTP verification failed")
                         appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                     }
                 }
             } else {
                 appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
-                Timber.tag(LogConstant.PAYMENT_INFO).e("customer OTP server referenceId not found")
+                Timber.tag(LogConstant.PAYMENT_INFO).e("channel OTP server referenceId not found")
             }
             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
         }
+    }
+
+    fun isChannelPartnerVerified(channelPartnerMobileNo: String): Boolean {
+        return phoneNoUserIdMap[channelPartnerMobileNo] != null
     }
 
     fun generateChannelPartnerOTP(channelPartnerMobileNo: String) {

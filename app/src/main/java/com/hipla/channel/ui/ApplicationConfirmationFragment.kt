@@ -70,56 +70,58 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                applicationConfirmationViewModel.appEvent.collect {
-                    when (it.id) {
-                        APPLICATION_UPDATING -> {
-                            requireActivity().toILoader().showLoader("Updating Application")
-                        }
-                        APPLICATION_UPDATING_SUCCESS -> {
-                            Timber.tag(LogConstant.APP_CONFIRM)
-                                .d("application update success")
-                            requireActivity().toILoader().dismiss()
-                            it.toApplicationRequest()?.let { appRequest ->
-                                Timber.tag(LogConstant.APP_CONFIRM)
-                                    .d("application request extracted")
-                                showApplicationSuccessful(appRequest)
+                launchSafely {
+                    applicationConfirmationViewModel.appEvent.collect {
+                        when (it.id) {
+                            APPLICATION_UPDATING -> {
+                                requireActivity().toILoader().showLoader("Updating Application")
                             }
-                        }
-                        APPLICATION_UPDATING_FAILED -> {
-                            Timber.tag(LogConstant.APP_CONFIRM)
-                                .d("application update failed")
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Application updating failed")
-                        }
-                        OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
-                        }
-                        OTP_GENERATING -> {
-                            requireActivity().toILoader().showLoader("Generating OTP")
-                        }
-                        OTP_VERIFICATION_SUCCESS -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_GENERATE_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
-                        }
-                        OTP_SHOW_VERIFICATION_DIALOG -> {
-                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
-                            showOTPDialog((appEventData?.extras) as String)
-                        }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_VERIFICATION_INVALID -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Wrong OTP")
-                        }
-                        OTP_VERIFICATION_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Unable to verify, server error")
+                            APPLICATION_UPDATING_SUCCESS -> {
+                                Timber.tag(LogConstant.APP_CONFIRM)
+                                    .d("application update success")
+                                requireActivity().toILoader().dismiss()
+                                it.toApplicationRequest()?.let { appRequest ->
+                                    Timber.tag(LogConstant.APP_CONFIRM)
+                                        .d("application request extracted")
+                                    showApplicationSuccessful(appRequest)
+                                }
+                            }
+                            APPLICATION_UPDATING_FAILED -> {
+                                Timber.tag(LogConstant.APP_CONFIRM)
+                                    .d("application update failed")
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Application updating failed")
+                            }
+                            OTP_VERIFYING -> {
+                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                            }
+                            OTP_GENERATING -> {
+                                requireActivity().toILoader().showLoader("Generating OTP")
+                            }
+                            OTP_VERIFICATION_SUCCESS -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_GENERATE_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                            }
+                            OTP_SHOW_VERIFICATION_DIALOG -> {
+                                val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                                showOTPDialog((appEventData?.extras) as String)
+                            }
+                            OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_VERIFICATION_INVALID -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Wrong OTP")
+                            }
+                            OTP_VERIFICATION_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Unable to verify, server error")
+                            }
                         }
                     }
                 }

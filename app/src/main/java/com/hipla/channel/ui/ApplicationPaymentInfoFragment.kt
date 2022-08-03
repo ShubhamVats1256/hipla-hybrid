@@ -23,7 +23,6 @@ import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -44,59 +43,64 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.appEvent.collect {
-                    when (it.id) {
-                        OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
-                        }
-                        OTP_GENERATING -> {
-                            requireActivity().toILoader().showLoader("Generating OTP")
-                        }
-                        OTP_GENERATE_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
-                        }
-                        OTP_SHOW_VERIFICATION_DIALOG -> {
-                            requireActivity().toILoader().dismiss()
-                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
-                            showOTPDialog(appEventData?.extras.toString())
-                        }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_VERIFICATION_SUCCESS -> {
-                            requireActivity().toILoader().dismiss()
-                            viewModel.updateApplicationRequest(
-                                amountPayable = binding.amountPayable.content(),
-                                chequeNo = binding.chequeNumber.content(),
-                                paymentType = getPaymentTypeFromCheckedId()
-                            ).also { appRequest ->
-                                findNavController().run {
-                                    if (isCurrentDestination(R.id.paymentInfoFragment)) {
-                                        navigate(
-                                            resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
-                                            Bundle().apply {
-                                                putString(
-                                                    KEY_APP_REQ,
-                                                    appRequest?.toJsonString()
-                                                )
-                                            }
-                                        )
-                                    }
-                                }
+                launchSafely {
+                    viewModel.appEvent.collect {
+                        when (it.id) {
+                            OTP_VERIFYING -> {
+                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                            }
+                            OTP_GENERATING -> {
+                                requireActivity().toILoader().showLoader("Generating OTP")
+                            }
+                            OTP_GENERATE_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                            }
+                            OTP_SHOW_VERIFICATION_DIALOG -> {
+                                requireActivity().toILoader().dismiss()
+                                val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                                showOTPDialog(appEventData?.extras.toString())
+                            }
+                            OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_VERIFICATION_SUCCESS -> {
+                                requireActivity().toILoader().dismiss()
+                            }
+                            OTP_VERIFICATION_INVALID -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Wrong OTP")
+                            }
+                            OTP_VERIFICATION_FAILED -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Unable to verify, server error")
                             }
                         }
-                        OTP_VERIFICATION_INVALID -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Wrong OTP")
-                        }
-                        OTP_VERIFICATION_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Unable to verify, server error")
-                        }
                     }
+                }
+            }
+        }
+    }
+
+    fun updateApplicationRequest() {
+        viewModel.updateApplicationRequest(
+            amountPayable = binding.amountPayable.content(),
+            chequeNo = binding.chequeNumber.content(),
+            paymentType = getPaymentTypeFromCheckedId()
+        ).also { appRequest ->
+            findNavController().run {
+                if (isCurrentDestination(R.id.paymentInfoFragment)) {
+                    navigate(
+                        resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
+                        Bundle().apply {
+                            putString(
+                                KEY_APP_REQ,
+                                appRequest?.toJsonString()
+                            )
+                        }
+                    )
                 }
             }
         }
@@ -108,7 +112,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.identification.text = customerUserId
-            dialogBinding.title.text = getString(R.string.verify_customer_otp)
+            dialogBinding.title.text = getString(R.string.verify_channel_partner_otp)
             dialogBinding.back.setOnClickListener {
                 otpConfirmDialog?.dismiss()
             }
@@ -116,8 +120,12 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 otpConfirmDialog?.dismiss()
                 dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
                     Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
-                    viewModel.verifyChannelPartnerOTP(it.content())
+                    viewModel.verifyChannelPartnerOTP(
+                        it.content(),
+                        binding.channelPartnerMobileNo.content()
+                    )
                     requireActivity().toILoader().showLoader(getString(R.string.verifying))
+                    return@onSubmit
                 }
             }
             otpConfirmDialog = dialogBuilder.show()
@@ -163,8 +171,14 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
             if (isMandatoryInfoFilled()) {
-                Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
-                viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
+                if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())
+                        .not()
+                ) {
+                    Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
+                    viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
+                } else {
+                    takePicture()
+                }
             }
         }
     }
