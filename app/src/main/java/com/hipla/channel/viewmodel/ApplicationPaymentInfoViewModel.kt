@@ -104,24 +104,8 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
             this.paymentDetails = chequeNo
             this.paymentType = paymentType
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
-        }?.also {
-            patchApplicationRequestData(it)
         }
     }
 
-    private fun patchApplicationRequestData(applicationRequest: ApplicationRequest) {
-        launchIO {
-            with(hiplaRepo.updateApplication(applicationRequest)) {
-                ifSuccessful {
-                    Timber.tag(LogConstant.PAYMENT_INFO)
-                        .d("application updated successfully for id : ${applicationRequest.id}")
-                }
-                ifError {
-                    Timber.tag(LogConstant.PAYMENT_INFO)
-                        .e("application updated failed for id : ${applicationRequest.id}")
-                }
-            }
-        }
-    }
 
 }
