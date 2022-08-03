@@ -41,7 +41,7 @@
 
     <dimen name="application_otp_confirm_customer_top_margin">20dp</dimen>
 
-    <dimen name="form_item_space">28dp</dimen>
+    <dimen name="form_item_space">20dp</dimen>
 
     <dimen name="header_text_size">26sp</dimen>
     <dimen name="header_padding">16dp</dimen>
