@@ -56,6 +56,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             requireActivity().toILoader().showLoader("Generating OTP")
                         }
                         OTP_GENERATE_FAILED -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("OTP generation failed, Please try again")
                         }
                         OTP_SHOW_VERIFICATION_DIALOG -> {
@@ -87,9 +88,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             }
                         }
                         OTP_VERIFICATION_INVALID -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Wrong OTP")
                         }
                         OTP_VERIFICATION_FAILED -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Unable to verify, server error")
                         }
                     }

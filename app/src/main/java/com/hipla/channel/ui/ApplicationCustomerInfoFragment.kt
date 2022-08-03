@@ -155,12 +155,13 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             requireContext().showToastLongDuration("Application creation failed")
                         }
                         OTP_VERIFYING -> {
-                            //requireActivity().toILoader().showLoader("Verifying OTP")
+                            requireActivity().toILoader().showLoader("Verifying OTP")
                         }
                         OTP_GENERATING -> {
                             requireActivity().toILoader().showLoader("Generating OTP")
                         }
                         OTP_GENERATE_FAILED -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("OTP generation failed, Please try again")
                         }
                         OTP_SHOW_VERIFICATION_DIALOG -> {
@@ -171,9 +172,11 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             requireActivity().toILoader().dismiss()
                         }
                         OTP_VERIFICATION_INVALID -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Wrong OTP")
                         }
                         OTP_VERIFICATION_FAILED -> {
+                            requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Unable to verify, server error")
                         }
                     }

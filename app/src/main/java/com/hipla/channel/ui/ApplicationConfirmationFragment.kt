@@ -12,8 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
-import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
-import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
+import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.showToastLongDuration
 import com.hipla.channel.extension.toApplicationRequest
@@ -25,12 +24,12 @@ import timber.log.Timber
 class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
 
     private lateinit var viewModel: ApplicationConfirmationViewModel
-    private lateinit var binding: FragmentApplicationPaymentInfoBinding
+    private lateinit var binding: FragmentApplicationConfirmBinding
     private var applicationSuccessDailog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentApplicationPaymentInfoBinding.bind(view)
+        binding = FragmentApplicationConfirmBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
         observeViewModel()
         setUI()
@@ -38,7 +37,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setUI() {
-        binding.continueBtn.setOnClickListener {
+        binding.submit.setOnClickListener {
             viewModel.updateApplication()
         }
         binding.backBtn.setOnClickListener {
