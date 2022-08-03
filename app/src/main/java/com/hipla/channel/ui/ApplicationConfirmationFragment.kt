@@ -56,6 +56,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.close.setOnClickListener {
+                applicationSuccessDailog?.dismiss()
                 findNavController().popBackStack(R.id.mainFragment, false)
             }
             dialogBinding.appInfo.text = getString(
