@@ -50,5 +50,7 @@
     <string name="verifying">Verifying</string>
     <string name="verify_channel_partner_otp">Verifying partner OTP</string>
 
+    <string name="application_confirm_customer_name">Customer Name : %1$s\n</string>
+    <string name="application_confirm_application_no">Confirmation for Application No :%1$s\n</string>
 
 </resources>

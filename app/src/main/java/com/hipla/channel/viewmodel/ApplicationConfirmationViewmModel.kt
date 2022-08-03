@@ -12,7 +12,7 @@ import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
 
-class ApplicationConfirmationViewmModel : BaseViewModel() {
+class ApplicationConfirmationViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
@@ -21,39 +21,38 @@ class ApplicationConfirmationViewmModel : BaseViewModel() {
         launchIO {
             arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
                 this.applicationRequest = it
+                appEvent.tryEmit(
+                    AppEventWithData(
+                        id = APPLICATION_ARGS_EXTRACTED,
+                        extras = applicationRequest!!
+                    )
+                )
                 Timber.tag(LogConstant.PAYMENT_INFO)
                     .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
             }
         }
     }
 
-    fun updateApplicationRequest(
-        amountPayable: String,
-        paymentType: PaymentType,
-        chequeNo: String,
-    ): ApplicationRequest? {
-        return applicationRequest?.apply {
-            this.channelPartnerId = generateOTPResponse?.recordReference?.id.toString()
-            this.amountPayable = amountPayable
-            this.paymentDetails = chequeNo
-            this.paymentType = paymentType
-            Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
-        }?.also {
-            patchApplicationRequestData(it)
-        }
-    }
-
-    private fun patchApplicationRequestData(applicationRequest: ApplicationRequest) {
+    fun updateApplication() {
         launchIO {
-            with(hiplaRepo.updateApplication(applicationRequest)) {
-                ifSuccessful {
-                    Timber.tag(LogConstant.PAYMENT_INFO)
-                        .d("application updated successfully for id : ${applicationRequest.id}")
+            appEvent.tryEmit(AppEvent(APPLICATION_UPDATING))
+            if (applicationRequest != null) {
+                with(hiplaRepo.updateApplication(applicationRequest!!)) {
+                    ifSuccessful {
+                        Timber.tag(LogConstant.PAYMENT_INFO)
+                            .d("application updated successfully for id : ${applicationRequest!!.id}")
+                        appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_SUCCESS))
+                    }
+                    ifError {
+                        appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
+                        Timber.tag(LogConstant.PAYMENT_INFO)
+                            .e("application update failed for id : ${applicationRequest!!.id}")
+                    }
                 }
-                ifError {
-                    Timber.tag(LogConstant.PAYMENT_INFO)
-                        .e("application updated failed for id : ${applicationRequest.id}")
-                }
+            } else {
+                appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
+                Timber.tag(LogConstant.PAYMENT_INFO)
+                    .e("application request argument not found failed for id : ${applicationRequest!!.id}")
             }
         }
     }
