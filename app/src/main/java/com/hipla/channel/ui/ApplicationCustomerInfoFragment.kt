@@ -46,16 +46,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             findNavController().navigateUp()
         }
         binding.continueBtn.setOnClickListener {
-            launchPaymentInfoFragment(
-                ApplicationRequest(
-                    id = 52,
-                    customerName = "Shiva",
-                    customerLastName = "Guru",
-                    panNumber = "pan",
-                    floorPreferenceId = 1,
-                    customerPhoneNumber = "9916555886"
-                )
-            )
             if (isMandatoryCustomerInfoFilled()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
                 applicationCustomerInfoViewModel.generateCustomerOTP(

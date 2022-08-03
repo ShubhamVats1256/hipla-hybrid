@@ -102,13 +102,13 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         launchIO {
             appEvent.tryEmit(AppEvent(OTP_GENERATING))
             applicationRequest.customerPhoneNumber?.let { customerPhoneNo ->
-                hiplaRepo.generateOtp("9916555886").run {
+                hiplaRepo.generateOtp(customerPhoneNo).run {
                     ifSuccessful {
                         Timber.tag(LogConstant.CUSTOMER_INFO)
                             .d("generate OTP successful for customer name ${applicationRequest.customerName}, referenceId:${it.referenceId}")
                         generateOTPResponse = it
                         appEvent.tryEmit(
-                            AppEventWithData<String>(
+                            AppEventWithData(
                                 id = OTP_SHOW_VERIFICATION_DIALOG,
                                 extras = it.recordReference.id.toString()
                             )
