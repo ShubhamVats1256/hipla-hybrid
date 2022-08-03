@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.common.*
-import com.hipla.channel.common.ApiErrorCode
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.ILoader
 import com.hipla.channel.entity.AppEvent
@@ -31,7 +30,6 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
-import okhttp3.internal.EMPTY_REQUEST
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.Qualifier
@@ -132,7 +130,7 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["panNumber"] = panNumber!!
     requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
-   // requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
+    // requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
     requestMap["paymentProofImageUrl"] = this.paymentProofImageUrl!!
     requestMap["amountPayable"] = this.amountPayable!!
     requestMap["ownerId"] = ownerId.toString()
@@ -225,4 +223,10 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
         } ?: Timber.tag(LogConstant.APP_CONFIRM).e("application request casting failed")
     }
     return null
+}
+
+
+fun AppEvent.toSalesUserId(): String? {
+    val appEventData: AppEventWithData<*>? = this as? AppEventWithData<*>
+    return ((appEventData?.extras) as? String)
 }

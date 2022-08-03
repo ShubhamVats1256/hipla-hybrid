@@ -15,7 +15,7 @@ import com.hipla.channel.R
 import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationBinding
-import com.hipla.channel.entity.SalesUser
+import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
@@ -45,9 +45,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-             //viewModel.generateOTP(it)
-             //showOTPDialog(it)
-            launchCustomerInfoFragment(it)
+            viewModel.generateOTP(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -74,6 +72,49 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 observeSalesUserList()
+                observeAppEvents()
+            }
+        }
+    }
+
+    private fun observeAppEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.appEvent.collect {
+                    when (it.id) {
+                        APP_EVENT_START_APPLICATION_FLOW -> {
+                            requireActivity().toILoader().dismiss()
+                            launchCustomerInfoFragment(it.toSalesUserId())
+                        }
+                        OTP_VERIFYING -> {
+                            requireActivity().toILoader().showLoader("Verifying OTP")
+                        }
+                        OTP_GENERATING -> {
+                            requireActivity().toILoader().showLoader("Generating OTP")
+                        }
+                        OTP_VERIFICATION_SUCCESS -> {
+                            requireActivity().toILoader().dismiss()
+                        }
+                        OTP_GENERATE_FAILED -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                        }
+                        OTP_SHOW_VERIFICATION_DIALOG -> {
+                            showOTPDialog(it.toSalesUserId());
+                        }
+                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
+                            requireActivity().toILoader().dismiss()
+                        }
+                        OTP_VERIFICATION_INVALID -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("Wrong OTP")
+                        }
+                        OTP_VERIFICATION_FAILED -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("Unable to verify, server error")
+                        }
+                    }
+                }
             }
         }
     }
@@ -88,14 +129,14 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         salesRecyclerAdapter.append(salesUserList)
     }
 
-    private fun showOTPDialog(salesUser: SalesUser) {
+    private fun showOTPDialog(salesUserId: String?) {
+        salesUserId ?: return
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.identification.text = salesUser.id.toString()
+            dialogBinding.identification.text = salesUserId
             dialogBinding.submit.setOnClickListener {
-                //requireActivity().toILoader().showLoader("Verifying")
                 dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
                 }
             }
@@ -104,8 +145,7 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
             }
             dialogBinding.otpEdit.onSubmit {
                 otpConfirmDialog?.dismiss()
-                // viewModel.verifyOtp(salesUser, dialogBinding.otpEdit.content())
-                launchCustomerInfoFragment(salesUser)
+                viewModel.verifyOtp(salesUserId, dialogBinding.otpEdit.content())
             }
             otpConfirmDialog = dialogBuilder.show()
             otpConfirmDialog?.setCancelable(false)
@@ -113,13 +153,14 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
         }
     }
 
-    private fun launchCustomerInfoFragment(salesUser: SalesUser) {
+    private fun launchCustomerInfoFragment(salesUserId: String?) {
+        salesUserId ?: return
         findNavController().run {
             if (isCurrentDestination(R.id.mainFragment)) {
                 navigate(
                     resId = R.id.action_mainFragment_to_customerInfoFragment,
                     args = Bundle().apply {
-                        putString(KEY_SALES_USER_ID, salesUser.id.toString())
+                        putString(KEY_SALES_USER_ID, salesUserId)
                     })
             }
         }

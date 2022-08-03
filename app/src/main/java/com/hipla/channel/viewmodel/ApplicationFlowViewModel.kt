@@ -3,9 +3,10 @@ package com.hipla.channel.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.hipla.channel.common.AppConfig
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.entity.SalesUser
+import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
@@ -19,7 +20,7 @@ class ApplicationFlowViewModel : BaseViewModel() {
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
     private val salesUserMasterList = mutableListOf<SalesUser>()
     var salesUsersLiveData = MutableLiveData<List<SalesUser>>()
-    private var otpReferenceId: String? = null
+    var generateOTPResponse : GenerateOTPResponse? = null
 
     fun loadUsers() {
         if (canDownload()) {
@@ -51,41 +52,63 @@ class ApplicationFlowViewModel : BaseViewModel() {
 
     fun generateOTP(salesUser: SalesUser) {
         launchIO {
+            appEvent.tryEmit(AppEvent(OTP_GENERATING))
             hiplaRepo.generateOtp(salesUser.phoneNumber.toString()).run {
                 ifSuccessful {
                     Timber.tag(LogConstant.FLOW_APP)
                         .d("generate OTP successful for ${salesUser.name} : ${salesUser.id}, referenceId:${it.referenceId}")
-                    otpReferenceId = it.referenceId
+                    generateOTPResponse = it
+                    appEvent.tryEmit(AppEvent(OTP_GENERATE_SUCCESS))
+                    appEvent.tryEmit(
+                        AppEventWithData(
+                            id = OTP_SHOW_VERIFICATION_DIALOG,
+                            extras = it.recordReference.id.toString()
+                        )
+                    )
                 }
                 ifError {
                     Timber.tag(LogConstant.FLOW_APP)
                         .e("generate OTP error for ${salesUser.name} : ${salesUser.id} ")
+                    appEvent.tryEmit(AppEvent(OTP_GENERATE_FAILED))
                 }
+                appEvent.tryEmit(AppEvent(OTP_GENERATE_COMPLETE))
             }
         }
     }
 
-    fun verifyOtp(salesUser: SalesUser, otp: String) {
-        Timber.tag(LogConstant.FLOW_APP).d("verify otp: $otp for userId : ${salesUser.id}")
+    fun verifyOtp(salesUserId : String, otp: String) {
+        Timber.tag(LogConstant.FLOW_APP).d("verify otp: $otp for userId : $salesUserId")
         launchIO {
-            if (otpReferenceId != null) {
+            appEvent.tryEmit(AppEvent(OTP_VERIFYING))
+            if (generateOTPResponse != null) {
                 hiplaRepo.verifyOtp(
                     otp = otp,
-                    userId = salesUser.id.toString(),
-                    referenceId = otpReferenceId!!
+                    userId = salesUserId,
+                    referenceId = generateOTPResponse!!.referenceId
                 ).run {
                     ifSuccessful {
-                        if (it.verifyOTPData.referenceId == otpReferenceId && it.verifyOTPData.isVerified) {
+                        if (it.verifyOTPData.referenceId ==  generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
                             Timber.tag(LogConstant.FLOW_APP).d("otp verification successful")
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
+                            appEvent.tryEmit(AppEvent(APP_EVENT_START_APPLICATION_FLOW))
+                            appEvent.tryEmit(
+                                AppEventWithData(
+                                    id = APP_EVENT_START_APPLICATION_FLOW,
+                                    extras = generateOTPResponse!!.recordReference.id.toString()
+                                )
+                            )
                         } else {
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.FLOW_APP).d("otp invalid")
                         }
                     }
                     ifError {
+                        appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                         Timber.tag(LogConstant.FLOW_APP).e("otp verification failed")
                     }
                 }
             } else {
+                appEvent.tryEmit(AppEvent(OTP_VERIFICATION_FAILED))
                 Timber.tag(LogConstant.FLOW_APP).e("otp server referenceId not found")
             }
         }
