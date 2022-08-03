@@ -8,14 +8,15 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.hipla.channel.R
+import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
@@ -69,7 +70,21 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 amountPayable = binding.amountPayable.content(),
                                 chequeNo = binding.chequeNumber.content(),
                                 paymentType = getPaymentTypeFromCheckedId()
-                            )
+                            ).also { appRequest ->
+                                findNavController().run {
+                                    if (isCurrentDestination(R.id.paymentInfoFragment)) {
+                                        navigate(
+                                            resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
+                                            Bundle().apply {
+                                                putString(
+                                                    KEY_APP_REQ,
+                                                    appRequest?.toJsonString()
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                            }
                         }
                         OTP_VERIFICATION_INVALID -> {
                             requireContext().showToastLongDuration("Wrong OTP")
@@ -115,10 +130,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             }
         }
         binding.paymentToggle.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if(isChecked) {
-                when(checkedId) {
+            if (isChecked) {
+                when (checkedId) {
                     R.id.cash -> {
-                        (binding.paymentToggle.findViewById(R.id.cheque) as MaterialButton).isEnabled = true
+                        (binding.paymentToggle.findViewById(R.id.cheque) as MaterialButton).isEnabled =
+                            true
                     }
                 }
             }

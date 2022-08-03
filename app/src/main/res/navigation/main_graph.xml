@@ -37,6 +37,13 @@
         app:popUpToInclusive="true" />
 
     <action
+        android:id="@+id/action_home"
+        app:destination="@id/mainFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
+
+    <action
         android:id="@+id/action_paymentInfoFragment_to_applicationConfirmFragment"
         app:destination="@id/applicationConfirmFragment"
         app:popUpTo="@+id/paymentInfoFragment"

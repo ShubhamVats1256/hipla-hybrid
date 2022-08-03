@@ -20,7 +20,6 @@ import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-
 class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
 
     private lateinit var viewModel: ApplicationConfirmationViewModel
@@ -71,15 +70,18 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             requireActivity().toILoader().showLoader("Updating Application")
                         }
                         APPLICATION_UPDATING_SUCCESS -> {
+                            Timber.tag(LogConstant.APP_CONFIRM)
+                                .d("application update success")
                             requireActivity().toILoader().dismiss()
                             it.toApplicationRequest()?.let { appRequest ->
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application request extracted")
                                 showApplicationSuccessful(appRequest)
                             }
-                            // show success dialog
                         }
                         APPLICATION_UPDATING_FAILED -> {
+                            Timber.tag(LogConstant.APP_CONFIRM)
+                                .d("application update failed")
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Application updating failed")
                         }
