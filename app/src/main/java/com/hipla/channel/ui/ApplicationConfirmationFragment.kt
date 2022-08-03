@@ -2,6 +2,7 @@ package com.hipla.channel.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -9,9 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.showToastLongDuration
+import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.extension.toILoader
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
 import kotlinx.coroutines.launch
@@ -22,6 +25,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
 
     private lateinit var viewModel: ApplicationConfirmationViewModel
     private lateinit var binding: FragmentApplicationCustomerInfoBinding
+    private var applicationSuccessDailog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +42,26 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
+    private fun showApplicationSuccessful(applicationRequest: ApplicationRequest) {
+        Timber.tag(LogConstant.CUSTOMER_INFO).d("showing application request successful dialog")
+        if (requireActivity().isDestroyed.not()) {
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val dialogBinding =
+                DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
+            dialogBuilder.setView(dialogBinding.root)
+            dialogBinding.close.setOnClickListener {
+                applicationSuccessDailog?.dismiss()
+            }
+            dialogBinding.appInfo.text = getString(
+                R.string.application_confirm_application_no,
+                applicationRequest.id.toString()
+            )
+            applicationSuccessDailog = dialogBuilder.show()
+            applicationSuccessDailog?.setCancelable(false)
+            applicationSuccessDailog?.setCanceledOnTouchOutside(false)
+        }
+    }
+
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -48,6 +72,11 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                         }
                         APPLICATION_UPDATING_SUCCESS -> {
                             requireActivity().toILoader().dismiss()
+                            it.toApplicationRequest()?.let { appRequest ->
+                                Timber.tag(LogConstant.APP_CONFIRM)
+                                    .d("application request extracted")
+                                showApplicationSuccessful(appRequest)
+                            }
                             // show success dialog
                         }
                         APPLICATION_UPDATING_FAILED -> {
@@ -55,12 +84,10 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             requireContext().showToastLongDuration("Application updating failed")
                         }
                         APPLICATION_ARGS_EXTRACTED -> {
-                            (it as? AppEventWithData<ApplicationRequest>)?.let { appRequestEventData ->
-                                Timber.tag(LogConstant.APP_CONFIRM).d("args extracted")
-                                appRequestEventData.extras?.let { appRequest ->
-                                    setHeader(appRequest)
-                                } ?: Timber.tag(LogConstant.APP_CONFIRM)
-                                    .e((LogConstant.APP_CONFIRM))
+                            it.toApplicationRequest()?.let { appRequest ->
+                                Timber.tag(LogConstant.APP_CONFIRM)
+                                    .d("application request extracted")
+                                setHeader(appRequest)
                             }
                         }
                     }

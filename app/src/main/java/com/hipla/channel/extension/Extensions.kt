@@ -16,6 +16,8 @@ import com.hipla.channel.common.*
 import com.hipla.channel.common.ApiErrorCode
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.ILoader
+import com.hipla.channel.entity.AppEvent
+import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.ApiErrorMessage
 import com.squareup.moshi.JsonAdapter
@@ -213,4 +215,15 @@ fun ApplicationRequest.toJsonString(): String? {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
     }
+}
+
+
+fun AppEvent.toApplicationRequest(): ApplicationRequest? {
+    (this as? AppEventWithData<*>)?.let { appRequestEventData ->
+        Timber.tag(LogConstant.APP_CONFIRM).d("args extracted")
+        appRequestEventData.extras?.let { appRequest ->
+            return appRequest as ApplicationRequest
+        } ?: Timber.tag(LogConstant.APP_CONFIRM).e("application request casting failed")
+    }
+    return null
 }

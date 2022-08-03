@@ -41,7 +41,12 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                     ifSuccessful {
                         Timber.tag(LogConstant.PAYMENT_INFO)
                             .d("application updated successfully for id : ${applicationRequest!!.id}")
-                        appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_SUCCESS))
+                        appEvent.tryEmit(
+                            AppEventWithData(
+                                id = APPLICATION_UPDATING_SUCCESS,
+                                extras = applicationRequest!!
+                            )
+                        )
                     }
                     ifError {
                         appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
