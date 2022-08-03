@@ -43,14 +43,14 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             findNavController().navigateUp()
         }
         binding.continueBtn.setOnClickListener {
-            if (isMandatoryCustomerInfoFilled()) {
+            if (isMandatoryCustomerInfoFilled().not()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
                 applicationCustomerInfoViewModel.createApplicationRequest(
-                    customerFirstName = binding.customerFirstName.content(),
-                    customerLastName = binding.customerLastName.content(),
-                    customerPhone = binding.customerNumber.content(),
-                    panNo = binding.panCardNumber.content(),
-                    floorId = applicationCustomerInfoViewModel.getSelectedFloorId()!!
+                    customerFirstName = "Shiva",
+                    customerLastName = "Guru",
+                    customerPhone = "9916555886",
+                    panNo = "JUIL222",
+                    floorId = 1
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)

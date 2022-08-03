@@ -68,8 +68,8 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
 
     fun generateChannelPartnerOTP(channelPartnerMobileNo: String) {
         launchIO {
-            appEvent.tryEmit(AppEvent(OTP_GENERATING))
             channelPartnerMobileNo.let { phoneNo ->
+                appEvent.tryEmit(AppEvent(OTP_GENERATING))
                 hiplaRepo.generateOtp(phoneNo).run {
                     ifSuccessful {
                         Timber.tag(LogConstant.PAYMENT_INFO)
