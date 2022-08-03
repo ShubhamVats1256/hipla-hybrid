@@ -25,7 +25,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
 
     private lateinit var viewModel: ApplicationConfirmationViewModel
     private lateinit var binding: FragmentApplicationConfirmBinding
-    private var applicationSuccessDailog: AlertDialog? = null
+    private var applicationSuccessDialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,16 +56,16 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.close.setOnClickListener {
-                applicationSuccessDailog?.dismiss()
+                applicationSuccessDialog?.dismiss()
                 findNavController().popBackStack(R.id.mainFragment, false)
             }
             dialogBinding.appInfo.text = getString(
                 R.string.application_confirm_application_no,
                 applicationRequest.id.toString()
             )
-            applicationSuccessDailog = dialogBuilder.show()
-            applicationSuccessDailog?.setCancelable(false)
-            applicationSuccessDailog?.setCanceledOnTouchOutside(false)
+            applicationSuccessDialog = dialogBuilder.show()
+            applicationSuccessDialog?.setCancelable(false)
+            applicationSuccessDialog?.setCanceledOnTouchOutside(false)
         }
     }
 

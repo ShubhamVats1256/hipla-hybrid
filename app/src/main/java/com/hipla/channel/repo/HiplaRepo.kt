@@ -5,10 +5,7 @@ import com.hipla.channel.entity.api.Resource
 import com.hipla.channel.entity.api.ResourceError
 import com.hipla.channel.api.asResource
 import com.hipla.channel.entity.ApplicationRequest
-import com.hipla.channel.entity.response.ApplicationResponse
-import com.hipla.channel.entity.response.GenerateOTPResponse
-import com.hipla.channel.entity.response.SalesPageResponse
-import com.hipla.channel.entity.response.VerifyOTPResponse
+import com.hipla.channel.entity.response.*
 import com.hipla.channel.extension.toCreateApplicationRequestMap
 import com.hipla.channel.extension.toUpdateApplicationRequestMap
 
@@ -40,7 +37,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun createApplication(applicationRequest: ApplicationRequest): Resource<ApplicationResponse> {
+    suspend fun createApplication(applicationRequest: ApplicationRequest): Resource<ApplicationCreateResponse> {
         return try {
             return hiplaApiService.createApplication(applicationRequest.toCreateApplicationRequestMap()).asResource()
         } catch (e: Exception) {
@@ -48,7 +45,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun updateApplication(applicationRequest: ApplicationRequest): Resource<ApplicationResponse> {
+    suspend fun updateApplication(applicationRequest: ApplicationRequest): Resource<ApplicationUpdateResponse> {
         return try {
             return hiplaApiService.updateApplication(
                 applicationRequest.id,

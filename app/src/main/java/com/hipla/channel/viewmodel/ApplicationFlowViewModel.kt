@@ -20,7 +20,7 @@ class ApplicationFlowViewModel : BaseViewModel() {
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
     private val salesUserMasterList = mutableListOf<SalesUser>()
     var salesUsersLiveData = MutableLiveData<List<SalesUser>>()
-    var generateOTPResponse : GenerateOTPResponse? = null
+    private var generateOTPResponse : GenerateOTPResponse? = null
 
     fun loadUsers() {
         if (canDownload()) {

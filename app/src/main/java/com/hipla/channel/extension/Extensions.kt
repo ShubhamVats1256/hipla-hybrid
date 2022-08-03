@@ -19,6 +19,8 @@ import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.ApiErrorMessage
+import com.hipla.channel.entity.api.Status
+import com.hipla.channel.entity.response.RecordStatus
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
@@ -229,4 +231,8 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
 fun AppEvent.toSalesUserId(): String? {
     val appEventData: AppEventWithData<*>? = this as? AppEventWithData<*>
     return ((appEventData?.extras) as? String)
+}
+
+fun RecordStatus.isSuccess(): Boolean {
+    return this.statusCode == SUCCESS;
 }

@@ -1,9 +1,6 @@
 package com.hipla.channel.api
 
-import com.hipla.channel.entity.response.ApplicationResponse
-import com.hipla.channel.entity.response.GenerateOTPResponse
-import com.hipla.channel.entity.response.SalesPageResponse
-import com.hipla.channel.entity.response.VerifyOTPResponse
+import com.hipla.channel.entity.response.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -22,11 +19,11 @@ interface HiplaApiService {
     suspend fun verifyOtp(@Body otpRequestMap: Map<String, String>): Response<VerifyOTPResponse>
 
     @POST("business/v1/extra/transactionInfo")
-    suspend fun createApplication(@Body createApplicationRequestMap: Map<String, String>): Response<ApplicationResponse>
+    suspend fun createApplication(@Body createApplicationRequestMap: Map<String, String>): Response<ApplicationCreateResponse>
 
     @PATCH("business/v1/extra/transactionInfo/{applicationId}")
     suspend fun updateApplication(
         @Path("applicationId") applicationId: Int,
-        @Body createApplicationRequestMap: Map<String, String>): Response<ApplicationResponse>
+        @Body createApplicationRequestMap: Map<String, String>): Response<ApplicationUpdateResponse>
 
 }

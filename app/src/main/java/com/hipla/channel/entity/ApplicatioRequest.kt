@@ -20,6 +20,6 @@ data class ApplicationRequest(
     var paymentProofImageUrl: String? = null,
     var floorPreferenceId: Int = -1,
     var ownerId: Int? = null,
-    val createdBy: Int? = null,
+    var createdBy: Int? = null,
 )
 

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class ApplicationResponse(
+class ApplicationCreateResponse(
     @Json(name = "record") val userReference: ApplicationRecordReference
 )
 
@@ -20,4 +20,9 @@ class ApplicationRecordReference(
 @JsonClass(generateAdapter = true)
 class ApplicationRecordExtraInfo(
     val paymentProofImageUrl: String?
+)
+
+@JsonClass(generateAdapter = true)
+class ApplicationUpdateResponse(
+    val status: RecordStatus
 )

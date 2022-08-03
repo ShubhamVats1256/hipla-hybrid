@@ -1,5 +1,7 @@
 package com.hipla.channel.viewmodel
 
+import android.os.Bundle
+import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
@@ -13,6 +15,11 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
+    private var salesUserId : String? = null
+
+    fun extractArguments(arguments : Bundle?) {
+        salesUserId = arguments?.getString(KEY_SALES_USER_ID);
+    }
 
     private fun createApplicationInServer() {
         launchIO {
@@ -88,12 +95,25 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         customerPhone: String,
         floorId : Int,
     ): ApplicationRequest {
-        applicationRequest = ApplicationRequest().apply {
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("customer first name  : $customerFirstName")
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("customer last name  : $customerLastName")
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("customer phone no  : $customerPhone")
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("customer pan no : $panNo")
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("floor preference Id : $floorId")
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("application created by  : $salesUserId")
+         applicationRequest = ApplicationRequest().apply {
             this.customerName =  customerFirstName
             this.customerLastName =  customerLastName
             this.customerPhoneNumber = customerPhone
             this.panNumber = panNo
             this.floorPreferenceId = floorId
+            this.createdBy = salesUserId?.toInt()
         }
         return applicationRequest!!
     }

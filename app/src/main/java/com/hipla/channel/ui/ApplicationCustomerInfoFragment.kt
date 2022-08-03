@@ -36,6 +36,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         binding = FragmentApplicationCustomerInfoBinding.bind(view)
         applicationCustomerInfoViewModel =
             ViewModelProvider(this)[ApplicationCustomerInfoViewModel::class.java]
+        applicationCustomerInfoViewModel.extractArguments(arguments)
         setFloorPreference()
         observeViewModel()
         setUI()

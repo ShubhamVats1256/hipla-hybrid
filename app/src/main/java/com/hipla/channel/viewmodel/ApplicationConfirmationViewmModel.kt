@@ -6,6 +6,7 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.extension.isSuccess
 import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
@@ -31,27 +32,39 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
             if (applicationRequest != null) {
                 with(hiplaRepo.updateApplication(applicationRequest!!)) {
                     ifSuccessful {
+                        if (it.status.isSuccess()) {
+                            reportApplicationUpdateSuccess()
+                        } else {
+                            reportApplicationUpdateFailed()
+                        }
                         Timber.tag(LogConstant.APP_CONFIRM)
                             .d("application updated successfully for id : ${applicationRequest!!.id}")
-                        appEvent.tryEmit(
-                            AppEventWithData(
-                                id = APPLICATION_UPDATING_SUCCESS,
-                                extras = applicationRequest!!
-                            )
-                        )
                     }
                     ifError {
-                        appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
+                        reportApplicationUpdateFailed()
                         Timber.tag(LogConstant.APP_CONFIRM)
                             .e("application update failed for id : ${applicationRequest!!.id}")
                     }
                 }
             } else {
-                appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
+                reportApplicationUpdateFailed()
                 Timber.tag(LogConstant.APP_CONFIRM)
                     .e("application request argument not found failed for id : ${applicationRequest!!.id}")
             }
         }
+    }
+
+    private fun reportApplicationUpdateSuccess() {
+        appEvent.tryEmit(
+            AppEventWithData(
+                id = APPLICATION_UPDATING_SUCCESS,
+                extras = applicationRequest!!
+            )
+        )
+    }
+
+    private fun reportApplicationUpdateFailed() {
+        appEvent.tryEmit(AppEvent(APPLICATION_UPDATING_FAILED))
     }
 
 }
