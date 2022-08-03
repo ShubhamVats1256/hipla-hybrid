@@ -45,7 +45,8 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-            viewModel.generateOTP(it)
+            launchCustomerInfoFragment()
+            //viewModel.generateOTP(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -153,7 +154,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
         }
     }
 
-    private fun launchCustomerInfoFragment(salesUserId: String?) {
+    private fun launchCustomerInfoFragment(salesUserId: String? = "105") {
         salesUserId ?: return
         findNavController().run {
             if (isCurrentDestination(R.id.mainFragment)) {

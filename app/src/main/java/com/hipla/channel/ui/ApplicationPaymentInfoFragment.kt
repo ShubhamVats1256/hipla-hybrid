@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButton
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
@@ -128,24 +127,45 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setUI() {
+        setContinueBtn()
+        setPaymentToggle()
+        setBackBtn()
+    }
+
+    private fun setPaymentToggle() {
+        binding.paymentToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.cash -> {
+                        setContinueBtnText(getString(R.string.upload_cash))
+                    }
+                    R.id.cheque -> {
+                        setContinueBtnText(getString(R.string.upload_cheque))
+                    }
+                    R.id.rtgs -> {
+                        setContinueBtnText(getString(R.string.your_rtgs_photo))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setBackBtn() {
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun setContinueBtnText(message: String) {
+        binding.continueBtn.text = message
+    }
+
+    private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
             if (isMandatoryInfoFilled()) {
                 Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
                 viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
             }
-        }
-        binding.paymentToggle.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.cash -> {
-                        (binding.paymentToggle.findViewById(R.id.cheque) as MaterialButton).isEnabled =
-                            true
-                    }
-                }
-            }
-        }
-        binding.backBtn.setOnClickListener {
-            findNavController().navigateUp()
         }
     }
 

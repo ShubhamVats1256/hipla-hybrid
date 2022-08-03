@@ -126,7 +126,7 @@
     <TextView
         android:id="@+id/continueBtn"
         style="@style/PrimaryButton"
-        android:text="@string/continue_btn"
+        android:text="@string/your_cheque_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/backBtn" />

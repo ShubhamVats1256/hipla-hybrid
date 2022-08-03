@@ -17,6 +17,7 @@
     <string name="cheque">Cheque</string>
     <string name="cheque_no">Cheque Number</string>
     <string name="your_cheque_photo">Your Cheque Photo</string>
+
     <string name="rtgs">RTGS</string>
     <string name="cash">Cash</string>
     <string name="date">Date</string>
@@ -52,5 +53,8 @@
 
     <string name="application_confirm_customer_name">Customer Name : %1$s\n</string>
     <string name="application_confirm_application_no">Confirmation for Application No :%1$s\n</string>
+    <string name="upload_cash">Upload Cash Receipt</string>
+    <string name="upload_cheque">Upload Cheque Photo</string>
+    <string name="your_rtgs_photo">Upload RTGS Photo</string>
 
 </resources>
