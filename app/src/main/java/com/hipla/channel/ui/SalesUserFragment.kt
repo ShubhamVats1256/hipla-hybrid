@@ -23,7 +23,7 @@ import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 import kotlinx.coroutines.launch
 
 
-class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
+class SalesUseFragment : Fragment(R.layout.fragment_application) {
 
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
@@ -165,6 +165,4 @@ class ApplicationFlowFragment : Fragment(R.layout.fragment_application) {
             }
         }
     }
-
-
 }

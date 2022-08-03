@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.hipla.channel.ui.MainFragment"
+        android:name="com.hipla.channel.ui.HomeFragment"
         android:label="Home" />
 
     <fragment

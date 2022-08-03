@@ -4,6 +4,7 @@ class FloorDetails(val id: Int, val name: String)
 
 fun generateFloors(): List<FloorDetails> {
     return mutableListOf<FloorDetails>().apply {
+        //add(FloorDetails(0, "Ground floor"))
         add(FloorDetails(1, "1st floor"))
         add(FloorDetails(2, "2nd floor"))
         add(FloorDetails(3, "3rd floor"))

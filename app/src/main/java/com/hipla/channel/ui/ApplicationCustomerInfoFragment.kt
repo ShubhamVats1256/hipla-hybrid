@@ -5,7 +5,6 @@ import android.view.KeyEvent.ACTION_UP
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -15,21 +14,18 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationCustomerInfoViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_customer_info) {
 
     private lateinit var applicationCustomerInfoViewModel: ApplicationCustomerInfoViewModel
     private lateinit var binding: FragmentApplicationCustomerInfoBinding
-    private var floorList = generateFloors()
-    private var selectedFloorPreference: FloorDetails? = null
-    private var otpConfirmDialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,14 +45,12 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         binding.continueBtn.setOnClickListener {
             if (isMandatoryCustomerInfoFilled()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
-                applicationCustomerInfoViewModel.generateCustomerOTP(
-                    applicationCustomerInfoViewModel.createApplicationRequest(
-                        customerFirstName = binding.customerFirstName.content(),
-                        customerLastName = binding.customerLastName.content(),
-                        customerPhone = binding.customerNumber.content(),
-                        panNo = binding.panCardNumber.content(),
-                        floorId = selectedFloorPreference?.id ?: 0
-                    )
+                applicationCustomerInfoViewModel.createApplicationRequest(
+                    customerFirstName = binding.customerFirstName.content(),
+                    customerLastName = binding.customerLastName.content(),
+                    customerPhone = binding.customerNumber.content(),
+                    panNo = binding.panCardNumber.content(),
+                    floorId = applicationCustomerInfoViewModel.getSelectedFloorId()!!
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)
@@ -81,30 +75,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
-    private fun showOTPDialog(customerUserId: String) {
-        Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
-        if (requireActivity().isDestroyed.not()) {
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
-            dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.identification.text = customerUserId
-            dialogBinding.title.text = getString(R.string.verify_customer_otp)
-            dialogBinding.back.setOnClickListener {
-                otpConfirmDialog?.dismiss()
-            }
-            dialogBinding.otpEdit.onSubmit {
-                otpConfirmDialog?.dismiss()
-                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
-                    Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
-                    applicationCustomerInfoViewModel.verifyCustomerOTP(it.content())
-                }
-            }
-            otpConfirmDialog = dialogBuilder.show()
-            otpConfirmDialog?.setCancelable(false)
-            otpConfirmDialog?.setCanceledOnTouchOutside(false)
-        }
-    }
-
     private fun isMandatoryCustomerInfoFilled(): Boolean {
         if (binding.customerFirstName.hasValidData().not()) {
             binding.customerFirstName.error = "Customer first name is mandatory";
@@ -126,6 +96,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             requireContext().showToastLongDuration("Customer  PAN number  is mandatory")
             return false
         }
+        if (applicationCustomerInfoViewModel.isFloorPreferenceSelected().not()) {
+            requireContext().showToastLongDuration("Kindly select floor preference")
+            return false
+        }
         return true
     }
 
@@ -144,33 +118,8 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Application creation failed")
                         }
-                        OTP_VERIFYING -> {
-                            requireActivity().toILoader().showLoader("Verifying OTP")
-                        }
-                        OTP_GENERATING -> {
-                            requireActivity().toILoader().showLoader("Generating OTP")
-                        }
-                        OTP_VERIFICATION_SUCCESS -> {
+                        APP_EVENT_APPLICATION_COMPLETE -> {
                             requireActivity().toILoader().dismiss()
-                        }
-                        OTP_GENERATE_FAILED,  -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
-                        }
-                        OTP_SHOW_VERIFICATION_DIALOG -> {
-                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
-                            showOTPDialog((appEventData?.extras) as String)
-                        }
-                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
-                            requireActivity().toILoader().dismiss()
-                        }
-                        OTP_VERIFICATION_INVALID -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Wrong OTP")
-                        }
-                        OTP_VERIFICATION_FAILED -> {
-                            requireActivity().toILoader().dismiss()
-                            requireContext().showToastLongDuration("Unable to verify, server error")
                         }
                     }
                 }
@@ -178,13 +127,12 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
-
     private fun setFloorPreference() {
         val floorAdapter: ArrayAdapter<String> =
             ArrayAdapter(
                 requireContext(),
                 R.layout.autocomplete_list_item,
-                floorList.map { it.name })
+                applicationCustomerInfoViewModel.floorList.map { it.name })
         binding.floorPreference.run {
             setAdapter(floorAdapter)
             setOnTouchListener { _, motionEvent ->
@@ -195,9 +143,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             }
             onItemClickListener =
                 AdapterView.OnItemClickListener { parent, view, position, id ->
-                    Timber.tag(LogConstant.CUSTOMER_INFO)
-                        .d("floor preference ${floorList[position].name}")
-                    selectedFloorPreference = floorList[position]
+                    applicationCustomerInfoViewModel.selectedFloorId(position)
                 }
         }
     }

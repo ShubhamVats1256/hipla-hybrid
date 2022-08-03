@@ -26,8 +26,5 @@ object Utils {
         visibility = View.INVISIBLE
     }
 
-    fun getFloorPreference() {
-
-    }
 
 }

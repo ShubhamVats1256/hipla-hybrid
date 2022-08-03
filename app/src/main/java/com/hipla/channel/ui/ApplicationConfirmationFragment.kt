@@ -12,36 +12,36 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
+import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
 import com.hipla.channel.entity.*
-import com.hipla.channel.extension.showToastLongDuration
-import com.hipla.channel.extension.toApplicationRequest
-import com.hipla.channel.extension.toILoader
+import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
 
-    private lateinit var viewModel: ApplicationConfirmationViewModel
+    private lateinit var applicationConfirmationViewModel: ApplicationConfirmationViewModel
     private lateinit var binding: FragmentApplicationConfirmBinding
     private var applicationSuccessDialog: AlertDialog? = null
+    private var otpConfirmDialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentApplicationConfirmBinding.bind(view)
-        viewModel = ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
+        applicationConfirmationViewModel =
+            ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
         observeViewModel()
         setUI()
-        viewModel.extractArguments(arguments)?.let {
-            setHeader(it)
-        }
-        requireActivity().toILoader().dismiss()
     }
 
     private fun setUI() {
+        applicationConfirmationViewModel.extractArguments(arguments)?.let {
+            setHeader(it)
+        }
         binding.submit.setOnClickListener {
-            viewModel.updateApplication()
+            applicationConfirmationViewModel.generateCustomerOTP()
         }
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
@@ -72,7 +72,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.appEvent.collect {
+                applicationConfirmationViewModel.appEvent.collect {
                     when (it.id) {
                         APPLICATION_UPDATING -> {
                             requireActivity().toILoader().showLoader("Updating Application")
@@ -93,6 +93,34 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             requireActivity().toILoader().dismiss()
                             requireContext().showToastLongDuration("Application updating failed")
                         }
+                        OTP_VERIFYING -> {
+                            requireActivity().toILoader().showLoader("Verifying OTP")
+                        }
+                        OTP_GENERATING -> {
+                            requireActivity().toILoader().showLoader("Generating OTP")
+                        }
+                        OTP_VERIFICATION_SUCCESS -> {
+                            requireActivity().toILoader().dismiss()
+                        }
+                        OTP_GENERATE_FAILED -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                        }
+                        OTP_SHOW_VERIFICATION_DIALOG -> {
+                            val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
+                            showOTPDialog((appEventData?.extras) as String)
+                        }
+                        OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
+                            requireActivity().toILoader().dismiss()
+                        }
+                        OTP_VERIFICATION_INVALID -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("Wrong OTP")
+                        }
+                        OTP_VERIFICATION_FAILED -> {
+                            requireActivity().toILoader().dismiss()
+                            requireContext().showToastLongDuration("Unable to verify, server error")
+                        }
                     }
                 }
             }
@@ -100,8 +128,10 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setHeader(applicationRequest: ApplicationRequest) {
-        Timber.tag(LogConstant.APP_CONFIRM).d("setting info customer name ${applicationRequest.customerName}r")
-        Timber.tag(LogConstant.APP_CONFIRM).d("setting info application no ${applicationRequest.id}r")
+        Timber.tag(LogConstant.APP_CONFIRM)
+            .d("setting info customer name ${applicationRequest.customerName}r")
+        Timber.tag(LogConstant.APP_CONFIRM)
+            .d("setting info application no ${applicationRequest.id}r")
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "
@@ -111,6 +141,30 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             applicationRequest.id.toString()
         )
         binding.header.text = customerName + applicationNo
+    }
+
+    private fun showOTPDialog(customerUserId: String) {
+        Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
+        if (requireActivity().isDestroyed.not()) {
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
+            dialogBuilder.setView(dialogBinding.root)
+            dialogBinding.identification.text = customerUserId
+            dialogBinding.title.text = getString(R.string.verify_customer_otp)
+            dialogBinding.back.setOnClickListener {
+                otpConfirmDialog?.dismiss()
+            }
+            dialogBinding.otpEdit.onSubmit {
+                otpConfirmDialog?.dismiss()
+                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
+                    Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
+                    applicationConfirmationViewModel.verifyCustomerOTP(it.content())
+                }
+            }
+            otpConfirmDialog = dialogBuilder.show()
+            otpConfirmDialog?.setCancelable(false)
+            otpConfirmDialog?.setCanceledOnTouchOutside(false)
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.hipla.channel.R
 import com.hipla.channel.databinding.FragmentMainBinding
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class HomeFragment : Fragment(R.layout.fragment_main) {
 
     private lateinit var binding: FragmentMainBinding
     private var mainPageAdapter: MainPageAdapter? = null
@@ -21,7 +21,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun setupViewPager() {
         binding.pager.run {
-            mainPageAdapter = MainPageAdapter(this@MainFragment)
+            mainPageAdapter = MainPageAdapter(this@HomeFragment)
             adapter = mainPageAdapter
             setCurrentItem(APPLICATION, false)
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -50,7 +50,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         override fun getItemCount(): Int = 1
 
         override fun createFragment(position: Int): Fragment {
-            return ApplicationFlowFragment()
+            return SalesUseFragment()
         }
     }
 
