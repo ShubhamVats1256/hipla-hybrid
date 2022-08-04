@@ -206,6 +206,16 @@ fun String.toApplicationRequest(): ApplicationRequest? {
     }
 }
 
+
+fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
+    return try {
+        return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java).fromJson (this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
 fun ApplicationRequest.toJsonString(): String? {
     return try {
         getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java).toJson(this)

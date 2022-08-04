@@ -55,6 +55,18 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_GENERATING -> {
                                 requireActivity().toILoader().showLoader("Generating OTP")
                             }
+                            IMAGE_UPLOADING -> {
+                                requireActivity().toILoader().showLoader("Uploading proof...")
+                            }
+                            IMAGE_UPLOADED_FAILED -> {
+                                requireContext().showToastLongDuration("Proof upload failed")
+                                requireActivity().toILoader().dismiss()
+                            }
+                            IMAGE_UPLOADED_SUCCESSFULLY -> {
+                                requireActivity().toILoader().dismiss()
+                                requireContext().showToastLongDuration("Proof uploaded")
+                                updateApplicationRequest()
+                            }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().toILoader().dismiss()
                                 requireContext().showToastLongDuration("OTP generation failed, Please try again")
@@ -67,7 +79,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
                                 requireActivity().toILoader().dismiss()
                             }
-                            OTP_VERIFICATION_SUCCESS -> {
+                            OTP_VERIFICATION_SUCCESS,  -> {
                                 requireActivity().toILoader().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
@@ -85,7 +97,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         }
     }
 
-    fun updateApplicationRequest() {
+    private fun updateApplicationRequest() {
         viewModel.updateApplicationRequest(
             amountPayable = binding.amountPayable.content(),
             chequeNo = binding.chequeNumber.content(),
@@ -216,6 +228,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.chequePhoto.setImageBitmap(bitmap)
             dialogBinding.upload.setOnClickListener {
+                Timber.tag(LogConstant.PAYMENT_INFO).d("upload image")
+                uploadChequeDialog?.dismiss()
+                viewModel.uploadImage(bitmap)
             }
             dialogBinding.close.setOnClickListener {
                 uploadChequeDialog?.dismiss()
@@ -248,6 +263,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 requireContext().showToastLongDuration("Photo capture cancelled")
             }
         }
+    }
+
+    override fun onDestroyView() {
+        uploadChequeDialog?.dismiss()
+        super.onDestroyView()
     }
 
     companion object {

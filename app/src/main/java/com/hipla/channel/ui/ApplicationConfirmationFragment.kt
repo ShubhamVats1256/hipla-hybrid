@@ -169,4 +169,10 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
+    override fun onDestroyView() {
+        applicationSuccessDialog?.dismiss()
+        otpConfirmDialog?.dismiss()
+        super.onDestroyView()
+    }
+
 }

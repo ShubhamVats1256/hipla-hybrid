@@ -5,7 +5,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 class ApplicationCreateResponse(
-    @Json(name = "record") val userReference: ApplicationRecordReference
+    @Json(name = "record") val userReference: ApplicationRecordReference,
+    val imageUploadUrl: String?,
+    val imageReadUrl: String?
 )
 
 @JsonClass(generateAdapter = true)
@@ -13,8 +15,7 @@ class ApplicationRecordReference(
     val id: Int,
     val name: String? = null,
     @Json(name = "extraInfo") val applicationRecordExtraInfo: ApplicationRecordExtraInfo,
-    val imageUploadUrl: String?,
-    val imageReadUrl: String?
+
 )
 
 @JsonClass(generateAdapter = true)

@@ -155,4 +155,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         }
     }
 
+
+
 }

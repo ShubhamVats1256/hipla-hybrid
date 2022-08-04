@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.ILoader
 import com.hipla.channel.databinding.DialogLoaderBinding
 import com.hipla.channel.extension.showToastLongDuration
@@ -22,17 +23,20 @@ class MainActivity : AppCompatActivity(), ILoader {
     }
 
     override fun showLoader(message: String) {
-        if (isDestroyed.not()) {
-            var dialogBuilder: AlertDialog.Builder? = null
-            if (loaderDialog == null) {
-                dialogBuilder = AlertDialog.Builder(this)
-                dialogLoaderBinding = DialogLoaderBinding.inflate(layoutInflater)
-                dialogBuilder.setView(dialogLoaderBinding?.root)
+        tryCatch {
+            if (isDestroyed.not() && loaderDialog?.isShowing != true) {
+                var dialogBuilder: AlertDialog.Builder? = null
+                if (dialogLoaderBinding == null) {
+                    dialogBuilder = AlertDialog.Builder(this)
+                    dialogLoaderBinding = DialogLoaderBinding.inflate(layoutInflater)
+                    dialogBuilder.setView(dialogLoaderBinding?.root)
+                }
+                dialogLoaderBinding?.message?.text = message
+                loaderDialog?.dismiss()
+                loaderDialog = dialogBuilder?.show()
+                loaderDialog?.setCancelable(false)
+                loaderDialog?.setCanceledOnTouchOutside(false)
             }
-            dialogLoaderBinding?.message?.text = message
-            loaderDialog = dialogBuilder?.show()
-            loaderDialog?.setCancelable(false)
-            loaderDialog?.setCanceledOnTouchOutside(false)
         }
     }
 
@@ -42,13 +46,26 @@ class MainActivity : AppCompatActivity(), ILoader {
 
     override fun onResume() {
         super.onResume()
-        checkPermission()
+        checkCameraPermission()
     }
-
-    private fun checkPermission() {
+/*
+    fun getListOfPermissionToBeRequested() {
+        val permissionRequestList = arrayListOf<String>().apply {
+            add(   android.Manifest.permission.CAMERA)
+            add(   android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
         if (ContextCompat.checkSelfPermission(
                 this,
-                "android.permission.CAMERA"
+
+            ) != PackageManager.PERMISSION_GRANTED) {
+            permissionRequestList.add(permissionRequestList)
+        }
+    }*/
+
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             Timber.tag(LogConstant.HIPLA).d("camera permission already granted")
@@ -80,8 +97,14 @@ class MainActivity : AppCompatActivity(), ILoader {
         }
     }
 
+    override fun onDestroy() {
+        loaderDialog?.dismiss()
+        super.onDestroy()
+    }
+
     companion object {
         const val PERMISSION_REQUEST_CODE = 555
+
     }
 
 

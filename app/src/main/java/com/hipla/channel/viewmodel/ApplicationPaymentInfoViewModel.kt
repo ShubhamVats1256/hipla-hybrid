@@ -1,30 +1,43 @@
 package com.hipla.channel.viewmodel
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import com.hipla.channel.common.KEY_APPLICATION_SERVER_INF0
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.extension.toApplicationRequest
+import com.hipla.channel.extension.toApplicationServerInfo
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
+import java.io.OutputStream
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
     private val phoneNoUserIdMap: MutableMap<String, String> = mutableMapOf()
+    private var applicationCreateResponse: ApplicationCreateResponse? = null
+    private var imageUploadUrl : String? = null
 
     fun extractArguments(arguments: Bundle?) {
-        launchIO {
-            arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
-                this.applicationRequest = it
-                Timber.tag(LogConstant.PAYMENT_INFO)
-                    .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
-            }
+        arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
+            this.applicationRequest = it
+            Timber.tag(LogConstant.PAYMENT_INFO)
+                .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
+        }
+        arguments?.getString(KEY_APPLICATION_SERVER_INF0)?.toApplicationServerInfo()?.let {
+            this.applicationCreateResponse = it
+            imageUploadUrl = it.imageUploadUrl
+            Timber.tag(LogConstant.PAYMENT_INFO)
+                .d("imageUploadUrl ${it.imageUploadUrl}")
         }
     }
 
@@ -111,6 +124,33 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
             this.paymentDetails = chequeNo
             this.paymentType = paymentType
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
+        }
+    }
+
+    fun uploadImage(bm: Bitmap) {
+        launchIO {
+            try {
+                appEvent.tryEmit(AppEvent(IMAGE_UPLOADING))
+                val preSignedUrl = URL(imageUploadUrl)
+                val connection = preSignedUrl.openConnection() as HttpsURLConnection
+                connection.doOutput = true
+                connection.requestMethod = "PUT"
+                connection.setRequestProperty(
+                    "Content-Type",
+                    "image/jpeg"
+                )
+                val output: OutputStream = connection.outputStream
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, output)
+                output.flush()
+                val responseCode: Int = connection.responseCode
+                Timber.tag("testfx").d("response code $responseCode")
+                Timber.tag("testfx").d("image uploaded, now verify in backend")
+                appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_SUCCESSFULLY))
+            } catch (e: Exception) {
+                appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_FAILED))
+                e.printStackTrace()
+                Timber.tag("testfx").d(e)
+            }
         }
     }
 
