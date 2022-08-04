@@ -95,7 +95,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                                 requireContext().showToastLongDuration("Application updating failed")
                             }
                             OTP_VERIFYING -> {
-                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().toILoader().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
                                 requireActivity().toILoader().showLoader("Generating OTP")
@@ -142,7 +142,11 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             R.string.application_confirm_application_no,
             applicationRequest.id.toString()
         )
-        binding.header.text = customerName + applicationNo
+        val amountPayable = requireContext().getString(
+            R.string.confirm_amount_payable,
+            applicationRequest.amountPayable
+        )
+        binding.header.text = customerName + applicationNo + amountPayable
     }
 
     private fun showOTPDialog(customerUserId: String) {

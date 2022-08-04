@@ -23,7 +23,6 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
-    private val phoneNoUserIdMap: MutableMap<String, String> = mutableMapOf()
     private var applicationCreateResponse: ApplicationCreateResponse? = null
     private var imageUploadUrl : String? = null
 
@@ -58,8 +57,6 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                                 .d(" OTP verified, channel partner user ID : ${generateOTPResponse?.recordReference?.id}")
                             applicationRequest?.channelPartnerId =
                                 generateOTPResponse?.recordReference?.id.toString()
-                            phoneNoUserIdMap[channelPartnerMobileNo] =
-                                applicationRequest?.channelPartnerId!!
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d("channel partnerId updated to application request")
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
@@ -80,10 +77,6 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
             }
             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_COMPLETE))
         }
-    }
-
-    fun isChannelPartnerVerified(channelPartnerMobileNo: String): Boolean {
-        return phoneNoUserIdMap[channelPartnerMobileNo] != null
     }
 
     fun generateChannelPartnerOTP(channelPartnerMobileNo: String) {

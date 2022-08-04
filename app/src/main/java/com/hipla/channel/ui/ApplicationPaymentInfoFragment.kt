@@ -36,6 +36,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private lateinit var binding: FragmentApplicationPaymentInfoBinding
     private var uploadChequeDialog: AlertDialog? = null
     private var otpConfirmDialog: AlertDialog? = null
+    private var isChannelPartnerOTPVerified = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,9 +54,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                     viewModel.appEvent.collect {
                         when (it.id) {
                             OTP_VERIFYING -> {
-                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().toILoader().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
+                                isChannelPartnerOTPVerified = false
                                 requireActivity().toILoader().showLoader("Generating OTP")
                             }
                             IMAGE_UPLOADING -> {
@@ -83,13 +85,17 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().toILoader().dismiss()
                             }
                             OTP_VERIFICATION_SUCCESS -> {
+                                requireContext().showToastLongDuration("Channel Partner Verified")
+                                isChannelPartnerOTPVerified = true
                                 requireActivity().toILoader().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
+                                isChannelPartnerOTPVerified = false
                                 requireActivity().toILoader().dismiss()
                                 requireContext().showToastLongDuration("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
+                                isChannelPartnerOTPVerified = false
                                 requireActivity().toILoader().dismiss()
                                 requireContext().showToastLongDuration("Unable to verify, server error")
                             }
@@ -203,18 +209,14 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
-            takePicture()
-            // dev setting
-/*            if (isMandatoryInfoFilled()) {
-                if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())
-                        .not()
-                ) {
+            if (isMandatoryInfoFilled()) {
+                if (isChannelPartnerOTPVerified) {
+                    takePicture()
+                } else {
                     Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
                     viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
-                } else {
-                    takePicture()
                 }
-            }*/
+            }
         }
     }
 

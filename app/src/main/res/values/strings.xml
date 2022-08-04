@@ -53,6 +53,8 @@
 
     <string name="application_confirm_customer_name">Customer Name : %1$s\n</string>
     <string name="application_confirm_application_no">Confirmation for Application No :%1$s\n</string>
+    <string name="confirm_channel_partner_no">Channel Partner Mobile No:%1$s\n</string>
+    <string name="confirm_amount_payable">Amount Payable :%1$s\n</string>
     <string name="upload_cash">Upload Cash Receipt</string>
     <string name="upload_cheque">Upload Cheque Photo</string>
     <string name="your_rtgs_photo">Upload RTGS Photo</string>

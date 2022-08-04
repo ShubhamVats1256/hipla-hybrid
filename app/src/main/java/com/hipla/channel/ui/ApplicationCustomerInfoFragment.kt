@@ -19,8 +19,6 @@ import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationCustomerInfoViewModel
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_customer_info) {
@@ -44,14 +42,14 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             findNavController().navigateUp()
         }
         binding.continueBtn.setOnClickListener {
-            if (isMandatoryCustomerInfoFilled().not()) {
+            if (isMandatoryCustomerInfoFilled()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
                 applicationCustomerInfoViewModel.createApplicationRequest(
-                    customerFirstName = "Shiva",
-                    customerLastName = "Guru",
-                    customerPhone = "9916555886",
-                    panNo = "JUIL222",
-                    floorId = 1
+                    customerFirstName = binding.customerFirstName.content(),
+                    customerLastName =  binding.customerLastName.content(),
+                    customerPhone = binding.customerNumber.content(),
+                    panNo =  binding.panCardNumber.content(),
+                    floorId = applicationCustomerInfoViewModel.getSelectedFloorId()!!
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)

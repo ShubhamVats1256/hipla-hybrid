@@ -45,8 +45,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-            launchCustomerInfoFragment()
-            //viewModel.generateOTP(it)
+            viewModel.generateOTP(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -89,7 +88,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                                 launchCustomerInfoFragment(it.toSalesUserId())
                             }
                             OTP_VERIFYING -> {
-                                //requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().toILoader().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
                                 requireActivity().toILoader().showLoader("Generating OTP")
