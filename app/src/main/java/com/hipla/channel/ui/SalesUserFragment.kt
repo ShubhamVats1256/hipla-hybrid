@@ -84,34 +84,34 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                     viewModel.appEvent.collect {
                         when (it.id) {
                             APP_EVENT_START_APPLICATION_FLOW -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 launchCustomerInfoFragment(it.toSalesUserId())
                             }
                             OTP_VERIFYING -> {
-                                requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().IActivityHelper().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
-                                requireActivity().toILoader().showLoader("Generating OTP")
+                                requireActivity().IActivityHelper().showLoader("Generating OTP")
                             }
                             OTP_VERIFICATION_SUCCESS -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_GENERATE_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
                                 showOTPDialog(it.toSalesUserId());
                             }
                             OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Unable to verify, server error")
                             }
                         }

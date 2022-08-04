@@ -1,25 +1,31 @@
 package com.hipla.channel
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.tryCatch
-import com.hipla.channel.contract.ILoader
+import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.DialogLoaderBinding
 import com.hipla.channel.extension.showToastLongDuration
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), ILoader {
+class MainActivity : AppCompatActivity(), IActivityHelper {
 
     private var loaderDialog: AlertDialog? = null
     private var dialogLoaderBinding: DialogLoaderBinding? = null
-
+    private lateinit var inputMethodManager: InputMethodManager
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        inputMethodManager = getSystemService(
+            Context.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
     }
 
     override fun showLoader(message: String) {
@@ -42,6 +48,15 @@ class MainActivity : AppCompatActivity(), ILoader {
 
     override fun dismiss() {
         loaderDialog?.dismiss()
+    }
+
+    override fun hideKeyboard() {
+        tryCatch {
+            inputMethodManager
+                .hideSoftInputFromWindow(
+                    this.currentFocus?.windowToken, 0
+                )
+        }
     }
 
     override fun onResume() {

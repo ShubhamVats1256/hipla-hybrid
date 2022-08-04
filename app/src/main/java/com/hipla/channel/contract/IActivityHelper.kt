@@ -1,9 +1,11 @@
 package com.hipla.channel.contract
 
-interface ILoader {
+interface IActivityHelper {
 
     fun showLoader(message: String)
 
     fun dismiss()
+
+    fun hideKeyboard()
 
 }

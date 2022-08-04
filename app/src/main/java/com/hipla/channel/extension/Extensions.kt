@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.tryCatch
-import com.hipla.channel.contract.ILoader
+import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
@@ -185,7 +185,7 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
     return currentDestination?.id == destinationId
 }
 
-fun Activity.toILoader() = this as ILoader
+fun Activity.IActivityHelper() = this as IActivityHelper
 
 fun Context.showToastShortDuration(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

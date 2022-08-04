@@ -17,7 +17,6 @@ import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
@@ -76,12 +75,12 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                     applicationConfirmationViewModel.appEvent.collect {
                         when (it.id) {
                             APPLICATION_UPDATING -> {
-                                requireActivity().toILoader().showLoader("Updating Application")
+                                requireActivity().IActivityHelper().showLoader("Updating Application")
                             }
                             APPLICATION_UPDATING_SUCCESS -> {
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application update success")
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 it.toApplicationRequest()?.let { appRequest ->
                                     Timber.tag(LogConstant.APP_CONFIRM)
                                         .d("application request extracted")
@@ -91,20 +90,20 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             APPLICATION_UPDATING_FAILED -> {
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application update failed")
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Application updating failed")
                             }
                             OTP_VERIFYING -> {
-                                requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().IActivityHelper().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
-                                requireActivity().toILoader().showLoader("Generating OTP")
+                                requireActivity().IActivityHelper().showLoader("Generating OTP")
                             }
                             OTP_VERIFICATION_SUCCESS -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_GENERATE_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
@@ -112,14 +111,14 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                                 showOTPDialog((appEventData?.extras) as String)
                             }
                             OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Unable to verify, server error")
                             }
                         }

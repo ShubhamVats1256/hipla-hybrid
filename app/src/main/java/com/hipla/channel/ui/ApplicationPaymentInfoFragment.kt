@@ -54,49 +54,50 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                     viewModel.appEvent.collect {
                         when (it.id) {
                             OTP_VERIFYING -> {
-                                requireActivity().toILoader().showLoader("Verifying OTP")
+                                requireActivity().IActivityHelper().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
                                 isChannelPartnerOTPVerified = false
-                                requireActivity().toILoader().showLoader("Generating OTP")
+                                requireActivity().IActivityHelper().showLoader("Generating OTP")
                             }
                             IMAGE_UPLOADING -> {
-                                requireActivity().toILoader().showLoader("Uploading proof...")
+                                requireActivity().IActivityHelper().showLoader("Uploading proof...")
                             }
                             IMAGE_UPLOADED_FAILED -> {
                                 requireContext().showToastLongDuration("Proof upload failed")
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             IMAGE_UPLOADED_SUCCESSFULLY -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Proof uploaded")
                                 updateApplicationRequest()
                             }
                             OTP_GENERATE_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
                                 showOTPDialog(appEventData?.extras.toString())
                             }
                             OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastLongDuration("Channel Partner Verified")
                                 isChannelPartnerOTPVerified = true
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
+                                requireActivity().IActivityHelper().hideKeyboard()
                             }
                             OTP_VERIFICATION_INVALID -> {
                                 isChannelPartnerOTPVerified = false
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
                                 isChannelPartnerOTPVerified = false
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Unable to verify, server error")
                             }
                         }
@@ -146,7 +147,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                         it.content(),
                         binding.channelPartnerMobileNo.content()
                     )
-                    requireActivity().toILoader().showLoader(getString(R.string.verifying))
+                    requireActivity().IActivityHelper().showLoader(getString(R.string.verifying))
                     return@onSubmit
                 }
             }

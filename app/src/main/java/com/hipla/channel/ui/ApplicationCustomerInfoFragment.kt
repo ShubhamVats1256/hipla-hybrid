@@ -113,17 +113,17 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                     applicationCustomerInfoViewModel.appEvent.collect {
                         when (it.id) {
                             APP_EVENT_APPLICATION_SUCCESS -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
                                 val applicationRequest = appEventData?.extras as? ApplicationRequest
                                 launchPaymentInfoFragment(applicationRequest)
                             }
                             APP_EVENT_APPLICATION_FAILED -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastLongDuration("Application creation failed")
                             }
                             APP_EVENT_APPLICATION_COMPLETE -> {
-                                requireActivity().toILoader().dismiss()
+                                requireActivity().IActivityHelper().dismiss()
                             }
                         }
                     }
