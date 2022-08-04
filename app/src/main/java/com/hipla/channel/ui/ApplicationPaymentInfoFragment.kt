@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
@@ -25,6 +26,8 @@ import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_payment_info) {
@@ -79,7 +82,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE -> {
                                 requireActivity().toILoader().dismiss()
                             }
-                            OTP_VERIFICATION_SUCCESS,  -> {
+                            OTP_VERIFICATION_SUCCESS -> {
                                 requireActivity().toILoader().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
@@ -151,6 +154,19 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setContinueBtn()
         setPaymentToggle()
         setBackBtn()
+        binding.date.setOnClickListener {
+            val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
+            materialDateBuilder.setTitleText("Select Payment Date");
+            val picker = materialDateBuilder.build()
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                val simpleFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+                binding.date.text = simpleFormat.format(Date(it));
+                // Do something...
+                //Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                //calendar.setTimeInMillis(selection);
+            }
+        }
     }
 
     private fun setPaymentToggle() {
