@@ -134,7 +134,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
 
     private fun showOTPDialog(salesUserId: String?) {
         salesUserId ?: return
-        if (requireActivity().isDestroyed.not()) {
+        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)

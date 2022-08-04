@@ -50,7 +50,7 @@
         app:singleSelection="true"
         app:selectionRequired="true"
         app:checkedButton="@+id/cheque"
-        app:layout_constraintBottom_toTopOf="@id/chequeNumber"
+        app:layout_constraintBottom_toTopOf="@id/paymentRefNo"
         app:layout_constraintStart_toStartOf="@id/amount_payable"
         app:layout_constraintTop_toBottomOf="@id/amount_payable"
         >
@@ -74,7 +74,7 @@
 
 
     <EditText
-        android:id="@+id/chequeNumber"
+        android:id="@+id/paymentRefNo"
         style="@style/Hipla.EditText"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_item_space"
@@ -96,7 +96,7 @@
         app:drawableTint="@color/primary"
         app:layout_constraintEnd_toEndOf="@id/pageDivider2"
         app:layout_constraintStart_toEndOf="@+id/pageDivider1"
-        app:layout_constraintTop_toTopOf="@id/chequeNumber" />
+        app:layout_constraintTop_toTopOf="@id/paymentRefNo" />
 
     <EditText
         android:id="@+id/channelPartnerMobileNo"
@@ -108,7 +108,7 @@
         android:layout_marginBottom="@dimen/form_item_space"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chequeNumber" />
+        app:layout_constraintTop_toBottomOf="@id/paymentRefNo" />
 
     <TextView
         android:id="@+id/backBtn"

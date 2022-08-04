@@ -147,7 +147,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
 
     private fun showOTPDialog(customerUserId: String) {
         Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
-        if (requireActivity().isDestroyed.not()) {
+        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true)  {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)

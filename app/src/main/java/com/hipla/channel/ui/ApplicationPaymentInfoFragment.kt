@@ -103,7 +103,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun updateApplicationRequest() {
         viewModel.updateApplicationRequest(
             amountPayable = binding.amountPayable.content(),
-            chequeNo = binding.chequeNumber.content(),
+            chequeNo = binding.paymentRefNo.content(),
             paymentType = getPaymentTypeFromCheckedId()
         ).also { appRequest ->
             findNavController().run {
@@ -123,7 +123,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun showOTPDialog(customerUserId: String) {
-        if (requireActivity().isDestroyed.not()) {
+        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
@@ -162,9 +162,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             picker.addOnPositiveButtonClickListener {
                 val simpleFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
                 binding.date.text = simpleFormat.format(Date(it));
-                // Do something...
-                //Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                //calendar.setTimeInMillis(selection);
             }
         }
     }
@@ -175,12 +172,15 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 when (checkedId) {
                     R.id.cash -> {
                         setContinueBtnText(getString(R.string.upload_cash))
+                        setReferenceEditTextHint("Cash Receipt Number")
                     }
                     R.id.cheque -> {
                         setContinueBtnText(getString(R.string.upload_cheque))
+                        setReferenceEditTextHint("Cheque Number")
                     }
                     R.id.rtgs -> {
                         setContinueBtnText(getString(R.string.your_rtgs_photo))
+                        setReferenceEditTextHint("RTGS Number")
                     }
                 }
             }
@@ -195,6 +195,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setContinueBtnText(message: String) {
         binding.continueBtn.text = message
+    }
+
+    private fun setReferenceEditTextHint(hint: String) {
+        binding.paymentRefNo.hint = hint
     }
 
     private fun setContinueBtn() {
