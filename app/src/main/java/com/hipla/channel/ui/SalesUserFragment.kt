@@ -111,7 +111,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                             }
                             OTP_VERIFICATION_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastMessage("Unable to verify, server error")
+                                requireContext().showToastErrorMessage("Unable to verify, server error")
                             }
                         }
                     }

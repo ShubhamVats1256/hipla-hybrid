@@ -281,7 +281,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
-            requireContext().showToastMessage("This device does not have camera application to proceed")
+            requireContext().showToastErrorMessage("This device does not have camera application to proceed")
         }
     }
 

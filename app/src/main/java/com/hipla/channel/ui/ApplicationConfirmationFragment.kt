@@ -95,7 +95,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application update failed")
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastMessage("Application updating failed")
+                                requireContext().showToastErrorMessage("Application updating failed")
                             }
                             OTP_VERIFYING -> {
                                 requireActivity().IActivityHelper().showLoader("Verifying OTP")

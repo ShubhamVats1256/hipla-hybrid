@@ -11,6 +11,7 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.DialogLoaderBinding
+import com.hipla.channel.extension.showToastErrorMessage
 import com.hipla.channel.extension.showToastMessage
 import timber.log.Timber
 
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
                     Timber.tag(LogConstant.HIPLA).d("camera permission granted by user")
                 } else {
                     Timber.tag(LogConstant.HIPLA).d("camera permission denied by user")
-                    showToastMessage("Camera permission is mandatory")
+                    showToastErrorMessage("Camera permission is mandatory")
                     finish()
                 }
                 return
