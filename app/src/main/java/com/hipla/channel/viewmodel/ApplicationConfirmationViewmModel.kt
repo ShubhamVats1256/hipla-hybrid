@@ -2,6 +2,7 @@ package com.hipla.channel.viewmodel
 
 import android.os.Bundle
 import com.hipla.channel.common.KEY_APP_REQ
+import com.hipla.channel.common.KEY_PARTNER_MOBILE_NO
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
@@ -17,6 +18,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private var applicationRequest: ApplicationRequest? = null
     private var generateOTPResponse: GenerateOTPResponse? = null
+    var channelPartnerMobileNo : String? = null
 
     fun extractArguments(arguments: Bundle?): ApplicationRequest? {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -25,6 +27,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                 .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
             return applicationRequest
         }
+        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO);
         return null
     }
 

@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/your_application_no"
+        android:text="@string/application_confirm_msg"
         android:textColor="@color/booking_success"
         android:textSize="22sp"
         android:layout_marginBottom="20dp"

@@ -25,6 +25,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var applicationRequest: ApplicationRequest? = null
     private var applicationCreateResponse: ApplicationCreateResponse? = null
     private var imageUploadUrl : String? = null
+    var channelPartnerMobileNo : String? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -60,6 +61,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d("channel partnerId updated to application request")
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
+                            this@ApplicationPaymentInfoViewModel.channelPartnerMobileNo = channelPartnerMobileNo
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                         } else {
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))

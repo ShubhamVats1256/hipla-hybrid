@@ -55,6 +55,8 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             val dialogBinding =
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
+            dialogBinding.appInfo.text =
+                getString(R.string.application_confirm_msg, applicationRequest.id.toString())
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
                 findNavController().popBackStack(R.id.mainFragment, false)
@@ -147,7 +149,16 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             R.string.confirm_amount_payable,
             applicationRequest.amountPayable
         )
-        binding.header.text = customerName + applicationNo + amountPayable
+        val channelPartnerMobileNoText = requireContext().getString(
+            R.string.confirm_channel_partner_no,
+            applicationConfirmationViewModel.channelPartnerMobileNo
+        )
+        binding.header.text = StringBuilder().apply {
+            append(customerName)
+            append(applicationNo)
+            append(amountPayable)
+            append(channelPartnerMobileNoText)
+        }.toString()
     }
 
     private fun showOTPDialog(customerUserId: String) {

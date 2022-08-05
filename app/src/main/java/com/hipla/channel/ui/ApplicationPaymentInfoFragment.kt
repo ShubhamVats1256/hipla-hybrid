@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
+import com.hipla.channel.common.KEY_PARTNER_MOBILE_NO
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
@@ -122,6 +123,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             putString(
                                 KEY_APP_REQ,
                                 appRequest?.toJsonString()
+                            )
+                            putString(
+                                KEY_PARTNER_MOBILE_NO,
+                                viewModel.channelPartnerMobileNo.toString()
                             )
                         }
                     )
@@ -243,6 +248,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             val dialogBinding = DialogUploadPhotoBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.chequePhoto.setImageBitmap(bitmap)
+            dialogBinding.paymentTitle.text = binding.continueBtn.text
             dialogBinding.upload.setOnClickListener {
                 Timber.tag(LogConstant.PAYMENT_INFO).d("upload image")
                 uploadChequeDialog?.dismiss()

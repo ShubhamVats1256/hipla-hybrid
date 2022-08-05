@@ -28,5 +28,6 @@ const val KEY_PARTNER_NAME  = "partner_name"
 
 const val KEY_APP_REQ = "app_req"
 const val KEY_APPLICATION_SERVER_INF0 = "app_server_info"
+const val KEY_PARTNER_MOBILE_NO = "app_server_info"
 
 const val SUCCESS = "success"

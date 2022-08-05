@@ -26,8 +26,7 @@
     <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
 
     <string name="application_success">Your Booking is successful</string>
-    <string name="application_confirm_msg">Confirmation for Application No:</string>
-    <string name="your_application_no">Your Booking ID:22323232313</string>
+    <string name="application_confirm_msg">Your Booking ID: %1$s</string>
 
     <string name="channel_partner">Channel Partner</string>
     <string name="channel_partner_name">Channel Partner Name*</string>
