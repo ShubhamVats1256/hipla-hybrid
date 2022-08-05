@@ -21,13 +21,13 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
     var channelPartnerMobileNo : String? = null
 
     fun extractArguments(arguments: Bundle?): ApplicationRequest? {
+        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO)
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
             this.applicationRequest = it
             Timber.tag(LogConstant.APP_CONFIRM)
                 .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
             return applicationRequest
         }
-        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO)
         return null
     }
 
