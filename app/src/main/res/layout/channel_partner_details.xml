@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/channel_partner_details"
-            android:textSize="28sp"
+            android:textSize="26sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,6 @@
             android:layout_marginTop="@dimen/channel_partner_info_space"
             android:layout_marginEnd="@dimen/channel_partner_info_space"
             android:layout_marginBottom="@dimen/channel_partner_info_space"
-            android:background="#50AAAAAA"
             app:layout_constraintStart_toStartOf="@id/title"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:ignore="ContentDescription" />
@@ -45,6 +44,7 @@
             android:id="@+id/mobile_no"
             style="@style/Hipla.ChannelPartnerHeader"
             android:layout_width="0dp"
+            android:layout_marginTop="2dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="20sp"
@@ -58,6 +58,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
+            android:textSize="20sp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/channel_partner_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mobile_no"

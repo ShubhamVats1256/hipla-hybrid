@@ -172,7 +172,6 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             append(customerName)
             append(applicationNo)
             append(amountPayable)
-            append(channelPartnerMobileNoText)
         }.toString()
     }
 
