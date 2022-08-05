@@ -89,7 +89,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastMessage("Channel Partner Verified")
                                 isChannelPartnerOTPVerified = true
-                                requireActivity().IActivityHelper().dismiss()
+                                binding.continueBtn.text = getPaymentTitle()
                                 requireActivity().IActivityHelper().hideKeyboard()
                             }
                             OTP_VERIFICATION_INVALID -> {
@@ -176,18 +176,30 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             if (isChecked) {
                 when (checkedId) {
                     R.id.cash -> {
-                        setContinueBtnText(getString(R.string.upload_cash))
                         setReferenceEditTextHint("Cash Receipt Number")
                     }
                     R.id.cheque -> {
-                        setContinueBtnText(getString(R.string.upload_cheque))
                         setReferenceEditTextHint("Cheque Number")
                     }
                     R.id.rtgs -> {
-                        setContinueBtnText(getString(R.string.your_rtgs_photo))
                         setReferenceEditTextHint("RTGS Number")
                     }
                 }
+            }
+        }
+        setContinueBtnText(getPaymentTitle())
+    }
+
+    private fun getPaymentTitle(): String {
+        return when (binding.paymentToggle.checkedButtonId) {
+            R.id.cheque -> {
+                getString(R.string.upload_cheque)
+            }
+            R.id.rtgs -> {
+                getString(R.string.your_rtgs_photo)
+            }
+            else -> {
+                getString(R.string.upload_cash)
             }
         }
     }
