@@ -68,7 +68,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
     private fun loadData() = viewModel.loadUsers()
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 observeSalesUserList()
                 observeAppEvents()

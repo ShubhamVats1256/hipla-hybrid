@@ -12,19 +12,20 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
-import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
+import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
 class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
 
     private lateinit var applicationConfirmationViewModel: ApplicationConfirmationViewModel
     private lateinit var binding: FragmentApplicationConfirmBinding
     private var applicationSuccessDialog: AlertDialog? = null
-    private var otpConfirmDialog: AlertDialog? = null
+    private var otpConfirmDialog: OTPDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +76,8 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                     applicationConfirmationViewModel.appEvent.collect {
                         when (it.id) {
                             APPLICATION_UPDATING -> {
-                                requireActivity().IActivityHelper().showLoader("Updating Application")
+                                requireActivity().IActivityHelper()
+                                    .showLoader("Updating Application")
                             }
                             APPLICATION_UPDATING_SUCCESS -> {
                                 Timber.tag(LogConstant.APP_CONFIRM)
@@ -150,25 +152,19 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
 
     private fun showOTPDialog(customerUserId: String) {
         Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
-        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true)  {
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
-            dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.identification.text = customerUserId
-            dialogBinding.title.text = getString(R.string.verify_customer_otp)
-            dialogBinding.back.setOnClickListener {
-                otpConfirmDialog?.dismiss()
-            }
-/*            dialogBinding.otpEdit.onSubmit {
-                otpConfirmDialog?.dismiss()
-                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
-                    Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
-                    applicationConfirmationViewModel.verifyCustomerOTP(it.content())
-                }
-            }*/
-            otpConfirmDialog = dialogBuilder.show()
-            otpConfirmDialog?.setCancelable(false)
-            otpConfirmDialog?.setCanceledOnTouchOutside(false)
+        if (otpConfirmDialog?.isShowing() != true) {
+            otpConfirmDialog = OTPDialog(
+                userId = customerUserId,
+                dialogTitle = getString(R.string.verify_channel_partner_otp),
+                activityReference = WeakReference(requireActivity()),
+                onSubmitListener = object : OTPDialog.OnOTPSubmitListener {
+                    override fun onSubmit(otp: String) {
+                        Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp $otp")
+                        applicationConfirmationViewModel.verifyCustomerOTP(otp)
+                        requireActivity().IActivityHelper()
+                            .showLoader(getString(R.string.verifying))
+                    }
+                }).show()
         }
     }
 

@@ -19,6 +19,7 @@ import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.ToastBinding
+import com.hipla.channel.databinding.ToastErrorBinding
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
@@ -197,7 +198,7 @@ fun Context.showToastMessage(message: String) {
             DataBindingUtil.inflate<ToastBinding>(it.layoutInflater, R.layout.toast, null, false)
         binding.toastMessage.text = message
         Toast(it).apply {
-            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 40)
+            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 120)
             duration = Toast.LENGTH_LONG
             setView(binding.root)
             show()
@@ -208,10 +209,10 @@ fun Context.showToastMessage(message: String) {
 fun Context.showToastErrorMessage(message: String) {
     (this as? Activity)?.let {
         val binding =
-            DataBindingUtil.inflate<ToastBinding>(it.layoutInflater, R.layout.toast_error, null, false)
+            DataBindingUtil.inflate<ToastErrorBinding>(it.layoutInflater, R.layout.toast_error, null, false)
         binding.toastMessage.text = message
         Toast(it).apply {
-            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 40)
+            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 120)
             duration = Toast.LENGTH_LONG
             setView(binding.root)
             show()

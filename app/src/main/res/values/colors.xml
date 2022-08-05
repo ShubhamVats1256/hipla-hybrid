@@ -37,5 +37,6 @@
 
     <color name="tab_selected">#DFE9FC</color>
     <color name="tab_unselected">@android:color/transparent</color>
+    <color name="booking_success">#3BB54A</color>
 
 </resources>

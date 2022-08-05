@@ -19,13 +19,14 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
+import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +36,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private lateinit var viewModel: ApplicationPaymentInfoViewModel
     private lateinit var binding: FragmentApplicationPaymentInfoBinding
     private var uploadChequeDialog: AlertDialog? = null
-    private var otpConfirmDialog: AlertDialog? = null
+    private var otpConfirmDialog: OTPDialog? = null
     private var isChannelPartnerOTPVerified = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,30 +131,22 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun showOTPDialog(customerUserId: String) {
-        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true) {
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
-            dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.identification.text = customerUserId
-            dialogBinding.title.text = getString(R.string.verify_channel_partner_otp)
-            dialogBinding.back.setOnClickListener {
-                otpConfirmDialog?.dismiss()
-            }
-/*            dialogBinding.otpEdit.onSubmit {
-                otpConfirmDialog?.dismiss()
-                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
-                    Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
-                    viewModel.verifyChannelPartnerOTP(
-                        it.content(),
-                        binding.channelPartnerMobileNo.content()
-                    )
-                    requireActivity().IActivityHelper().showLoader(getString(R.string.verifying))
-                    return@onSubmit
-                }
-            }*/
-            otpConfirmDialog = dialogBuilder.show()
-            otpConfirmDialog?.setCancelable(false)
-            otpConfirmDialog?.setCanceledOnTouchOutside(false)
+        if (otpConfirmDialog?.isShowing() != true) {
+            otpConfirmDialog = OTPDialog(
+                userId = customerUserId,
+                dialogTitle = getString(R.string.verify_channel_partner_otp),
+                activityReference = WeakReference(requireActivity()),
+                onSubmitListener = object : OTPDialog.OnOTPSubmitListener {
+                    override fun onSubmit(otp: String) {
+                        Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp $otp")
+                        viewModel.verifyChannelPartnerOTP(
+                            otp = otp,
+                            channelPartnerMobileNo = binding.channelPartnerMobileNo.content()
+                        )
+                        requireActivity().IActivityHelper()
+                            .showLoader(getString(R.string.verifying))
+                    }
+                }).show()
         }
     }
 

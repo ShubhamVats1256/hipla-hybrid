@@ -104,7 +104,7 @@ class OTPDialog(
 
     fun isShowing() = otpConfirmDialog?.isShowing
 
-    private fun dismiss() {
+    fun dismiss() {
         otpConfirmDialog?.dismiss()
     }
 
