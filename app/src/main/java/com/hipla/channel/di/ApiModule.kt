@@ -4,9 +4,10 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.hipla.channel.BuildConfig
+import com.hipla.channel.common.AppConfig.HTTP_TIMEOUT
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.moshi.adapter.PaymentTypeAdapter
 import com.hipla.channel.extension.safeProceed
+import com.hipla.channel.moshi.adapter.PaymentTypeAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -23,9 +24,9 @@ val apiModule = module {
     single {
         Timber.tag(LogConstant.HIPLA).d("adding logging interceptor 1")
         val httpBuilder = OkHttpClient.Builder()
-        httpBuilder.readTimeout(20, TimeUnit.SECONDS)
-        httpBuilder.connectTimeout(20, TimeUnit.SECONDS)
-        httpBuilder.writeTimeout(20, TimeUnit.SECONDS) //Backend is really slow
+        httpBuilder.readTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
+        httpBuilder.connectTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
+        httpBuilder.writeTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS) //Backend is really slow
         if (BuildConfig.DEBUG) {
             httpBuilder.addInterceptor(get<ChuckerInterceptor>())
             Timber.tag(LogConstant.HIPLA).d("adding logging interceptor2 ")

@@ -19,10 +19,9 @@ import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 import com.hipla.channel.widget.OTPDialog
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
-class SalesUseFragment : Fragment(R.layout.fragment_application) {
+class SalesUserFragment : Fragment(R.layout.fragment_application) {
 
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
@@ -82,6 +81,11 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                 launchSafely {
                     viewModel.appEvent.collect {
                         when (it.id) {
+                            API_ERROR -> {
+                                it.message?.let { errorMessage ->
+                                    requireContext().showToastErrorMessage(errorMessage)
+                                }
+                            }
                             APP_EVENT_START_APPLICATION_FLOW -> {
                                 requireActivity().IActivityHelper().dismiss()
                                 launchCustomerInfoFragment(it.toSalesUserId())
@@ -132,7 +136,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
 
     private fun showOTPDialog(salesUserId: String?) {
         salesUserId ?: return
-        if(otpDialog?.isShowing() != true) {
+        if (otpDialog?.isShowing() != true) {
             otpDialog = OTPDialog(
                 userId = salesUserId,
                 dialogTitle = requireContext().getString(R.string.enter_otp),

@@ -3,7 +3,7 @@ package com.hipla.channel.repo
 import com.hipla.channel.api.HiplaApiService
 import com.hipla.channel.entity.api.Resource
 import com.hipla.channel.entity.api.ResourceError
-import com.hipla.channel.api.asResource
+import com.hipla.channel.extension.asResource
 import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.response.*
 import com.hipla.channel.extension.toCreateApplicationRequestMap

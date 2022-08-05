@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.hipla.channel.common.AppConfig
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
+import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.GenerateOTPResponse
@@ -43,7 +44,18 @@ class ApplicationFlowViewModel : BaseViewModel() {
                             .d("loading sales user list successful ${it.salesUserList?.size}")
                     }
                     ifError {
-                        Timber.tag(LogConstant.FLOW_APP).e("downloading sales user list failed")
+                        Timber.tag(LogConstant.FLOW_APP).e("sales api error")
+                        (it.throwable as? ApiError)?.run {
+                            Timber.tag(LogConstant.FLOW_APP).e("error list size ${this.errorList?.size}")
+                            if (this.errorList?.isNotEmpty() == true) {
+                                appEvent.tryEmit(AppEvent(
+                                    id = API_ERROR,
+                                    message = this.errorList.first().msg ?: "Connection error"
+                                ))
+                                Timber.tag(LogConstant.FLOW_APP).e("error")
+                            }
+                            Timber.tag(LogConstant.FLOW_APP).e("downloading sales user list failed")
+                        }
                     }
                     isDownloading.set(false)
                 }

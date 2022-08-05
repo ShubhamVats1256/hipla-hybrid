@@ -50,7 +50,7 @@ class HomeFragment : Fragment(R.layout.fragment_main) {
         override fun getItemCount(): Int = 1
 
         override fun createFragment(position: Int): Fragment {
-            return SalesUseFragment()
+            return SalesUserFragment()
         }
     }
 

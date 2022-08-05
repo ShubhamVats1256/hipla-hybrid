@@ -1,8 +1,7 @@
-package com.hipla.channel.api
+package com.hipla.channel.extension
 
 import com.hipla.channel.common.Constant
 import com.hipla.channel.entity.api.*
-import com.hipla.channel.extension.getKoinInstance
 import com.squareup.moshi.Moshi
 import org.json.JSONObject
 import retrofit2.Response
