@@ -2,33 +2,37 @@ package com.hipla.channel.viewmodel
 
 import android.os.Bundle
 import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.KEY_PARTNER_MOBILE_NO
+import com.hipla.channel.common.KEY_PARTNER
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.GenerateOTPResponse
+import com.hipla.channel.entity.response.UserDetails
 import com.hipla.channel.extension.isSuccess
 import com.hipla.channel.extension.toApplicationRequest
+import com.hipla.channel.extension.toUserDetails
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
 
 class ApplicationConfirmationViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
-    private var applicationRequest: ApplicationRequest? = null
+    var applicationRequest: ApplicationRequest? = null
     private var generateOTPResponse: GenerateOTPResponse? = null
-    var channelPartnerMobileNo : String? = null
+    var channelPartnerDetails: UserDetails? = null
 
-    fun extractArguments(arguments: Bundle?): ApplicationRequest? {
-        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO)
+    fun extractArguments(arguments: Bundle?) {
+        arguments?.getString(KEY_PARTNER)?.toUserDetails()?.let {
+            this.channelPartnerDetails = it
+            Timber.tag(LogConstant.APP_CONFIRM)
+                .d("channel partner name ${channelPartnerDetails?.name} mobile no ${channelPartnerDetails?.phoneNumber}")
+        }
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
             this.applicationRequest = it
             Timber.tag(LogConstant.APP_CONFIRM)
                 .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
-            return applicationRequest
         }
-        return null
     }
 
     private fun updateApplication() {

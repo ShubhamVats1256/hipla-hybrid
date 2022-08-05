@@ -49,4 +49,7 @@
 
     <dimen name="key_item_space">12dp</dimen>
 
+    <dimen name="channel_partner_prof_pic">100dp</dimen>
+    <dimen name="channel_partner_info_space">16dp</dimen>
+
 </resources>

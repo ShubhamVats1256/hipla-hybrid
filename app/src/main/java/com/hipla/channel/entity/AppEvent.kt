@@ -38,6 +38,9 @@ const val IMAGE_UPLOADING = 50
 const val IMAGE_UPLOADED_SUCCESSFULLY = 51
 const val IMAGE_UPLOADED_FAILED = 52
 
+const val FETCHING_USER_INFO = 60
+const val FETCH_USER_INFO = 60
+const val FETCH_USER_ERROR = 61
 
 const val API_ERROR = 500
 

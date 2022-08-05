@@ -61,4 +61,7 @@
     <string name="clear">Clear</string>
     <string name="okay">Okay</string>
 
+
+    <string name="channel_partner_details">Channel Partner Details</string>
+
 </resources>

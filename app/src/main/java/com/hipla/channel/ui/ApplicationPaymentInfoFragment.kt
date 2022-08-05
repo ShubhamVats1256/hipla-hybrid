@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.KEY_PARTNER_MOBILE_NO
+import com.hipla.channel.common.KEY_PARTNER
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
@@ -102,6 +102,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastErrorMessage("Unable to verify, server error")
                             }
+                            FETCH_USER_ERROR -> {
+                                requireActivity().IActivityHelper().dismiss()
+                                requireContext().showToastErrorMessage("Unable to fetch channel partner details")
+                            }
                         }
                     }
                 }
@@ -116,7 +120,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             paymentType = getPaymentTypeFromCheckedId()
         ).also { appRequest ->
             findNavController().run {
-                Timber.tag(LogConstant.CUSTOMER_INFO).d("partner mobile no ${viewModel.channelPartnerMobileNo}")
+                Timber.tag(LogConstant.CUSTOMER_INFO)
+                    .d("partner mobile no ${viewModel.channelPartnerMobileNo}")
                 if (isCurrentDestination(R.id.paymentInfoFragment)) {
                     navigate(
                         resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
@@ -126,8 +131,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 appRequest?.toJsonString()
                             )
                             putString(
-                                KEY_PARTNER_MOBILE_NO,
-                                viewModel.channelPartnerMobileNo.toString()
+                                KEY_PARTNER,
+                                viewModel.channelPartnerDetails?.toJsonString()
                             )
                         }
                     )

@@ -27,6 +27,7 @@ import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ErrorInfo
 import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.entity.response.RecordStatus
+import com.hipla.channel.entity.response.UserDetails
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
@@ -245,11 +246,29 @@ fun String.toApplicationRequest(): ApplicationRequest? {
     }
 }
 
+fun String.toUserDetails(): UserDetails? {
+    return try {
+        return getKoinInstance<Moshi>().adapter(UserDetails::class.java).fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
 
 fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
     return try {
         return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java)
             .fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+fun UserDetails.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(UserDetails::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
@@ -279,6 +298,15 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
         appRequestEventData.extras?.let { appRequest ->
             return appRequest as? ApplicationRequest
         } ?: Timber.tag(LogConstant.APP_CONFIRM).e("application request casting failed")
+    }
+    return null
+}
+
+fun AppEvent.toUserDetails(): UserDetails? {
+    (this as? AppEventWithData<*>)?.let { appEventData ->
+        appEventData.extras?.let { appRequest ->
+            return appRequest as? UserDetails
+        } ?: Timber.tag(LogConstant.APP_CONFIRM).e("user details casting failed")
     }
     return null
 }

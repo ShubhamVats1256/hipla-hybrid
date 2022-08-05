@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Hipla.ChannelPartnerHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/channel_partner_details"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            style="@style/Sales.User.ChannelPartner"
+            android:layout_marginTop="@dimen/channel_partner_info_space"
+            android:layout_marginEnd="@dimen/channel_partner_info_space"
+            android:layout_marginBottom="@dimen/channel_partner_info_space"
+            android:background="#50AAAAAA"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/channel_partner_name"
+            style="@style/Hipla.ChannelPartnerHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="start"
+            android:maxLines="2"
+            app:layout_constraintStart_toEndOf="@id/profile_pic"
+            app:layout_constraintTop_toTopOf="@id/profile_pic"
+            tools:text="Deepak dev" />
+
+        <TextView
+            android:id="@+id/mobile_no"
+            style="@style/Hipla.ChannelPartnerHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/channel_partner_name"
+            app:layout_constraintTop_toBottomOf="@id/channel_partner_name"
+            tools:text="+1 123 456 66666" />
+
+        <TextView
+            android:id="@+id/email"
+            style="@style/Hipla.ChannelPartnerInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            app:layout_constraintStart_toStartOf="@id/channel_partner_name"
+            app:layout_constraintTop_toBottomOf="@id/mobile_no"
+            tools:text="you@email.com" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

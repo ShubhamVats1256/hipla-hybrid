@@ -36,12 +36,16 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         applicationConfirmationViewModel =
             ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
         observeViewModel()
+        applicationConfirmationViewModel.extractArguments(arguments)
         setUI()
     }
 
     private fun setUI() {
-        applicationConfirmationViewModel.extractArguments(arguments)?.let {
+        applicationConfirmationViewModel.applicationRequest?.let {
             setHeader(it)
+        }
+        applicationConfirmationViewModel.channelPartnerDetails?.let {
+            binding.channelPartnerWidget.setChannelPartnerDetails(it)
         }
         binding.submit.setOnClickListener {
             applicationConfirmationViewModel.generateCustomerOTP()
@@ -162,7 +166,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
         )
         val channelPartnerMobileNoText = requireContext().getString(
             R.string.confirm_channel_partner_no,
-            applicationConfirmationViewModel.channelPartnerMobileNo
+            applicationConfirmationViewModel.channelPartnerDetails?.phoneNumber
         )
         binding.header.text = StringBuilder().apply {
             append(customerName)

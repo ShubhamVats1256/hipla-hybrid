@@ -10,6 +10,7 @@ import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
+import com.hipla.channel.entity.response.UserDetails
 import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.extension.toApplicationServerInfo
 import com.hipla.channel.repo.HiplaRepo
@@ -26,6 +27,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var applicationCreateResponse: ApplicationCreateResponse? = null
     private var imageUploadUrl: String? = null
     var channelPartnerMobileNo: String? = null
+    var channelPartnerDetails: UserDetails? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -53,8 +55,8 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                     userId = channelPartnerUserId.toString(),
                     referenceId = generateOTPResponse!!.referenceId
                 ).run {
-                    ifSuccessful {
-                        if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
+                    ifSuccessful { verifyOTPResponse ->
+                        if (verifyOTPResponse.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && verifyOTPResponse.verifyOTPData.isVerified) {
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d(" OTP verified, channel partner user ID : ${generateOTPResponse?.recordReference?.id}")
                             applicationRequest?.channelPartnerId = channelPartnerUserId.toString()
@@ -63,22 +65,31 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
                             this@ApplicationPaymentInfoViewModel.channelPartnerMobileNo =
                                 channelPartnerMobileNo
-                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
+                            launchIO {
+                                with(hiplaRepo.fetchUserDetails(channelPartnerUserId!!)) {
+                                    ifSuccessful {
+                                        appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
+                                        appEvent.tryEmit(
+                                            AppEventWithData(
+                                                FETCH_USER_INFO,
+                                                extras = it.userInfo
+                                            )
+                                        )
+                                        channelPartnerDetails = it.userInfo
+                                        Timber.tag(LogConstant.PAYMENT_INFO)
+                                            .d("channel partner name ${it.userInfo.name}")
+                                    }
+                                    ifError {
+                                        appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
+                                        appEvent.tryEmit(AppEvent(FETCH_USER_ERROR))
+                                        Timber.tag(LogConstant.PAYMENT_INFO)
+                                            .d("channel partner api error")
+                                    }
+                                }
+                            }
                         } else {
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.PAYMENT_INFO).e("channel OTP invalid")
-                        }
-                        launchIO {
-                            with(hiplaRepo.fetchUserDetails(channelPartnerUserId!!)) {
-                                ifSuccessful {
-                                    Timber.tag(LogConstant.PAYMENT_INFO)
-                                        .d("channel partner name ${it.userInfo.name}")
-                                }
-                                ifError {
-                                    Timber.tag(LogConstant.PAYMENT_INFO)
-                                        .d("channel partner api error")
-                                }
-                            }
                         }
                     }
                     ifError {

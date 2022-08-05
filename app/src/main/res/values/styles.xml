@@ -105,6 +105,14 @@
         <item name="android:adjustViewBounds">true</item>
     </style>
 
+    <style name="Sales.User.ChannelPartner">
+        <item name="android:minHeight">@dimen/channel_partner_prof_pic</item>
+        <item name="android:minWidth">@dimen/channel_partner_prof_pic</item>
+        <item name="android:layout_width">@dimen/channel_partner_prof_pic</item>
+        <item name="android:layout_height">@dimen/channel_partner_prof_pic</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
 
     <style name="ToggleButton.Style" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">18sp</item>
@@ -120,4 +128,21 @@
         <item name="android:strokeWidth">4</item>
     </style>
 
+    <style name="Hipla.ChannelPartnerHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Hipla.ChannelPartnerInfo">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingBottom">@dimen/header_padding</item>
+    </style>
 </resources>
