@@ -1,9 +1,6 @@
 package com.hipla.channel.api
 
 import com.hipla.channel.common.Constant
-import com.hipla.channel.common.LogConstant
-import com.hipla.channel.entity.AppEventWithData
-import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.*
 import com.hipla.channel.extension.getKoinInstance
 import com.squareup.moshi.Moshi
@@ -17,12 +14,9 @@ fun <T> Response<T>.asResource(): Resource<T> {
             val body = this.body() ?: Unit as T
             ResourceSuccess(body)
         } else {
-            val jsonAdapter = getKoinInstance<Moshi>().adapter(ApiErrorMessage::class.java)
+            val jsonAdapter = getKoinInstance<Moshi>().adapter(ApiError::class.java)
             ResourceError(
-                throwable = ApiException(
-                    this.code(),
-                    //jsonAdapter.fromJson(this.errorBody()!!.string())
-                ), code = this.code()
+                throwable = jsonAdapter.fromJson(this.errorBody()!!.string())
             )
         }
     } catch (e: Exception) {
@@ -31,7 +25,6 @@ fun <T> Response<T>.asResource(): Resource<T> {
         ResourceError(e, this.code())
     }
 }
-
 
 fun Map<String, Any>.toJSONObject(): JSONObject {
     val o = JSONObject()

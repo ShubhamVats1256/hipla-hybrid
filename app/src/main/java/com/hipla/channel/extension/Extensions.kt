@@ -23,7 +23,8 @@ import com.hipla.channel.databinding.ToastErrorBinding
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
-import com.hipla.channel.entity.api.ApiErrorMessage
+import com.hipla.channel.entity.api.ApiError
+import com.hipla.channel.entity.api.ErrorInfo
 import com.hipla.channel.entity.response.ApplicationCreateResponse
 import com.hipla.channel.entity.response.RecordStatus
 import com.squareup.moshi.JsonAdapter
@@ -80,13 +81,21 @@ internal fun Interceptor.Chain.safeProceed(
     }
 }
 
-
 internal fun Request.toErrorResponse(
     @ApiErrorCode code: String,
 ): Response {
+    val errorMessage = when (code) {
+        CLIENT_ERROR_NO_INTERNET -> {
+            "Please connect to internet"
+        }
+        else -> {
+            "Unable to connect"
+        }
+    }
     val errorBody =
-        moshiAdapter<ApiErrorMessage>().toJson(ApiErrorMessage("unable to connect", code))
-    // 400 is a generic client side error
+        moshiAdapter<ApiError>().toJson(ApiError(FAILURE, mutableListOf<ErrorInfo>().apply {
+            add(ErrorInfo(errorMessage))
+        }))
     return Response.Builder()
         .code(400)
         .message("client error")
@@ -209,7 +218,12 @@ fun Context.showToastSuccessMessage(message: String) {
 fun Context.showToastErrorMessage(message: String) {
     (this as? Activity)?.let {
         val binding =
-            DataBindingUtil.inflate<ToastErrorBinding>(it.layoutInflater, R.layout.toast_error, null, false)
+            DataBindingUtil.inflate<ToastErrorBinding>(
+                it.layoutInflater,
+                R.layout.toast_error,
+                null,
+                false
+            )
         binding.toastMessage.text = message
         Toast(it).apply {
             setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 120)
@@ -269,12 +283,15 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
     return null
 }
 
-
 fun AppEvent.toSalesUserId(): String? {
     val appEventData: AppEventWithData<*>? = this as? AppEventWithData<*>
     return ((appEventData?.extras) as? String)
 }
 
 fun RecordStatus.isSuccess(): Boolean {
-    return this.statusCode == SUCCESS;
+    return this.statusCode == SUCCESS
+}
+
+fun RecordStatus.isFailure(): Boolean {
+    return this.statusCode == FAILURE
 }
