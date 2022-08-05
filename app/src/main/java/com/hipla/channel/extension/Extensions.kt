@@ -4,17 +4,21 @@ import android.app.Activity
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
+import android.view.Gravity
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hipla.channel.R
 import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
+import com.hipla.channel.databinding.ToastBinding
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
@@ -187,12 +191,32 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
 
 fun Activity.IActivityHelper() = this as IActivityHelper
 
-fun Context.showToastShortDuration(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun Context.showToastMessage(message: String) {
+    (this as? Activity)?.let {
+        val binding =
+            DataBindingUtil.inflate<ToastBinding>(it.layoutInflater, R.layout.toast, null, false)
+        binding.toastMessage.text = message
+        Toast(it).apply {
+            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 40)
+            duration = Toast.LENGTH_LONG
+            setView(binding.root)
+            show()
+        }
+    }
 }
 
-fun Context.showToastLongDuration(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+fun Context.showToastErrorMessage(message: String) {
+    (this as? Activity)?.let {
+        val binding =
+            DataBindingUtil.inflate<ToastBinding>(it.layoutInflater, R.layout.toast_error, null, false)
+        binding.toastMessage.text = message
+        Toast(it).apply {
+            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 40)
+            duration = Toast.LENGTH_LONG
+            setView(binding.root)
+            show()
+        }
+    }
 }
 
 fun String.toApplicationRequest(): ApplicationRequest? {
@@ -209,7 +233,8 @@ fun String.toApplicationRequest(): ApplicationRequest? {
 
 fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
     return try {
-        return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java).fromJson (this)
+        return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java)
+            .fromJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null

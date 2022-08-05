@@ -81,26 +81,26 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     private fun isMandatoryCustomerInfoFilled(): Boolean {
         if (binding.customerFirstName.hasValidData().not()) {
             binding.customerFirstName.error = "Customer first name is mandatory";
-            requireContext().showToastLongDuration("Customer first name is mandatory")
+            requireContext().showToastErrorMessage("Customer first name is mandatory")
             return false
         }
         if (binding.customerLastName.hasValidData().not()) {
             binding.customerLastName.error = "Customer last name is mandatory";
-            requireContext().showToastLongDuration("Customer last name is mandatory")
+            requireContext().showToastErrorMessage("Customer last name is mandatory")
             return false
         }
         if (binding.customerNumber.hasValidData().not()) {
             binding.customerNumber.error = "Customer number is mandatory";
-            requireContext().showToastLongDuration("Customer number is mandatory")
+            requireContext().showToastErrorMessage("Customer number is mandatory")
             return false
         }
         if (binding.panCardNumber.hasValidData().not()) {
             binding.panCardNumber.error = "Customer PAN number is mandatory";
-            requireContext().showToastLongDuration("Customer  PAN number  is mandatory")
+            requireContext().showToastErrorMessage("Customer  PAN number  is mandatory")
             return false
         }
         if (applicationCustomerInfoViewModel.isFloorPreferenceSelected().not()) {
-            requireContext().showToastLongDuration("Kindly select floor preference")
+            requireContext().showToastErrorMessage("Kindly select floor preference")
             return false
         }
         return true
@@ -120,7 +120,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                             }
                             APP_EVENT_APPLICATION_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Application creation failed")
+                                requireContext().showToastErrorMessage("Application creation failed")
                             }
                             APP_EVENT_APPLICATION_COMPLETE -> {
                                 requireActivity().IActivityHelper().dismiss()

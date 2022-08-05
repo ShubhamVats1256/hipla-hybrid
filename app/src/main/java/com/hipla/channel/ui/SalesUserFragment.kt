@@ -98,7 +98,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                             }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                                requireContext().showToastErrorMessage("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
                                 showOTPDialog(it.toSalesUserId());
@@ -108,11 +108,11 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                             }
                             OTP_VERIFICATION_INVALID -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Wrong OTP")
+                                requireContext().showToastErrorMessage("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Unable to verify, server error")
+                                requireContext().showToastMessage("Unable to verify, server error")
                             }
                         }
                     }

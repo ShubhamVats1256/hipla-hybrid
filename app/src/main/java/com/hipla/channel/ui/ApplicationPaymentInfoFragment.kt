@@ -64,17 +64,17 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().IActivityHelper().showLoader("Uploading proof...")
                             }
                             IMAGE_UPLOADED_FAILED -> {
-                                requireContext().showToastLongDuration("Proof upload failed")
+                                requireContext().showToastErrorMessage("Proof upload failed")
                                 requireActivity().IActivityHelper().dismiss()
                             }
                             IMAGE_UPLOADED_SUCCESSFULLY -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Proof uploaded")
+                                requireContext().showToastMessage("Proof uploaded")
                                 updateApplicationRequest()
                             }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                                requireContext().showToastErrorMessage("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
                                 requireActivity().IActivityHelper().dismiss()
@@ -85,7 +85,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_SUCCESS -> {
-                                requireContext().showToastLongDuration("Channel Partner Verified")
+                                requireContext().showToastMessage("Channel Partner Verified")
                                 isChannelPartnerOTPVerified = true
                                 requireActivity().IActivityHelper().dismiss()
                                 requireActivity().IActivityHelper().hideKeyboard()
@@ -93,12 +93,12 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_VERIFICATION_INVALID -> {
                                 isChannelPartnerOTPVerified = false
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Wrong OTP")
+                                requireContext().showToastErrorMessage("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
                                 isChannelPartnerOTPVerified = false
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Unable to verify, server error")
+                                requireContext().showToastErrorMessage("Unable to verify, server error")
                             }
                         }
                     }
@@ -233,12 +233,12 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun isMandatoryInfoFilled(): Boolean {
         if (binding.channelPartnerMobileNo.hasValidData().not()) {
             binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
-            requireContext().showToastLongDuration("Channel partner mobile number is mandatory")
+            requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
             return false
         }
         if (binding.amountPayable.hasValidData().not()) {
             binding.amountPayable.error = "Amount payable is mandatory";
-            requireContext().showToastLongDuration("Amount payable is mandatory")
+            requireContext().showToastErrorMessage("Amount payable is mandatory")
             return false
         }
         return true
@@ -270,7 +270,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
-            requireContext().showToastLongDuration("This device does not have camera application to proceed")
+            requireContext().showToastMessage("This device does not have camera application to proceed")
         }
     }
 
@@ -283,7 +283,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 Timber.tag(LogConstant.PAYMENT_INFO).d("picture taken successfully : $imageUri")
                 showUploadChequeDialog(bitmap)
             } else {
-                requireContext().showToastLongDuration("Photo capture cancelled")
+                requireContext().showToastMessage("Photo capture cancelled")
             }
         }
     }

@@ -91,7 +91,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application update failed")
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Application updating failed")
+                                requireContext().showToastMessage("Application updating failed")
                             }
                             OTP_VERIFYING -> {
                                 requireActivity().IActivityHelper().showLoader("Verifying OTP")
@@ -104,7 +104,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("OTP generation failed, Please try again")
+                                requireContext().showToastErrorMessage("OTP generation failed, Please try again")
                             }
                             OTP_SHOW_VERIFICATION_DIALOG -> {
                                 val appEventData: AppEventWithData<*>? = it as? AppEventWithData<*>
@@ -115,11 +115,11 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                             }
                             OTP_VERIFICATION_INVALID -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Wrong OTP")
+                                requireContext().showToastErrorMessage("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastLongDuration("Unable to verify, server error")
+                                requireContext().showToastErrorMessage("Unable to verify, server error")
                             }
                         }
                     }
