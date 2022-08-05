@@ -17,7 +17,7 @@ class OTPDialog(
     private var otpConfirmDialog: AlertDialog? = null
 
     init {
-        otpConfirmBinding.submit.setOnClickListener {
+        otpConfirmBinding.keySubmit.setOnClickListener {
             if (otpStringBuilder.toString().isNotEmpty()) {
                 otpConfirmDialog?.dismiss()
                 onSubmitListener.onSubmit(otpStringBuilder.toString())
