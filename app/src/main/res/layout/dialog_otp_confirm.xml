@@ -72,16 +72,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_bg" />
 
-        <EditText
-            android:id="@+id/otp_edit"
-            style="@style/Hipla.EditText"
+        <TextView
+            android:id="@+id/otp_display"
+            style="@style/Hipla.OTP"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
+            android:clickable="false"
             android:layout_marginEnd="@dimen/form_item_space"
-            android:imeOptions="actionDone"
-            android:inputType="none"
-            android:enabled="false"
             app:layout_constraintBottom_toTopOf="@id/key_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +96,7 @@
             android:layout_marginBottom="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/otp_edit" />
+            app:layout_constraintTop_toBottomOf="@id/otp_display" />
 
         <!-- START OF KEYBOARD -->
         <TextView
@@ -106,8 +104,8 @@
             style="@style/Hipla.Keyboard"
             android:text="1"
             app:layout_constraintEnd_toStartOf="@id/key_2"
-            app:layout_constraintStart_toStartOf="@id/otp_edit"
-            app:layout_constraintTop_toBottomOf="@id/otp_edit" />
+            app:layout_constraintStart_toStartOf="@id/otp_display"
+            app:layout_constraintTop_toBottomOf="@id/otp_display" />
 
         <TextView
             android:id="@+id/key_2"
@@ -116,22 +114,22 @@
             app:layout_constraintBottom_toBottomOf="@id/key_1"
             app:layout_constraintEnd_toStartOf="@id/key_3"
             app:layout_constraintStart_toEndOf="@id/key_1"
-            app:layout_constraintTop_toBottomOf="@id/otp_edit" />
+            app:layout_constraintTop_toBottomOf="@id/otp_display" />
 
         <TextView
             android:id="@+id/key_3"
             style="@style/Hipla.Keyboard"
             android:text="3"
-            app:layout_constraintEnd_toEndOf="@id/otp_edit"
+            app:layout_constraintEnd_toEndOf="@id/otp_display"
             app:layout_constraintStart_toEndOf="@id/key_2"
-            app:layout_constraintTop_toBottomOf="@id/otp_edit" />
+            app:layout_constraintTop_toBottomOf="@id/otp_display" />
 
         <TextView
             android:id="@+id/key_4"
             style="@style/Hipla.Keyboard"
             android:text="4"
             app:layout_constraintEnd_toStartOf="@id/key_5"
-            app:layout_constraintStart_toStartOf="@id/otp_edit"
+            app:layout_constraintStart_toStartOf="@id/otp_display"
             app:layout_constraintTop_toBottomOf="@id/key_1" />
 
         <TextView
@@ -146,7 +144,7 @@
             android:id="@+id/key_6"
             style="@style/Hipla.Keyboard"
             android:text="6"
-            app:layout_constraintEnd_toEndOf="@id/otp_edit"
+            app:layout_constraintEnd_toEndOf="@id/otp_display"
             app:layout_constraintStart_toEndOf="@id/key_5"
             app:layout_constraintTop_toBottomOf="@id/key_3" />
 
@@ -155,7 +153,7 @@
             style="@style/Hipla.Keyboard"
             android:text="7"
             app:layout_constraintEnd_toStartOf="@id/key_8"
-            app:layout_constraintStart_toStartOf="@id/otp_edit"
+            app:layout_constraintStart_toStartOf="@id/otp_display"
             app:layout_constraintTop_toBottomOf="@id/key_4" />
 
         <TextView
@@ -170,7 +168,7 @@
             android:id="@+id/key_9"
             style="@style/Hipla.Keyboard"
             android:text="9"
-            app:layout_constraintEnd_toEndOf="@id/otp_edit"
+            app:layout_constraintEnd_toEndOf="@id/otp_display"
             app:layout_constraintStart_toEndOf="@id/key_8"
             app:layout_constraintTop_toBottomOf="@id/key_6" />
 
@@ -179,7 +177,7 @@
             style="@style/Hipla.Keyboard.clear"
             android:text="@string/clear"
             app:layout_constraintEnd_toStartOf="@id/key_0"
-            app:layout_constraintStart_toStartOf="@id/otp_edit"
+            app:layout_constraintStart_toStartOf="@id/otp_display"
             app:layout_constraintTop_toBottomOf="@id/key_7" />
 
         <TextView
@@ -194,7 +192,7 @@
             android:id="@+id/key_submit"
             style="@style/Hipla.Keyboard.Submit"
             android:text="@string/submit"
-            app:layout_constraintEnd_toEndOf="@id/otp_edit"
+            app:layout_constraintEnd_toEndOf="@id/otp_display"
             app:layout_constraintStart_toEndOf="@id/key_0"
             app:layout_constraintTop_toBottomOf="@id/key_9" />
         <!-- END OF KEYBOARD -->

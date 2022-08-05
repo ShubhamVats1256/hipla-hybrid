@@ -2,7 +2,6 @@ package com.hipla.channel.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -13,22 +12,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.databinding.DialogOtpConfirmBinding
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import com.hipla.channel.viewmodel.ApplicationFlowViewModel
+import com.hipla.channel.widget.OTPDialog
 import kotlinx.coroutines.launch
-
+import java.lang.ref.WeakReference
 
 class SalesUseFragment : Fragment(R.layout.fragment_application) {
 
     private lateinit var viewModel: ApplicationFlowViewModel
     private lateinit var binding: FragmentApplicationBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
-    private var otpConfirmDialog: AlertDialog? = null
+    private var otpDialog: OTPDialog? = null
 
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -103,7 +102,7 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
                             OTP_SHOW_VERIFICATION_DIALOG -> {
                                 showOTPDialog(it.toSalesUserId());
                             }
-                            OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
+                            OTP_GENERATE_SUCCESS, OTP_GENERATE_COMPLETE, OTP_VERIFICATION_COMPLETE, APP_EVENT_APPLICATION_COMPLETE -> {
                                 requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_INVALID -> {
@@ -133,25 +132,16 @@ class SalesUseFragment : Fragment(R.layout.fragment_application) {
 
     private fun showOTPDialog(salesUserId: String?) {
         salesUserId ?: return
-        if (requireActivity().isDestroyed.not() && otpConfirmDialog?.isShowing != true) {
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogBinding = DialogOtpConfirmBinding.inflate(requireActivity().layoutInflater)
-            dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.identification.text = salesUserId
-            dialogBinding.submit.setOnClickListener {
-                dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
-                }
-            }
-            dialogBinding.back.setOnClickListener {
-                otpConfirmDialog?.dismiss()
-            }
-            dialogBinding.otpEdit.onSubmit {
-                otpConfirmDialog?.dismiss()
-                viewModel.verifyOtp(salesUserId, dialogBinding.otpEdit.content())
-            }
-            otpConfirmDialog = dialogBuilder.show()
-            otpConfirmDialog?.setCancelable(false)
-            otpConfirmDialog?.setCanceledOnTouchOutside(false)
+        if(otpDialog?.isShowing() != true) {
+            otpDialog = OTPDialog(
+                userId = salesUserId,
+                dialogTitle = requireContext().getString(R.string.enter_otp),
+                activityReference = WeakReference(requireActivity()),
+                onSubmitListener = object : OTPDialog.OnOTPSubmitListener {
+                    override fun onSubmit(otp: String) {
+                        viewModel.verifyOtp(salesUserId, otp)
+                    }
+                }).show()
         }
     }
 

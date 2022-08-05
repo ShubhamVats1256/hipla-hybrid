@@ -1,34 +1,26 @@
 package com.hipla.channel.widget
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
-import com.hipla.channel.R
+import android.app.Activity
+import androidx.appcompat.app.AlertDialog
 import com.hipla.channel.databinding.DialogOtpConfirmBinding
+import java.lang.ref.WeakReference
 
-class OTPWidget : ConstraintLayout {
-    private var otpConfirmBinding: DialogOtpConfirmBinding
+class OTPDialog(
+    private val userId: String,
+    private val dialogTitle: String,
+    private val activityReference: WeakReference<Activity>,
+    private val onSubmitListener: OnOTPSubmitListener
+) {
+
+    private var otpConfirmBinding: DialogOtpConfirmBinding = DialogOtpConfirmBinding.inflate(activityReference.get()!!.layoutInflater)
     private val otpStringBuilder = StringBuilder()
-    private var onSubmitListener: OnOTPSubmitListener? = null
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+    private var otpConfirmDialog: AlertDialog? = null
 
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        otpConfirmBinding =
-            DataBindingUtil.inflate(inflater, R.layout.dialog_otp_confirm, this, true)
-
         otpConfirmBinding.submit.setOnClickListener {
             if (otpStringBuilder.toString().isNotEmpty()) {
-                onSubmitListener?.onSubmit(otpStringBuilder.toString())
+                otpConfirmDialog?.dismiss()
+                onSubmitListener.onSubmit(otpStringBuilder.toString())
             }
         }
 
@@ -42,41 +34,46 @@ class OTPWidget : ConstraintLayout {
         otpConfirmBinding.key0.setOnClickListener {
             appendText("0")
         }
+
         otpConfirmBinding.key1.setOnClickListener {
             appendText("1")
         }
+
         otpConfirmBinding.key2.setOnClickListener {
             appendText("2")
         }
+
         otpConfirmBinding.key3.setOnClickListener {
             appendText("3")
         }
+
         otpConfirmBinding.key4.setOnClickListener {
             appendText("4")
         }
+
         otpConfirmBinding.key5.setOnClickListener {
             appendText("5")
         }
         otpConfirmBinding.key6.setOnClickListener {
             appendText("6")
         }
+
         otpConfirmBinding.key7.setOnClickListener {
             appendText("7")
         }
+
         otpConfirmBinding.key8.setOnClickListener {
             appendText("8")
         }
+
         otpConfirmBinding.key9.setOnClickListener {
             appendText("9")
         }
-    }
 
-    fun setOnSubmitListener(onSubmitListener: OnOTPSubmitListener) {
-        this.onSubmitListener = onSubmitListener
-    }
+        otpConfirmBinding.back.setOnClickListener {
+            dismiss()
+        }
 
-    fun setTitle(title: String) {
-        otpConfirmBinding.title.text = title
     }
 
     private fun appendText(text: String) {
@@ -85,7 +82,30 @@ class OTPWidget : ConstraintLayout {
     }
 
     private fun updateDisplay() {
-        otpConfirmBinding.otpEdit.setText(otpStringBuilder.toString())
+        otpConfirmBinding.otpDisplay.text = otpStringBuilder.toString()
+    }
+
+    fun show(): OTPDialog? {
+        if (otpConfirmDialog?.isShowing != true && activityReference.get()?.isDestroyed?.not() == true) {
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(activityReference.get()!!)
+                  dialogBuilder.setView(otpConfirmBinding.root)
+            otpConfirmBinding.identification.text = userId
+            otpConfirmBinding.back.setOnClickListener {
+                otpConfirmDialog?.dismiss()
+            }
+            otpConfirmBinding.title.text = dialogTitle
+            otpConfirmDialog = dialogBuilder.show()
+            otpConfirmDialog?.setCancelable(false)
+            otpConfirmDialog?.setCanceledOnTouchOutside(false)
+            return this
+        }
+        return null
+    }
+
+    fun isShowing() = otpConfirmDialog?.isShowing
+
+    private fun dismiss() {
+        otpConfirmDialog?.dismiss()
     }
 
     interface OnOTPSubmitListener {
@@ -93,3 +113,4 @@ class OTPWidget : ConstraintLayout {
     }
 
 }
+

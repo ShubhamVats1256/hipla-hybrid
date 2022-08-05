@@ -139,7 +139,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             dialogBinding.back.setOnClickListener {
                 otpConfirmDialog?.dismiss()
             }
-            dialogBinding.otpEdit.onSubmit {
+/*            dialogBinding.otpEdit.onSubmit {
                 otpConfirmDialog?.dismiss()
                 dialogBinding.otpEdit.takeIf { it.hasValidData() }?.let {
                     Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp ${it.content()}")
@@ -150,7 +150,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                     requireActivity().IActivityHelper().showLoader(getString(R.string.verifying))
                     return@onSubmit
                 }
-            }
+            }*/
             otpConfirmDialog = dialogBuilder.show()
             otpConfirmDialog?.setCancelable(false)
             otpConfirmDialog?.setCanceledOnTouchOutside(false)
