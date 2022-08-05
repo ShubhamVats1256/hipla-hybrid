@@ -15,7 +15,6 @@ class ApplicationRecordReference(
     val id: Int,
     val name: String? = null,
     @Json(name = "extraInfo") val applicationRecordExtraInfo: ApplicationRecordExtraInfo,
-
 )
 
 @JsonClass(generateAdapter = true)

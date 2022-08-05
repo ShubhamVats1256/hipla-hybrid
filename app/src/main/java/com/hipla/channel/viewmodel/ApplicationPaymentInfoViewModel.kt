@@ -24,8 +24,8 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var generateOTPResponse: GenerateOTPResponse? = null
     private var applicationRequest: ApplicationRequest? = null
     private var applicationCreateResponse: ApplicationCreateResponse? = null
-    private var imageUploadUrl : String? = null
-    var channelPartnerMobileNo : String? = null
+    private var imageUploadUrl: String? = null
+    var channelPartnerMobileNo: String? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -42,30 +42,43 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     }
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
+        val channelPartnerUserId = generateOTPResponse?.recordReference?.id
         Timber.tag(LogConstant.PAYMENT_INFO)
-            .d("verify OTP: $otp for userId : ${generateOTPResponse?.recordReference?.id}")
+            .d("verify OTP: $otp for userId : $channelPartnerUserId ")
         launchIO {
             if (generateOTPResponse != null) {
                 appEvent.tryEmit(AppEvent(OTP_VERIFYING))
                 hiplaRepo.verifyOtp(
                     otp = otp,
-                    userId = generateOTPResponse!!.recordReference.id.toString(),
+                    userId = channelPartnerUserId.toString(),
                     referenceId = generateOTPResponse!!.referenceId
                 ).run {
                     ifSuccessful {
                         if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d(" OTP verified, channel partner user ID : ${generateOTPResponse?.recordReference?.id}")
-                            applicationRequest?.channelPartnerId =
-                                generateOTPResponse?.recordReference?.id.toString()
+                            applicationRequest?.channelPartnerId = channelPartnerUserId.toString()
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d("channel partnerId updated to application request")
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
-                            this@ApplicationPaymentInfoViewModel.channelPartnerMobileNo = channelPartnerMobileNo
+                            this@ApplicationPaymentInfoViewModel.channelPartnerMobileNo =
+                                channelPartnerMobileNo
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                         } else {
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.PAYMENT_INFO).e("channel OTP invalid")
+                        }
+                        launchIO {
+                            with(hiplaRepo.fetchUserDetails(channelPartnerUserId!!)) {
+                                ifSuccessful {
+                                    Timber.tag(LogConstant.PAYMENT_INFO)
+                                        .d("channel partner name ${it.userInfo.name}")
+                                }
+                                ifError {
+                                    Timber.tag(LogConstant.PAYMENT_INFO)
+                                        .d("channel partner api error")
+                                }
+                            }
                         }
                     }
                     ifError {

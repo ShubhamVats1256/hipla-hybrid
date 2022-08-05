@@ -64,5 +64,13 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
+    suspend fun fetchUserDetails(userId : Int): Resource<UserDetailsResponse> {
+        return try {
+            return hiplaApiService.fetchUserDetails(userId).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
 
 }

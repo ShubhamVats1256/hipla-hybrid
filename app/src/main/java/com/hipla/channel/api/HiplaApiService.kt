@@ -26,4 +26,9 @@ interface HiplaApiService {
         @Path("applicationId") applicationId: Int,
         @Body createApplicationRequestMap: Map<String, String>): Response<ApplicationUpdateResponse>
 
+    @GET("business/v1/user/{userId}")
+    suspend fun fetchUserDetails(
+        @Path("userId") userId: Int,
+    ): Response<UserDetailsResponse>
+
 }
