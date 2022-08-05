@@ -11,28 +11,29 @@ import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 class ApplicationFlowViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by inject(HiplaRepo::class.java)
     private val pageSize: Int = AppConfig.PAGE_DOWNLOAD_SIZE
-    private var currentPage: Int = 1
-    private var totalPage: Int = 1
+    private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
+    private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
     private val salesUserMasterList = mutableListOf<SalesUser>()
     var salesUsersLiveData = MutableLiveData<List<SalesUser>>()
-    private var generateOTPResponse : GenerateOTPResponse? = null
+    private var generateOTPResponse: GenerateOTPResponse? = null
 
     fun loadUsers() {
         if (canDownload()) {
             launchIO {
                 Timber.tag(LogConstant.FLOW_APP)
-                    .d("downloading sales user list for page $currentPage")
-                with(hiplaRepo.fetchSalesUserList(currentPage, pageSize)) {
+                    .d("downloading sales user list for page ${currentPageAtomic.get()}")
+                with(hiplaRepo.fetchSalesUserList(currentPageAtomic.get(), pageSize)) {
                     ifSuccessful {
                         Timber.tag(LogConstant.FLOW_APP)
-                            .d("downloading sales user list successful with size ${it.salesUserList?.size}")
-                        totalPage = it.pagination.totalPage
-                        currentPage++
+                            .d("downloading sales user list successful with size ${it.salesUserList?.size} for page ${currentPageAtomic.get()}")
+                        totalPageAtomic = AtomicInteger(it.pagination.totalPage)
+                        currentPageAtomic.getAndIncrement()
                         Timber.tag(LogConstant.FLOW_APP).d("totalPage : ${it.pagination.totalPage}")
                         if (it.salesUserList.isNullOrEmpty().not()) {
                             salesUserMasterList.addAll(it.salesUserList!!)
@@ -76,7 +77,7 @@ class ApplicationFlowViewModel : BaseViewModel() {
         }
     }
 
-    fun verifyOtp(salesUserId : String, otp: String) {
+    fun verifyOtp(salesUserId: String, otp: String) {
         Timber.tag(LogConstant.FLOW_APP).d("verify otp: $otp for userId : $salesUserId")
         launchIO {
             appEvent.tryEmit(AppEvent(OTP_VERIFYING))
@@ -87,7 +88,7 @@ class ApplicationFlowViewModel : BaseViewModel() {
                     referenceId = generateOTPResponse!!.referenceId
                 ).run {
                     ifSuccessful {
-                        if (it.verifyOTPData.referenceId ==  generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
+                        if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
                             Timber.tag(LogConstant.FLOW_APP).d("otp verification successful")
                             appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                             appEvent.tryEmit(AppEvent(APP_EVENT_START_APPLICATION_FLOW))
@@ -115,7 +116,12 @@ class ApplicationFlowViewModel : BaseViewModel() {
     }
 
     private fun canDownload(): Boolean {
-        return isDownloading.get() || currentPage <= totalPage
+        Timber.tag(LogConstant.FLOW_APP)
+            .d("current page: ${currentPageAtomic.get()}  is downloading: ${isDownloading.get()}")
+        val canDownload =
+            isDownloading.get().not() && currentPageAtomic.get() <= totalPageAtomic.get()
+        Timber.tag(LogConstant.FLOW_APP).d("can download $canDownload")
+        return canDownload
     }
 
 }
