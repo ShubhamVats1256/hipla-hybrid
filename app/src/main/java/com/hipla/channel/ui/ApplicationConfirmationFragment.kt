@@ -14,7 +14,10 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
 import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
 import com.hipla.channel.entity.*
-import com.hipla.channel.extension.*
+import com.hipla.channel.extension.IActivityHelper
+import com.hipla.channel.extension.launchSafely
+import com.hipla.channel.extension.showToastErrorMessage
+import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
 import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
@@ -59,7 +62,11 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
                 getString(R.string.application_confirm_msg, applicationRequest.id.toString())
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
-                findNavController().popBackStack(R.id.mainFragment, false)
+                goHome()
+            }
+            dialogBinding.okay.setOnClickListener {
+                applicationSuccessDialog?.dismiss()
+                goHome()
             }
             dialogBinding.appInfo.text = getString(
                 R.string.application_confirm_application_no,
@@ -69,6 +76,10 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
             applicationSuccessDialog?.setCancelable(false)
             applicationSuccessDialog?.setCanceledOnTouchOutside(false)
         }
+    }
+
+    private fun goHome() {
+        findNavController().popBackStack(R.id.mainFragment, false)
     }
 
     private fun observeViewModel() {
