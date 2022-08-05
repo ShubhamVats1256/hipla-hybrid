@@ -59,5 +59,6 @@
     <string name="upload_cash">Upload Cash Receipt</string>
     <string name="upload_cheque">Upload Cheque Photo</string>
     <string name="your_rtgs_photo">Upload RTGS Photo</string>
+    <string name="clear">Clear</string>
 
 </resources>

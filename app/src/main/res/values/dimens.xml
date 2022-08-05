@@ -45,5 +45,6 @@
 
     <dimen name="header_text_size">26sp</dimen>
     <dimen name="header_padding">16dp</dimen>
+    <dimen name="keyboard_item_corner_radius">16dp</dimen>
 
 </resources>
