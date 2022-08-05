@@ -27,7 +27,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                 .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
             return applicationRequest
         }
-        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO);
+        channelPartnerMobileNo = arguments?.getString(KEY_PARTNER_MOBILE_NO)
         return null
     }
 

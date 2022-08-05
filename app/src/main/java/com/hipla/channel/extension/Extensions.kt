@@ -192,7 +192,7 @@ fun NavController?.isCurrentDestination(destinationId: Int): Boolean {
 
 fun Activity.IActivityHelper() = this as IActivityHelper
 
-fun Context.showToastMessage(message: String) {
+fun Context.showToastSuccessMessage(message: String) {
     (this as? Activity)?.let {
         val binding =
             DataBindingUtil.inflate<ToastBinding>(it.layoutInflater, R.layout.toast, null, false)

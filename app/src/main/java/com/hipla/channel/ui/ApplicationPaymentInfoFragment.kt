@@ -71,7 +71,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             }
                             IMAGE_UPLOADED_SUCCESSFULLY -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastMessage("Proof uploaded")
+                                requireContext().showToastSuccessMessage("Proof uploaded")
                                 updateApplicationRequest()
                             }
                             OTP_GENERATE_FAILED -> {
@@ -87,7 +87,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().IActivityHelper().dismiss()
                             }
                             OTP_VERIFICATION_SUCCESS -> {
-                                requireContext().showToastMessage("Channel Partner Verified")
+                                requireContext().showToastSuccessMessage("Channel Partner Verified")
                                 isChannelPartnerOTPVerified = true
                                 binding.continueBtn.text = getPaymentTitle()
                                 requireActivity().IActivityHelper().hideKeyboard()
@@ -116,6 +116,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             paymentType = getPaymentTypeFromCheckedId()
         ).also { appRequest ->
             findNavController().run {
+                Timber.tag(LogConstant.CUSTOMER_INFO).d("partner mobile no ${viewModel.channelPartnerMobileNo}")
                 if (isCurrentDestination(R.id.paymentInfoFragment)) {
                     navigate(
                         resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
@@ -186,8 +187,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                     }
                 }
             }
+            setContinueBtnText(getPaymentTitle())
         }
-        setContinueBtnText(getPaymentTitle())
     }
 
     private fun getPaymentTitle(): String {
@@ -211,7 +212,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setContinueBtnText(message: String) {
-        binding.continueBtn.text = message
+        if (isChannelPartnerOTPVerified) {
+            binding.continueBtn.text = message
+        }
     }
 
     private fun setReferenceEditTextHint(hint: String) {
@@ -294,7 +297,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 Timber.tag(LogConstant.PAYMENT_INFO).d("picture taken successfully : $imageUri")
                 showUploadChequeDialog(bitmap)
             } else {
-                requireContext().showToastMessage("Photo capture cancelled")
+                requireContext().showToastSuccessMessage("Photo capture cancelled")
             }
         }
     }
