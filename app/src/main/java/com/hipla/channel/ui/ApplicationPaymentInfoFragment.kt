@@ -88,6 +88,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastSuccessMessage("Channel Partner Verified")
                                 requireActivity().IActivityHelper().hideKeyboard()
+                                updateApplicationRequest()
                             }
                             OTP_VERIFICATION_INVALID -> {
                                 requireActivity().IActivityHelper().dismiss()
