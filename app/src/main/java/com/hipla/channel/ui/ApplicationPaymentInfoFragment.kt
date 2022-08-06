@@ -38,7 +38,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private lateinit var binding: FragmentApplicationPaymentInfoBinding
     private var uploadChequeDialog: AlertDialog? = null
     private var otpConfirmDialog: OTPDialog? = null
-    private var isChannelPartnerOTPVerified = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +58,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 requireActivity().IActivityHelper().showLoader("Verifying OTP")
                             }
                             OTP_GENERATING -> {
-                                isChannelPartnerOTPVerified = false
                                 requireActivity().IActivityHelper().showLoader("Generating OTP")
                             }
                             IMAGE_UPLOADING -> {
@@ -88,17 +86,14 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             }
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastSuccessMessage("Channel Partner Verified")
-                                isChannelPartnerOTPVerified = true
                                 binding.continueBtn.text = getPaymentTitle()
                                 requireActivity().IActivityHelper().hideKeyboard()
                             }
                             OTP_VERIFICATION_INVALID -> {
-                                isChannelPartnerOTPVerified = false
                                 requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastErrorMessage("Wrong OTP")
                             }
                             OTP_VERIFICATION_FAILED -> {
-                                isChannelPartnerOTPVerified = false
                                 requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastErrorMessage("Unable to verify, server error")
                             }
@@ -165,6 +160,17 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setContinueBtn()
         setPaymentToggle()
         setBackBtn()
+        setDate()
+        setUploadButton()
+    }
+
+    private fun setUploadButton() {
+        binding.uploadProof.setOnClickListener {
+            takePicture()
+        }
+    }
+
+    private fun setDate() {
         binding.date.setOnClickListener {
             val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
             materialDateBuilder.setTitleText("Select Payment Date");
@@ -227,7 +233,15 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
-            viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
+            if (isMandatoryInfoFilled()) {
+                if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content()).not()) {
+                    Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner not verified")
+                    viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
+                } else {
+                    Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner already verified")
+                    updateApplicationRequest()
+                }
+            }
         }
     }
 
@@ -250,6 +264,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             binding.amountPayable.error = "Amount payable is mandatory";
             requireContext().showToastErrorMessage("Amount payable is mandatory")
             return false
+        }
+        if (viewModel.isPaymentProofUploaded()) {
+            requireContext().showToastErrorMessage("kindly ${getPaymentTitle()}")
         }
         return true
     }

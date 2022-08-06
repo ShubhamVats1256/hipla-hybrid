@@ -47,7 +47,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
 
     fun isPaymentProofUploaded() = isProofUploadedAtomic.get()
 
-    fun isChannelPartnerVerified(channelPartnerMobileNo : String) = channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
+    fun isChannelPartnerVerified(channelPartnerMobileNo : String?) = channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id
