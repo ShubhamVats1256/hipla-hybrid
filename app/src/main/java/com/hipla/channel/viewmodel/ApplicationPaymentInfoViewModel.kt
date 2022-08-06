@@ -53,7 +53,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         Timber.tag(LogConstant.PAYMENT_INFO)
             .d("check if channel partner verified for mobile no $channelPartnerMobileNo")
         Timber.tag(LogConstant.PAYMENT_INFO)
-            .d("channel partner mobile number saved in view model $channelPartnerMobileNo")
+            .d("channel partner mobile number saved in view model ${channelPartnerDetails?.phoneNumber}")
         return channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
     }
 

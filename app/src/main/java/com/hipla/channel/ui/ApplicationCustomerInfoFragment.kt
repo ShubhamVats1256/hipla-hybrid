@@ -32,33 +32,21 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         applicationCustomerInfoViewModel =
             ViewModelProvider(this)[ApplicationCustomerInfoViewModel::class.java]
         applicationCustomerInfoViewModel.extractArguments(arguments)
-        setFloorPreference()
         observeViewModel()
         setUI()
     }
 
     private fun setUI() {
-        binding.backBtn.setOnClickListener {
-            findNavController().navigateUp()
-        }
-/*        binding.continueBtn.setOnClickListener {
-            if (isMandatoryCustomerInfoFilled()) {
-                Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
-                applicationCustomerInfoViewModel.createApplicationRequest(
-                    customerFirstName = binding.customerFirstName.content(),
-                    customerLastName =  binding.customerLastName.content(),
-                    customerPhone = binding.customerNumber.content(),
-                    panNo =  binding.panCardNumber.content(),
-                    floorId = applicationCustomerInfoViewModel.getSelectedFloorId()!!
-                )
-            } else {
-                Timber.tag(LogConstant.CUSTOMER_INFO)
-                    .e("validation failed, cannot create application")
-            }
-        }*/
+        setBackBtn()
+        setContinueBtn()
+        setCustomerFirstName()
+        setCustomerLastName()
+        setCustomerPhone()
+        setPanNo()
+        setFloorPreference()
 
         // dev settings
-        binding.continueBtn.setOnClickListener {
+/*        binding.continueBtn.setOnClickListener {
             if (isMandatoryCustomerInfoFilled().not()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
                 applicationCustomerInfoViewModel.createApplicationRequest(
@@ -72,8 +60,57 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                 Timber.tag(LogConstant.CUSTOMER_INFO)
                     .e("validation failed, cannot create application")
             }
+        }*/
+    }
+
+    private fun setBackBtn() {
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
+
+    private fun setContinueBtn() {
+        binding.continueBtn.setOnClickListener {
+            if (isMandatoryCustomerInfoFilled()) {
+                Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
+                applicationCustomerInfoViewModel.createApplicationRequest(
+                    customerFirstName = binding.customerFirstName.content(),
+                    customerLastName = binding.customerLastName.content(),
+                    customerPhone = binding.customerNumber.content(),
+                    panNo = binding.panCardNumber.content(),
+                    floorId = applicationCustomerInfoViewModel.getCustomerFloorPreferenceId()!!
+                )
+            } else {
+                Timber.tag(LogConstant.CUSTOMER_INFO)
+                    .e("validation failed, cannot create application")
+            }
+        }
+    }
+
+    private fun setPanNo() {
+        applicationCustomerInfoViewModel.getCustomerPanNo()?.let {
+            binding.panCardNumber.setText(it)
+        }
+    }
+
+    private fun setCustomerPhone() {
+        applicationCustomerInfoViewModel.getCustomerMobileNo()?.let {
+            binding.customerNumber.setText(it)
+        }
+    }
+
+    private fun setCustomerLastName() {
+        applicationCustomerInfoViewModel.getCustomerLastName()?.let {
+            binding.customerLastName.setText(it)
+        }
+    }
+
+    private fun setCustomerFirstName() {
+        applicationCustomerInfoViewModel.getCustomerFirstName()?.let {
+            binding.customerFirstName.setText(it)
+        }
+    }
+
 
     private fun launchPaymentInfoFragment(applicationRequest: ApplicationRequest?) {
         findNavController().run {
@@ -164,12 +201,15 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                 return@setOnTouchListener false;
             }
             onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
+                AdapterView.OnItemClickListener { _, _, position, _ ->
                     applicationCustomerInfoViewModel.selectedFloorId(position)
                 }
         }
+        applicationCustomerInfoViewModel.getCustomerFloorPreferenceId()?.let {
+            binding.floorPreference.setText(
+                binding.floorPreference.adapter.getItem(it).toString(),
+                false
+            )
+        }
     }
-
-
-
 }

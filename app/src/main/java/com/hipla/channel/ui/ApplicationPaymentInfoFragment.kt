@@ -181,7 +181,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setChannelPartnerVerifiedIcon()
         setPaymentProofImage()
         // dev settings
-        setTestData()
+        //setTestData()
     }
 
     private fun setChannelPartnerVerifiedIcon() {

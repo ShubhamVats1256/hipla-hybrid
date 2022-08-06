@@ -16,7 +16,8 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     private var salesUserId: String? = null
     private var selectedFloorPreference: FloorDetails? = null
     var floorList: List<FloorDetails> = generateFloors()
-    var applicationCreateResponse : ApplicationCreateResponse? = null
+    var applicationCreateResponse: ApplicationCreateResponse? = null
+    private var applicationRequest: ApplicationRequest? = null
 
     fun extractArguments(arguments: Bundle?) {
         salesUserId = arguments?.getString(KEY_SALES_USER_ID);
@@ -28,7 +29,15 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             .d("floor preference ${selectedFloorPreference?.name}")
     }
 
-    fun getSelectedFloorId() = selectedFloorPreference?.id
+    fun getCustomerFloorPreferenceId() = selectedFloorPreference?.id
+
+    fun getCustomerFirstName() = applicationRequest?.customerName
+
+    fun getCustomerLastName() = applicationRequest?.customerLastName
+
+    fun getCustomerPanNo() = applicationRequest?.panNumber
+
+    fun getCustomerMobileNo() = applicationRequest?.customerPhoneNumber
 
     fun isFloorPreferenceSelected() = selectedFloorPreference != null
 
@@ -95,6 +104,10 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             this.floorPreferenceId = floorId
             this.createdBy = salesUserId?.toInt()
         }.also {
+            // save locally
+            this.applicationRequest = it
+        }.also {
+            // create application in server
             createApplicationInServer(it)
         }
     }
