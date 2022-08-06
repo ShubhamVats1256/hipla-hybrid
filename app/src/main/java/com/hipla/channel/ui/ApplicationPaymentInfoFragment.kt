@@ -20,6 +20,8 @@ import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.KEY_PARTNER
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.image.loadImageBasedOnOrientation
+import com.hipla.channel.common.image.setRoundedImageWithDefaultCornerRadius
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
 import com.hipla.channel.entity.*
@@ -30,7 +32,6 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_payment_info) {
 
@@ -69,8 +70,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             }
                             IMAGE_UPLOADED_SUCCESSFULLY -> {
                                 requireActivity().IActivityHelper().dismiss()
-                                requireContext().showToastSuccessMessage("Proof uploaded")
-                                updateApplicationRequest()
+                                requireContext().showToastSuccessMessage("Proof uploaded successfully")
+                                setPaymentProof((it as AppEventWithData<*>).extras as? String)
                             }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
@@ -86,7 +87,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             }
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastSuccessMessage("Channel Partner Verified")
-                                binding.continueBtn.text = getPaymentTitle()
                                 requireActivity().IActivityHelper().hideKeyboard()
                             }
                             OTP_VERIFICATION_INVALID -> {
@@ -106,6 +106,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 }
             }
         }
+    }
+
+    private fun setPaymentProof(proofUrl: String?) {
+         binding.paymentProofIv.setRoundedImageWithDefaultCornerRadius(proofUrl)
     }
 
     private fun updateApplicationRequest() {
@@ -243,7 +247,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         binding.continueBtn.setOnClickListener {
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
             if (isMandatoryInfoFilled()) {
-                if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content()).not()) {
+                if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())
+                        .not()
+                ) {
                     Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner not verified")
                     viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
                 } else {
@@ -274,8 +280,9 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             requireContext().showToastErrorMessage("Amount payable is mandatory")
             return false
         }
-        if (viewModel.isPaymentProofUploaded()) {
+        if (viewModel.isPaymentProofUploaded().not()) {
             requireContext().showToastErrorMessage("kindly ${getPaymentTitle()}")
+            return false
         }
         return true
     }

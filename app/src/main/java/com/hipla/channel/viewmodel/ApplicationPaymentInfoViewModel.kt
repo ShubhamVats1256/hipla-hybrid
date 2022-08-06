@@ -47,7 +47,8 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
 
     fun isPaymentProofUploaded() = isProofUploadedAtomic.get()
 
-    fun isChannelPartnerVerified(channelPartnerMobileNo : String?) = channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
+    fun isChannelPartnerVerified(channelPartnerMobileNo: String?) =
+        channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id
@@ -171,7 +172,12 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                 Timber.tag("testfx").d("response code $responseCode")
                 Timber.tag("testfx").d("image uploaded, now verify in backend")
                 isProofUploadedAtomic.getAndSet(true)
-                appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_SUCCESSFULLY))
+                appEvent.tryEmit(
+                    AppEventWithData(
+                        IMAGE_UPLOADED_SUCCESSFULLY,
+                        extras = applicationCreateResponse?.imageReadUrl
+                    )
+                )
             } catch (e: Exception) {
                 appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_FAILED))
                 e.printStackTrace()
