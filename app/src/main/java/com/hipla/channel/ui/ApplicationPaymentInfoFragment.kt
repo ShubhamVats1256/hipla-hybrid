@@ -316,5 +316,4 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         const val REQUEST_IMAGE_CAPTURE = 1000
     }
 
-
 }
