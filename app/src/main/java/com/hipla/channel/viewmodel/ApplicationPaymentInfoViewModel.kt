@@ -106,10 +106,11 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                                             .d("channel partner name ${it.userInfo.name}")
                                     }
                                     ifError {
+                                        channelPartnerDetails = null
                                         appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                                         appEvent.tryEmit(AppEvent(FETCH_USER_ERROR))
                                         Timber.tag(LogConstant.PAYMENT_INFO)
-                                            .d("channel partner api error")
+                                            .e("channel partner api error")
                                     }
                                 }
                             }

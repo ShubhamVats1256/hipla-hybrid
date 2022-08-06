@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 class UserDetailsResponse(
-    @Json(name = "record") val userInfo: UserDetails,
+    @Json(name = "record") val userInfo: UserDetails?,
     val imageUploadUrl: String?,
     val imageReadUrl: String?
 )

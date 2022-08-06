@@ -51,7 +51,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         viewModel.extractArguments(arguments)
         observeViewModel()
         setUI()
-        requireContext().showToastSuccessMessage("on view created")
     }
 
     private fun observeViewModel() {
