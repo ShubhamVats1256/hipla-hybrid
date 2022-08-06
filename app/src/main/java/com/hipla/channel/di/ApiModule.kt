@@ -22,14 +22,12 @@ val apiModule = module {
 
     // okhttp client builder
     single {
-        Timber.tag(LogConstant.HIPLA).d("adding logging interceptor 1")
         val httpBuilder = OkHttpClient.Builder()
         httpBuilder.readTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.connectTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.writeTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS) //Backend is really slow
         if (BuildConfig.DEBUG) {
             httpBuilder.addInterceptor(get<ChuckerInterceptor>())
-            Timber.tag(LogConstant.HIPLA).d("adding logging interceptor2 ")
             httpBuilder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
                 HttpLoggingInterceptor.Level.BODY
             })
