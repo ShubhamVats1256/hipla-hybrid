@@ -121,9 +121,20 @@
         android:inputType="phone"
         android:layout_marginEnd="@dimen/form_item_space"
         android:layout_marginBottom="@dimen/form_item_space"
-        app:layout_constraintEnd_toStartOf="@id/pageDivider1"
+        app:layout_constraintEnd_toStartOf="@id/partner_verified_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/paymentRefNo" />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/pageDivider1"
+        app:layout_constraintStart_toEndOf="@id/channelPartnerMobileNo"
+        app:layout_constraintTop_toTopOf="@id/channelPartnerMobileNo"
+        app:layout_constraintBottom_toBottomOf="@id/channelPartnerMobileNo"
+        android:id="@+id/partner_verified_icon"
+        android:src="@drawable/ic_success"
+        android:layout_height="48dp"/>
 
     <TextView
         android:id="@+id/backBtn"

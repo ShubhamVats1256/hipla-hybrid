@@ -20,7 +20,7 @@ import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.KEY_PARTNER
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.common.image.loadImageBasedOnOrientation
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.common.image.setRoundedImageWithDefaultCornerRadius
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
@@ -88,7 +88,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             OTP_VERIFICATION_SUCCESS -> {
                                 requireContext().showToastSuccessMessage("Channel Partner Verified")
                                 requireActivity().IActivityHelper().hideKeyboard()
-                                updateApplicationRequest()
+                                channelPartnerVerified()
                             }
                             OTP_VERIFICATION_INVALID -> {
                                 requireActivity().IActivityHelper().dismiss()
@@ -107,6 +107,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 }
             }
         }
+    }
+
+    private fun channelPartnerVerified() {
+        binding.partnerVerifiedIcon.show()
+        updateApplicationRequest()
     }
 
     private fun setPaymentProof(proofUrl: String?) {
