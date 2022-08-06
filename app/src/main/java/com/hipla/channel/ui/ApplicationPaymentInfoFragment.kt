@@ -7,6 +7,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -181,7 +183,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setPaymentReferenceNo()
         setChannelPartnerMobileNo()
         setPaymentDate()
-        setChannelPartnerVerifiedIcon()
+        setChannelPartnerVerifiedIcon(binding.channelPartnerMobileNo.content())
         setPaymentProofImage()
         // dev settings
         //setTestData()
@@ -197,6 +199,25 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         viewModel.getChannelPartnerPhoneNo()?.let {
             binding.channelPartnerMobileNo.setText(it)
         }
+        binding.channelPartnerMobileNo.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                userTypedPartnerNo: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                setChannelPartnerVerifiedIcon(userTypedPartnerNo.toString())
+            }
+        })
     }
 
     private fun setPaymentReferenceNo() {
@@ -211,8 +232,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         }
     }
 
-    private fun setChannelPartnerVerifiedIcon() {
-        if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())) {
+    private fun setChannelPartnerVerifiedIcon(mobileNo: String) {
+        if (viewModel.isChannelPartnerVerified(mobileNo)) {
             Timber.tag(LogConstant.PAYMENT_INFO)
                 .d("channel partner verified, showing verified icon")
             binding.partnerVerifiedIcon.show()
