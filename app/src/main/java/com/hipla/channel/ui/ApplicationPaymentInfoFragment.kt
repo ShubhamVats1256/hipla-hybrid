@@ -356,7 +356,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             return false
         }
         if (viewModel.isPaymentProofUploaded().not()) {
-            requireContext().showToastErrorMessage("kindly ${getPaymentTitle()}")
+            requireContext().showToastErrorMessage("Kindly ${getPaymentTitle()}")
             return false
         }
         return true
