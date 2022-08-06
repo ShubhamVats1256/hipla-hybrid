@@ -93,11 +93,24 @@
         android:drawablePadding="24dp"
         android:gravity="center"
         android:text="@string/date"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textColor="@color/header"
         app:drawableTint="@color/primary"
         app:layout_constraintEnd_toEndOf="@id/pageDivider2"
         app:layout_constraintStart_toEndOf="@+id/pageDivider1"
         app:layout_constraintTop_toTopOf="@id/paymentRefNo" />
+
+
+    <TextView
+        android:id="@+id/uploadProof"
+        style="@style/PrimaryButton"
+        android:text="@string/upload_cheque"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/date"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="@id/pageDivider2" />
 
     <EditText
         android:id="@+id/channelPartnerMobileNo"

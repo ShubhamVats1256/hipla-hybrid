@@ -18,6 +18,7 @@ import org.koin.java.KoinJavaComponent
 import timber.log.Timber
 import java.io.OutputStream
 import java.net.URL
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.net.ssl.HttpsURLConnection
 
 class ApplicationPaymentInfoViewModel : BaseViewModel() {
@@ -28,6 +29,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var imageUploadUrl: String? = null
     var channelPartnerMobileNo: String? = null
     var channelPartnerDetails: UserDetails? = null
+    private var isProofUploadedAtomic = AtomicBoolean(false)
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -42,6 +44,10 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                 .d("imageUploadUrl ${it.imageUploadUrl}")
         }
     }
+
+    fun isPaymentProofUploaded() = isProofUploadedAtomic.get()
+
+    fun isChannelPartnerVerified(channelPartnerMobileNo : String) = channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id
@@ -164,6 +170,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                 val responseCode: Int = connection.responseCode
                 Timber.tag("testfx").d("response code $responseCode")
                 Timber.tag("testfx").d("image uploaded, now verify in backend")
+                isProofUploadedAtomic.getAndSet(true)
                 appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_SUCCESSFULLY))
             } catch (e: Exception) {
                 appEvent.tryEmit(AppEvent(IMAGE_UPLOADED_FAILED))

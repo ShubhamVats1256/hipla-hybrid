@@ -192,7 +192,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                     }
                 }
             }
-            setContinueBtnText(getPaymentTitle())
+            setUploadButtonText(getPaymentTitle())
         }
     }
 
@@ -216,10 +216,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         }
     }
 
-    private fun setContinueBtnText(message: String) {
-        if (isChannelPartnerOTPVerified) {
-            binding.continueBtn.text = message
-        }
+    private fun setUploadButtonText(message: String) {
+        binding.uploadProof.text = message
     }
 
     private fun setReferenceEditTextHint(hint: String) {
@@ -228,14 +226,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setContinueBtn() {
         binding.continueBtn.setOnClickListener {
-            if (isMandatoryInfoFilled()) {
-                if (isChannelPartnerOTPVerified) {
-                    takePicture()
-                } else {
-                    Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
-                    viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
-                }
-            }
+            Timber.tag(LogConstant.PAYMENT_INFO).d("payment mandatory field filled")
+            viewModel.generateChannelPartnerOTP(binding.channelPartnerMobileNo.content())
         }
     }
 
