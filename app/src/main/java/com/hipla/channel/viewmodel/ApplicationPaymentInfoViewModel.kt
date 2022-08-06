@@ -45,10 +45,17 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         }
     }
 
+    fun getPaymentProofReadUrl() = applicationCreateResponse?.imageReadUrl
+
     fun isPaymentProofUploaded() = isProofUploadedAtomic.get()
 
-    fun isChannelPartnerVerified(channelPartnerMobileNo: String?) =
-        channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
+    fun isChannelPartnerVerified(channelPartnerMobileNo: String?): Boolean {
+        Timber.tag(LogConstant.PAYMENT_INFO)
+            .d("check if channel partner verified for mobile no $channelPartnerMobileNo")
+        Timber.tag(LogConstant.PAYMENT_INFO)
+            .d("channel partner mobile number saved in view model $channelPartnerMobileNo")
+        return channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
+    }
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id

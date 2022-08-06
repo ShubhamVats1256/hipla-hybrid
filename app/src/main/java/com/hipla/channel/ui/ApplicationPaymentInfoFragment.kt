@@ -20,7 +20,9 @@ import com.hipla.channel.R
 import com.hipla.channel.common.KEY_APP_REQ
 import com.hipla.channel.common.KEY_PARTNER
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
+import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.common.image.setRoundedImageWithDefaultCornerRadius
 import com.hipla.channel.databinding.DialogUploadPhotoBinding
 import com.hipla.channel.databinding.FragmentApplicationPaymentInfoBinding
@@ -28,6 +30,7 @@ import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
 import com.hipla.channel.widget.OTPDialog
+import org.koin.android.ext.android.bind
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -47,6 +50,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         viewModel.extractArguments(arguments)
         observeViewModel()
         setUI()
+        requireContext().showToastSuccessMessage("on view created")
     }
 
     private fun observeViewModel() {
@@ -71,7 +75,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                             IMAGE_UPLOADED_SUCCESSFULLY -> {
                                 requireActivity().IActivityHelper().dismiss()
                                 requireContext().showToastSuccessMessage("Proof uploaded successfully")
-                                setPaymentProof((it as AppEventWithData<*>).extras as? String)
+                                setPaymentProof()
                             }
                             OTP_GENERATE_FAILED -> {
                                 requireActivity().IActivityHelper().dismiss()
@@ -114,8 +118,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         updateApplicationRequest()
     }
 
-    private fun setPaymentProof(proofUrl: String?) {
-         binding.paymentProofIv.setRoundedImageWithDefaultCornerRadius(proofUrl)
+    private fun setPaymentProof() {
+        tryCatch {
+            binding.paymentProofIv.setRoundedImageWithDefaultCornerRadius(viewModel.getPaymentProofReadUrl())
+        }
     }
 
     private fun updateApplicationRequest() {
@@ -172,8 +178,20 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setBackBtn()
         setDate()
         setUploadButton()
+        setChannelPartnerVerifiedIcon()
+        setPaymentProofImage()
         // dev settings
         setTestData()
+    }
+
+    private fun setChannelPartnerVerifiedIcon() {
+        if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())) {
+            Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner verified, showing verified icon")
+            binding.partnerVerifiedIcon.show()
+        } else {
+            Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner not verified, hiding verified icon")
+            binding.partnerVerifiedIcon.hide()
+        }
     }
 
     // dev settings
@@ -181,6 +199,10 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         binding.amountPayable.setText("100000")
         binding.paymentRefNo.setText("Ref1999")
         binding.channelPartnerMobileNo.setText("9962222626")
+    }
+
+    private fun setPaymentProofImage() {
+        binding.paymentProofIv.setRoundedImageWithDefaultCornerRadius(viewModel.getPaymentProofReadUrl());
     }
 
     private fun setUploadButton() {
