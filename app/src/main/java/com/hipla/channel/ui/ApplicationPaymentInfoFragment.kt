@@ -162,6 +162,15 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setBackBtn()
         setDate()
         setUploadButton()
+        // dev settings
+        setTestData()
+    }
+
+    // dev settings
+    fun setTestData() {
+        binding.amountPayable.setText("100000")
+        binding.paymentRefNo.setText("Ref1999")
+        binding.channelPartnerMobileNo.setText("9962222626")
     }
 
     private fun setUploadButton() {
@@ -173,7 +182,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun setDate() {
         binding.date.setOnClickListener {
             val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
-            materialDateBuilder.setTitleText("Select Payment Date");
+            materialDateBuilder.setTitleText("Select Payment Date")
             val picker = materialDateBuilder.build()
             picker.show(requireActivity().supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {

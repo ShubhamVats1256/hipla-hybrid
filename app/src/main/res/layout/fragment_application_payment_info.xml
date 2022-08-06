@@ -105,6 +105,7 @@
     <TextView
         android:id="@+id/uploadProof"
         style="@style/PrimaryButton"
+        android:textSize="24sp"
         android:text="@string/upload_cheque"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/date"
@@ -138,7 +139,7 @@
     <TextView
         android:id="@+id/continueBtn"
         style="@style/PrimaryButton"
-        android:text="@string/verify_channel_partner_no"
+        android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/backBtn" />

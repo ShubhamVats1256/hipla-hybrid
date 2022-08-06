@@ -41,7 +41,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
         }
-        binding.continueBtn.setOnClickListener {
+/*        binding.continueBtn.setOnClickListener {
             if (isMandatoryCustomerInfoFilled()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
                 applicationCustomerInfoViewModel.createApplicationRequest(
@@ -50,6 +50,23 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                     customerPhone = binding.customerNumber.content(),
                     panNo =  binding.panCardNumber.content(),
                     floorId = applicationCustomerInfoViewModel.getSelectedFloorId()!!
+                )
+            } else {
+                Timber.tag(LogConstant.CUSTOMER_INFO)
+                    .e("validation failed, cannot create application")
+            }
+        }*/
+
+        // dev settings
+        binding.continueBtn.setOnClickListener {
+            if (isMandatoryCustomerInfoFilled().not()) {
+                Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
+                applicationCustomerInfoViewModel.createApplicationRequest(
+                    customerFirstName = "Shiva",
+                    customerLastName = "Guru",
+                    customerPhone = "9916555886",
+                    panNo = "DYESSS123234",
+                    floorId = 1
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)

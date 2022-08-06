@@ -43,7 +43,9 @@ class SalesUserFragment : Fragment(R.layout.fragment_application) {
         binding = FragmentApplicationBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-            viewModel.generateOTP(it)
+            // dev setting
+            // viewModel.generateOTP(it)
+            launchCustomerInfoFragment("105")
         }
         setRecyclerView()
         observeViewModel()
