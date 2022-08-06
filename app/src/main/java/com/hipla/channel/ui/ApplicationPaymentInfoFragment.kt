@@ -30,7 +30,6 @@ import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
 import com.hipla.channel.widget.OTPDialog
-import org.koin.android.ext.android.bind
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -132,7 +131,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         ).also { appRequest ->
             findNavController().run {
                 Timber.tag(LogConstant.CUSTOMER_INFO)
-                    .d("partner mobile no ${viewModel.channelPartnerMobileNo}")
+                    .d("partner mobile no ${viewModel.getChannelPartnerPhoneNo()}")
                 if (isCurrentDestination(R.id.paymentInfoFragment)) {
                     navigate(
                         resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
@@ -174,22 +173,52 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setUI() {
         setContinueBtn()
-        setPaymentToggle()
         setBackBtn()
         setDate()
         setUploadButton()
+        setAmountPayable()
+        setPaymentToggle()
+        setPaymentReferenceNo()
+        setChannelPartnerMobileNo()
+        setPaymentDate()
         setChannelPartnerVerifiedIcon()
         setPaymentProofImage()
         // dev settings
         //setTestData()
     }
 
+    private fun setPaymentDate() {
+        viewModel.getPaymentDate()?.let {
+            binding.paymentDate.text = it
+        }
+    }
+
+    private fun setChannelPartnerMobileNo() {
+        viewModel.getChannelPartnerPhoneNo()?.let {
+            binding.channelPartnerMobileNo.setText(it)
+        }
+    }
+
+    private fun setPaymentReferenceNo() {
+        viewModel.getPaymentReferenceNo()?.let {
+            binding.paymentRefNo.setText(it)
+        }
+    }
+
+    private fun setAmountPayable() {
+        viewModel.getAmountPayable()?.let {
+            binding.amountPayable.setText(it)
+        }
+    }
+
     private fun setChannelPartnerVerifiedIcon() {
         if (viewModel.isChannelPartnerVerified(binding.channelPartnerMobileNo.content())) {
-            Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner verified, showing verified icon")
+            Timber.tag(LogConstant.PAYMENT_INFO)
+                .d("channel partner verified, showing verified icon")
             binding.partnerVerifiedIcon.show()
         } else {
-            Timber.tag(LogConstant.PAYMENT_INFO).d("channel partner not verified, hiding verified icon")
+            Timber.tag(LogConstant.PAYMENT_INFO)
+                .d("channel partner not verified, hiding verified icon")
             binding.partnerVerifiedIcon.hide()
         }
     }
@@ -212,14 +241,15 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setDate() {
-        binding.date.setOnClickListener {
+        binding.paymentDate.setOnClickListener {
             val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
             materialDateBuilder.setTitleText("Select Payment Date")
             val picker = materialDateBuilder.build()
             picker.show(requireActivity().supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {
                 val simpleFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-                binding.date.text = simpleFormat.format(Date(it));
+                viewModel.setPaymentDate(simpleFormat.format(Date(it)))
+                binding.paymentDate.text = viewModel.getPaymentDate()
             }
         }
     }
@@ -240,6 +270,23 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 }
             }
             setUploadButtonText(getPaymentTitle())
+        }
+        viewModel.getSelectedPaymentType().let {
+            binding.paymentToggle.check(getSelectedPaymentCheckedId(it))
+        }
+    }
+
+    private fun getSelectedPaymentCheckedId(selectedPaymentType: PaymentType): Int {
+        return when (selectedPaymentType) {
+            PaymentType.Cash() -> {
+                R.id.cash
+            }
+            PaymentType.Rtgs() -> {
+                R.id.rtgs
+            }
+            else -> {
+                R.id.cheque
+            }
         }
     }
 
@@ -318,7 +365,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     private fun showUploadChequeDialog(bitmap: Bitmap) {
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogBinding = DialogUploadPhotoBinding.inflate(requireActivity().layoutInflater)
+            val dialogBinding =
+                DialogUploadPhotoBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.chequePhoto.setImageBitmap(bitmap)
             dialogBinding.paymentTitle.text = binding.continueBtn.text

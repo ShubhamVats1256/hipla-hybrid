@@ -87,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@id/payment_toggle" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/paymentDate"
         style="@style/Hipla.EditText"
         android:layout_height="wrap_content"
         android:drawablePadding="24dp"
@@ -108,7 +108,7 @@
         android:textSize="24sp"
         android:text="@string/upload_cheque"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/date"
+        app:layout_constraintTop_toTopOf="@id/paymentDate"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="@id/pageDivider2" />
@@ -154,7 +154,7 @@
         android:id="@+id/paymentProofIv"
         app:layout_constraintStart_toEndOf="@id/pageDivider1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/date"
+        app:layout_constraintBottom_toTopOf="@id/paymentDate"
         android:layout_height="0dp"
         android:contentDescription="payment proof" />
 

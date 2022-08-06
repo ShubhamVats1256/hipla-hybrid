@@ -27,9 +27,9 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var applicationRequest: ApplicationRequest? = null
     private var applicationCreateResponse: ApplicationCreateResponse? = null
     private var imageUploadUrl: String? = null
-    var channelPartnerMobileNo: String? = null
     var channelPartnerDetails: UserDetails? = null
     private var isProofUploadedAtomic = AtomicBoolean(false)
+    private var paymentDate : String? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
@@ -45,17 +45,31 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         }
     }
 
+    fun setPaymentDate(paymentDate : String) {
+        this.paymentDate = paymentDate
+    }
+
+    fun getPaymentDate() =  this.paymentDate
+
     fun getPaymentProofReadUrl() = applicationCreateResponse?.imageReadUrl
 
     fun isPaymentProofUploaded() = isProofUploadedAtomic.get()
 
     fun isChannelPartnerVerified(channelPartnerMobileNo: String?): Boolean {
         Timber.tag(LogConstant.PAYMENT_INFO)
-            .d("check if channel partner verified for mobile no $channelPartnerMobileNo")
+            .d("check if channel partner verified for mobile no : $channelPartnerMobileNo")
         Timber.tag(LogConstant.PAYMENT_INFO)
-            .d("channel partner mobile number saved in view model ${channelPartnerDetails?.phoneNumber}")
+            .d("channel partner mobile number saved in view model : ${channelPartnerDetails?.phoneNumber}")
         return channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
     }
+
+    fun getAmountPayable()  = applicationRequest?.amountPayable
+
+    fun getPaymentReferenceNo()  = applicationRequest?.paymentDetails
+
+    fun getSelectedPaymentType() : PaymentType = applicationRequest?.paymentType ?: PaymentType.Cheque()
+
+    fun getChannelPartnerPhoneNo()  = channelPartnerDetails?.phoneNumber
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id
@@ -77,8 +91,6 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                             Timber.tag(LogConstant.PAYMENT_INFO)
                                 .d("channel partnerId updated to application request")
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
-                            this@ApplicationPaymentInfoViewModel.channelPartnerMobileNo =
-                                channelPartnerMobileNo
                             launchIO {
                                 with(hiplaRepo.fetchUserDetails(channelPartnerUserId!!)) {
                                     ifSuccessful {
