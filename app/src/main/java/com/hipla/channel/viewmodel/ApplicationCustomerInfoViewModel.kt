@@ -3,12 +3,16 @@ package com.hipla.channel.viewmodel
 import android.os.Bundle
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.KEY_UNIT
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.ApplicationCreateResponse
+import com.hipla.channel.extension.isApplication
+import com.hipla.channel.extension.isInventory
 import com.hipla.channel.extension.toFlowConfig
+import com.hipla.channel.extension.toUnitInfo
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
@@ -20,23 +24,18 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     var floorList: List<FloorDetails> = generateFloors()
     var applicationCreateResponse: ApplicationCreateResponse? = null
     private var applicationRequest: ApplicationRequest? = null
-    private lateinit var flowConfig: FlowConfig
+    lateinit var flowConfig: FlowConfig
+    var unitInfo: UnitInfo? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.let {
             salesUserId = it.getString(KEY_SALES_USER_ID)
             flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
-            Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
+            unitInfo = it.getString(KEY_UNIT)?.toUnitInfo()
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("Unit selected: $unitInfo")
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("Flow config: $flowConfig")
         }
     }
-
-    fun selectedFloorId(selectionFloorDetailsIndex: Int) {
-        selectedFloorPreference = floorList[selectionFloorDetailsIndex]
-        Timber.tag(LogConstant.CUSTOMER_INFO)
-            .d("floor preference ${selectedFloorPreference?.name}")
-    }
-
-    fun getCustomerFloorPreferenceId() = selectedFloorPreference?.id
 
     fun getCustomerFirstName() = applicationRequest?.customerName
 
@@ -46,7 +45,35 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
 
     fun getCustomerMobileNo() = applicationRequest?.customerPhoneNumber
 
-    fun isFloorPreferenceSelected() = selectedFloorPreference != null
+    fun isFloorPreferenceSelected(): Boolean {
+        return when {
+            flowConfig.isApplication() -> {
+                selectedFloorPreference != null
+            }
+            flowConfig.isInventory() -> {
+                unitInfo != null
+            }
+            else -> false
+        }
+    }
+
+    // selectedFloorId function is used only in application flow
+    fun selectedFloorId(selectionFloorDetailsIndex: Int) {
+        selectedFloorPreference = floorList[selectionFloorDetailsIndex]
+        Timber.tag(LogConstant.CUSTOMER_INFO)
+            .d("floor preference ${selectedFloorPreference?.name}")
+    }
+
+    // getCustomerFloorPreferenceId function is used only in application flow
+    fun getCustomerFloorPreferenceId(): Int {
+        return if (flowConfig.isApplication()) {
+            selectedFloorPreference?.id!!
+        } else if (flowConfig.isInventory()) {
+            unitInfo!!.floorId
+        } else {
+            return -1
+        }
+    }
 
     private fun createApplicationInServer(applicationRequest: ApplicationRequest?) {
         launchIO {
@@ -104,7 +131,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             .d("floor preference Id : $floorId")
         Timber.tag(LogConstant.CUSTOMER_INFO)
             .d("application created by  : $salesUserId")
-        ApplicationRequest(tag = flowConfig.tag, type =  flowConfig.type).apply {
+        ApplicationRequest(tag = flowConfig.tag, type = flowConfig.type).apply {
             this.customerName = customerFirstName
             this.customerLastName = customerLastName
             this.customerPhoneNumber = customerPhone

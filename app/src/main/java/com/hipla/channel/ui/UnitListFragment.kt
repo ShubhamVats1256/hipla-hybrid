@@ -136,7 +136,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
 
     private fun showBookingConfirmationDialog(unitInfo: UnitInfo) {
         AlertDialog.Builder(requireContext())
-            .setTitle("${unitInfo.name} Selected")
+            .setTitle("${unitInfo.name} selected")
             .setMessage("Are you sure you want to continue booking ${unitInfo.name}") // Specifying a listener allows you to take an action before dismissing the dialog.
             .setPositiveButton(
                 android.R.string.yes

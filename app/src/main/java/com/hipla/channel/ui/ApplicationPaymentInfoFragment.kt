@@ -19,9 +19,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
-import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.KEY_PARTNER
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.common.Utils.tryCatch
@@ -145,6 +143,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 KEY_PARTNER,
                                 viewModel.channelPartnerDetails?.toJsonString()
                             )
+                            putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
+                            putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                         }
                     )
                 }
@@ -173,6 +173,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setUI() {
+        setHeader()
         setContinueBtn()
         setBackBtn()
         setDate()
@@ -186,6 +187,20 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setPaymentProofImage()
         // dev settings
         //setTestData()
+    }
+
+    private fun setHeader() {
+        binding.header.text = getFormTitle()
+    }
+
+    private fun getFormTitle(): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            "Payment Information"
+        } else if (viewModel.flowConfig.isInventory()) {
+            "Booking for ${viewModel.unitInfo?.name}"
+        } else {
+            Constant.EMPTY_STRING
+        }
     }
 
     private fun setPaymentDate() {

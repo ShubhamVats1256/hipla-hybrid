@@ -2,9 +2,7 @@ package com.hipla.channel.viewmodel
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import com.hipla.channel.common.KEY_APPLICATION_SERVER_INF0
-import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
@@ -13,6 +11,8 @@ import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.UserDetails
 import com.hipla.channel.extension.toApplicationRequest
 import com.hipla.channel.extension.toApplicationServerInfo
+import com.hipla.channel.extension.toFlowConfig
+import com.hipla.channel.extension.toUnitInfo
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
@@ -29,27 +29,35 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var imageUploadUrl: String? = null
     var channelPartnerDetails: UserDetails? = null
     private var isProofUploadedAtomic = AtomicBoolean(false)
-    private var paymentDate : String? = null
+    private var paymentDate: String? = null
+    var unitInfo: UnitInfo? = null
+    lateinit var flowConfig: FlowConfig
 
     fun extractArguments(arguments: Bundle?) {
-        arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
-            this.applicationRequest = it
-            Timber.tag(LogConstant.PAYMENT_INFO)
-                .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
-        }
-        arguments?.getString(KEY_APPLICATION_SERVER_INF0)?.toApplicationServerInfo()?.let {
-            this.applicationCreateResponse = it
-            imageUploadUrl = it.imageUploadUrl
-            Timber.tag(LogConstant.PAYMENT_INFO)
-                .d("imageUploadUrl ${it.imageUploadUrl}")
+        arguments?.let {
+            it.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
+                this.applicationRequest = it
+                Timber.tag(LogConstant.PAYMENT_INFO)
+                    .d("application request with id ${it.id} for customer : ${it.customerName} received in payment flow")
+            }
+            it.getString(KEY_APPLICATION_SERVER_INF0)?.toApplicationServerInfo()?.let {
+                this.applicationCreateResponse = it
+                imageUploadUrl = it.imageUploadUrl
+                Timber.tag(LogConstant.PAYMENT_INFO)
+                    .d("imageUploadUrl ${it.imageUploadUrl}")
+            }
+            unitInfo = it.getString(KEY_UNIT)?.toUnitInfo()
+            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
+            Timber.tag(LogConstant.PAYMENT_INFO).d("Unit selected: $unitInfo")
+            Timber.tag(LogConstant.PAYMENT_INFO).d("Flow config: $flowConfig")
         }
     }
 
-    fun setPaymentDate(paymentDate : String) {
+    fun setPaymentDate(paymentDate: String) {
         this.paymentDate = paymentDate
     }
 
-    fun getPaymentDate() =  this.paymentDate
+    fun getPaymentDate() = this.paymentDate
 
     fun getPaymentProofReadUrl() = applicationCreateResponse?.imageReadUrl
 
@@ -63,13 +71,14 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         return channelPartnerDetails?.phoneNumber == channelPartnerMobileNo
     }
 
-    fun getAmountPayable()  = applicationRequest?.amountPayable
+    fun getAmountPayable() = applicationRequest?.amountPayable
 
-    fun getPaymentReferenceNo()  = applicationRequest?.paymentDetails
+    fun getPaymentReferenceNo() = applicationRequest?.paymentDetails
 
-    fun getSelectedPaymentType() : PaymentType = applicationRequest?.paymentType ?: PaymentType.Cheque()
+    fun getSelectedPaymentType(): PaymentType =
+        applicationRequest?.paymentType ?: PaymentType.Cheque()
 
-    fun getChannelPartnerPhoneNo()  = channelPartnerDetails?.phoneNumber
+    fun getChannelPartnerPhoneNo() = channelPartnerDetails?.phoneNumber
 
     fun verifyChannelPartnerOTP(otp: String, channelPartnerMobileNo: String) {
         val channelPartnerUserId = generateOTPResponse?.recordReference?.id

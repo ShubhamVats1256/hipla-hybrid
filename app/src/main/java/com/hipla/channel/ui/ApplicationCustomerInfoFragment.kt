@@ -12,9 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
-import com.hipla.channel.common.KEY_APPLICATION_SERVER_INF0
-import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
+import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.databinding.FragmentApplicationCustomerInfoBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
@@ -23,20 +22,21 @@ import timber.log.Timber
 
 class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_customer_info) {
 
-    private lateinit var applicationCustomerInfoViewModel: ApplicationCustomerInfoViewModel
+    private lateinit var viewModel: ApplicationCustomerInfoViewModel
     private lateinit var binding: FragmentApplicationCustomerInfoBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentApplicationCustomerInfoBinding.bind(view)
-        applicationCustomerInfoViewModel =
+        viewModel =
             ViewModelProvider(this)[ApplicationCustomerInfoViewModel::class.java]
-        applicationCustomerInfoViewModel.extractArguments(arguments)
+        viewModel.extractArguments(arguments)
         observeViewModel()
         setUI()
     }
 
     private fun setUI() {
+        setHeader()
         setBackBtn()
         setContinueBtn()
         setCustomerFirstName()
@@ -63,6 +63,20 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         }*/
     }
 
+    private fun setHeader() {
+        binding.header.text = getFormTitle()
+    }
+
+    private fun getFormTitle(): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            "Application Form"
+        } else if (viewModel.flowConfig.isInventory()) {
+            "Booking for ${viewModel.unitInfo?.name}"
+        } else {
+            Constant.EMPTY_STRING
+        }
+    }
+
     private fun setBackBtn() {
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
@@ -73,12 +87,12 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         binding.continueBtn.setOnClickListener {
             if (isMandatoryCustomerInfoFilled()) {
                 Timber.tag(LogConstant.CUSTOMER_INFO).d("can create application")
-                applicationCustomerInfoViewModel.createApplicationRequest(
+                viewModel.createApplicationRequest(
                     customerFirstName = binding.customerFirstName.content(),
                     customerLastName = binding.customerLastName.content(),
                     customerPhone = binding.customerNumber.content(),
                     panNo = binding.panCardNumber.content(),
-                    floorId = applicationCustomerInfoViewModel.getCustomerFloorPreferenceId()!!
+                    floorId = viewModel.getCustomerFloorPreferenceId()!!
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)
@@ -88,25 +102,25 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setPanNo() {
-        applicationCustomerInfoViewModel.getCustomerPanNo()?.let {
+        viewModel.getCustomerPanNo()?.let {
             binding.panCardNumber.setText(it)
         }
     }
 
     private fun setCustomerPhone() {
-        applicationCustomerInfoViewModel.getCustomerMobileNo()?.let {
+        viewModel.getCustomerMobileNo()?.let {
             binding.customerNumber.setText(it)
         }
     }
 
     private fun setCustomerLastName() {
-        applicationCustomerInfoViewModel.getCustomerLastName()?.let {
+        viewModel.getCustomerLastName()?.let {
             binding.customerLastName.setText(it)
         }
     }
 
     private fun setCustomerFirstName() {
-        applicationCustomerInfoViewModel.getCustomerFirstName()?.let {
+        viewModel.getCustomerFirstName()?.let {
             binding.customerFirstName.setText(it)
         }
     }
@@ -124,8 +138,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                         )
                         putString(
                             KEY_APPLICATION_SERVER_INF0,
-                            applicationCustomerInfoViewModel.applicationCreateResponse?.toJsonString()
+                            viewModel.applicationCreateResponse?.toJsonString()
                         )
+                        putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
+                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                     }
                 )
             }
@@ -153,7 +169,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             requireContext().showToastErrorMessage("Customer  PAN number  is mandatory")
             return false
         }
-        if (applicationCustomerInfoViewModel.isFloorPreferenceSelected().not()) {
+        if (viewModel.isFloorPreferenceSelected().not()) {
             requireContext().showToastErrorMessage("Kindly select floor preference")
             return false
         }
@@ -164,7 +180,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launchSafely {
-                    applicationCustomerInfoViewModel.appEvent.collect {
+                    viewModel.appEvent.collect {
                         when (it.id) {
                             APP_EVENT_APPLICATION_SUCCESS -> {
                                 requireActivity().IActivityHelper().dismiss()
@@ -187,29 +203,33 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun setFloorPreference() {
-        val floorAdapter: ArrayAdapter<String> =
-            ArrayAdapter(
-                requireContext(),
-                R.layout.autocomplete_list_item,
-                applicationCustomerInfoViewModel.floorList.map { it.name })
-        binding.floorPreference.run {
-            setAdapter(floorAdapter)
-            setOnTouchListener { _, motionEvent ->
-                if (motionEvent.action == ACTION_UP) {
-                    showDropDown()
+        if (viewModel.flowConfig.isApplication()) {
+            val floorAdapter: ArrayAdapter<String> =
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.autocomplete_list_item,
+                    viewModel.floorList.map { it.name })
+            binding.floorPreference.run {
+                setAdapter(floorAdapter)
+                setOnTouchListener { _, motionEvent ->
+                    if (motionEvent.action == ACTION_UP) {
+                        showDropDown()
+                    }
+                    return@setOnTouchListener false;
                 }
-                return@setOnTouchListener false;
+                onItemClickListener =
+                    AdapterView.OnItemClickListener { _, _, position, _ ->
+                        viewModel.selectedFloorId(position)
+                    }
             }
-            onItemClickListener =
-                AdapterView.OnItemClickListener { _, _, position, _ ->
-                    applicationCustomerInfoViewModel.selectedFloorId(position)
-                }
-        }
-        applicationCustomerInfoViewModel.getCustomerFloorPreferenceId()?.let {
-            binding.floorPreference.setText(
-                binding.floorPreference.adapter.getItem(it).toString(),
-                false
-            )
+            viewModel.getCustomerFloorPreferenceId()?.let {
+                binding.floorPreference.setText(
+                    binding.floorPreference.adapter.getItem(it).toString(),
+                    false
+                )
+            }
+        } else {
+            binding.floorPreference.hide()
         }
     }
 }
