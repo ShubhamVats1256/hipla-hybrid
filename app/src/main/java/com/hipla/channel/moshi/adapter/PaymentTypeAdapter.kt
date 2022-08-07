@@ -13,7 +13,7 @@ object PaymentTypeAdapter {
     @FromJson
     fun stringToPaymentType(paymentTypeId: String): PaymentType {
         return when (paymentTypeId) {
-            PaymentType.Cash().typeId.toString() -> PaymentType.Cash()
+            PaymentType.DD().typeId.toString() -> PaymentType.DD()
             PaymentType.Cheque().typeId.toString() -> PaymentType.Cheque()
             PaymentType.Rtgs().typeId.toString() -> PaymentType.Rtgs()
             else -> PaymentType.Unknown()

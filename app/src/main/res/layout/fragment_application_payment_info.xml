@@ -56,9 +56,9 @@
         >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/cash"
+            android:id="@+id/dd"
             style="@style/ToggleButton.Style"
-            android:text="@string/cash" />
+            android:text="@string/demand_draft" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cheque"

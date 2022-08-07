@@ -20,6 +20,7 @@
 
     <string name="rtgs">RTGS</string>
     <string name="cash">Cash</string>
+    <string name="demand_draft">DD</string>
     <string name="date">Date</string>
     <string name="amount_payable">Amount Payable*</string>
     <string name="pan">Pan Card Number*</string>
@@ -51,9 +52,10 @@
     <string name="application_confirm_customer_name">Customer Name : %1$s\n</string>
     <string name="confirm_channel_partner_no">Channel Partner Mobile No: %1$s\n</string>
     <string name="confirm_amount_payable">Amount Payable :%1$s\n</string>
-    <string name="upload_cash">Upload Cash Receipt</string>
+    <string name="upload_dd">Upload DD Receipt</string>
     <string name="upload_cheque">Upload Cheque Photo</string>
     <string name="your_rtgs_photo">Upload RTGS Photo</string>
+    <string name="upload_receipt">Upload Receipt</string>
     <string name="clear">Clear</string>
     <string name="okay">Okay</string>
 

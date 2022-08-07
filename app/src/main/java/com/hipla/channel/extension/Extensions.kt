@@ -173,6 +173,10 @@ fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     }
 }
 
+fun EditText.isValidPAN(): Boolean {
+    return this.text.trim().length == 10
+}
+
 fun EditText.hasValidData(): Boolean {
     return this.text.trim().isEmpty().not()
 }

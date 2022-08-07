@@ -169,6 +169,11 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             requireContext().showToastErrorMessage("Customer  PAN number  is mandatory")
             return false
         }
+        if (binding.panCardNumber.isValidPAN().not()) {
+            binding.panCardNumber.error = "Customer PAN should have 10 digits";
+            requireContext().showToastErrorMessage("Customer PAN should have 10 digits")
+            return false
+        }
         if (viewModel.isFloorPreferenceSelected().not()) {
             requireContext().showToastErrorMessage("Kindly select floor preference")
             return false
