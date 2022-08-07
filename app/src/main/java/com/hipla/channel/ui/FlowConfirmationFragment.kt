@@ -70,10 +70,6 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
                 applicationSuccessDialog?.dismiss()
                 goHome()
             }
-            dialogBinding.appInfo.text = getString(
-                R.string.application_confirm_application_no,
-                applicationRequest.id.toString()
-            )
             applicationSuccessDialog = dialogBuilder.show()
             applicationSuccessDialog?.setCancelable(false)
             applicationSuccessDialog?.setCanceledOnTouchOutside(false)
