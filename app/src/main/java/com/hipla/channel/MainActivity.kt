@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         inputMethodManager = getSystemService(
             Context.INPUT_METHOD_SERVICE
         ) as InputMethodManager

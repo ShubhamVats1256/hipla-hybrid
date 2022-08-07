@@ -9,6 +9,7 @@ import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.databinding.FragmentHomeBinding
 import com.hipla.channel.entity.FlowConfig
 import com.hipla.channel.extension.isCurrentDestination
+import com.hipla.channel.extension.showToastErrorMessage
 import com.hipla.channel.extension.toJsonString
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -19,6 +20,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         setUI()
+        requireContext().showToastErrorMessage("t")
     }
 
     private fun setUI() {

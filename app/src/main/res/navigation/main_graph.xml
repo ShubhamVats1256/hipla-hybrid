@@ -31,7 +31,7 @@
 
     <action
         android:id="@+id/action_homeFragment_to_salesUserFragment"
-        app:destination="@id/customerInfoFragment"
+        app:destination="@id/salesUserFragment"
         app:popUpTo="@+id/homeFragment" />
 
     <action
