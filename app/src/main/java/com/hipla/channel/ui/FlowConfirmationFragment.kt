@@ -179,7 +179,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             .d("setting info customer name ${applicationRequest.customerName}r")
         Timber.tag(LogConstant.APP_CONFIRM)
             .d("setting info application no ${applicationRequest.id}r")
-        val flowConfirmationMessage = "Validate your details \n"
+        val flowConfirmationMessage = "Validate your details \n\n"
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "

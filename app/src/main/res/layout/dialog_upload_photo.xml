@@ -58,13 +58,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/upload_cheque_instruction_bg"
-        app:layout_constraintBottom_toBottomOf="@id/cheque_instruction"
+        app:layout_constraintBottom_toBottomOf="@id/upload_instruction"
         app:layout_constraintEnd_toEndOf="@id/chequePhoto"
         app:layout_constraintStart_toStartOf="@id/chequePhoto"
-        app:layout_constraintTop_toTopOf="@id/cheque_instruction" />
+        app:layout_constraintTop_toTopOf="@id/upload_instruction" />
 
     <TextView
-        android:id="@+id/cheque_instruction"
+        android:id="@+id/upload_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="20dp"
@@ -86,7 +86,7 @@
         style="@style/PrimaryButton"
         android:layout_marginTop="32dp"
         android:text="@string/upload"
-        app:layout_constraintTop_toBottomOf="@id/cheque_instruction"
+        app:layout_constraintTop_toBottomOf="@id/upload_instruction"
         app:layout_constraintEnd_toEndOf="@id/chequePhoto"
         app:layout_constraintStart_toStartOf="@id/chequePhoto" />
 

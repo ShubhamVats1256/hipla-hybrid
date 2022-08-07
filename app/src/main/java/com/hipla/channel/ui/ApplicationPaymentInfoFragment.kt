@@ -289,7 +289,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             // prepare date range
             val constraintsBuilderRange = CalendarConstraints.Builder()
             val oneDayInMillis: Long = 1000 * 60 * 60 * 24
-            val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 2 // days from today
+            val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 3// days from today
             val dateValidatorMax: DateValidator =
                 DateValidatorPointBackward.before(endDateInMs)
             val listValidators = ArrayList<DateValidator>()
