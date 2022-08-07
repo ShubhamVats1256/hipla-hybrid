@@ -20,7 +20,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         setUI()
-        requireContext().showToastErrorMessage("t")
     }
 
     private fun setUI() {

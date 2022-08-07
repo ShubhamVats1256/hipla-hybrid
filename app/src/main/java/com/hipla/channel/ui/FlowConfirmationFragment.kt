@@ -180,7 +180,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
         if (otpConfirmDialog?.isShowing() != true) {
             otpConfirmDialog = OTPDialog(
                 userId = customerUserId,
-                dialogTitle = getString(R.string.verify_channel_partner_otp),
+                dialogTitle = getString(R.string.verify_customer_otp),
                 activityReference = WeakReference(requireActivity()),
                 onSubmitListener = object : OTPDialog.OnOTPSubmitListener {
                     override fun onSubmit(otp: String) {
