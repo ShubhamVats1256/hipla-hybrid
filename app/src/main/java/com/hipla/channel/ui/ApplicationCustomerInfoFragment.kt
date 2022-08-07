@@ -92,7 +92,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                     customerLastName = binding.customerLastName.content(),
                     customerPhone = binding.customerNumber.content(),
                     panNo = binding.panCardNumber.content(),
-                    floorId = viewModel.getCustomerFloorPreferenceId()!!
+                    floorId = viewModel.getCustomerFloorPreferenceId()
                 )
             } else {
                 Timber.tag(LogConstant.CUSTOMER_INFO)
