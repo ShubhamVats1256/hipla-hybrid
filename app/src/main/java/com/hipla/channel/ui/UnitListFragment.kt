@@ -20,10 +20,15 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentUnitListBinding
-import com.hipla.channel.entity.*
-import com.hipla.channel.extension.*
+import com.hipla.channel.entity.UNIT_LIST_ERROR
+import com.hipla.channel.entity.UNIT_LIST_LOADING
+import com.hipla.channel.entity.UNIT_LIST_SUCCESS
+import com.hipla.channel.entity.UnitInfo
+import com.hipla.channel.extension.canLoadNextGridPage
+import com.hipla.channel.extension.isCurrentDestination
+import com.hipla.channel.extension.launchSafely
+import com.hipla.channel.extension.showToastErrorMessage
 import com.hipla.channel.ui.adapter.UnitListAdapter
-import com.hipla.channel.ui.decoration.SalesGridItemDecoration
 import timber.log.Timber
 
 class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
@@ -47,7 +52,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUnitListBinding.bind(view)
         viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
-        unitListAdapter = UnitListAdapter {
+        unitListAdapter = UnitListAdapter(requireContext()) {
             // dev setting
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
             //launchCustomerInfoFragment("105")

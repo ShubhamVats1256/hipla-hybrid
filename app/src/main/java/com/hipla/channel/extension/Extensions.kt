@@ -22,10 +22,7 @@ import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.ToastBinding
 import com.hipla.channel.databinding.ToastErrorBinding
-import com.hipla.channel.entity.AppEvent
-import com.hipla.channel.entity.AppEventWithData
-import com.hipla.channel.entity.ApplicationRequest
-import com.hipla.channel.entity.FlowConfig
+import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ErrorInfo
 import com.hipla.channel.entity.response.ApplicationCreateResponse
@@ -347,4 +344,16 @@ fun FlowConfig.isApplication(): Boolean {
 
 fun FlowConfig.isInventory(): Boolean {
     return this.tag == INVENTORY_TAG
+}
+
+fun UnitInfo.isAvailable(): Boolean {
+    return this.status?.currentStatus == UNIT_AVAILABLE
+}
+
+fun UnitInfo.isBooked(): Boolean {
+    return this.status?.currentStatus == UNIT_BOOKED
+}
+
+fun UnitInfo.isHold(): Boolean {
+    return this.status?.currentStatus == UNIT_HOLD
 }
