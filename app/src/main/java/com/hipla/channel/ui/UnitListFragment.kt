@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.KEY_UNIT_ID
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.Utils.hide
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentUnitListBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
@@ -57,13 +60,11 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
     private fun setRecyclerView() {
         binding.unitRecyclerView.run {
             layoutManager = GridLayoutManager(
-                requireContext(),
-                6,
+                requireContext(), 6,
                 RecyclerView.VERTICAL,
                 false
             )
             adapter = unitListAdapter
-            addItemDecoration(SalesGridItemDecoration())
             addOnScrollListener(scrollListener)
         }
     }
@@ -108,7 +109,13 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
     }
 
     private fun displayUnits(unitInfoList: List<UnitInfo>) {
-        unitListAdapter.append(unitInfoList)
+        if (unitInfoList.isEmpty()) {
+            requireContext().showToastErrorMessage("Units data not found")
+        } else {
+            unitListAdapter.append(unitInfoList)
+            binding.unitRecyclerView.show()
+            binding.unitListLoader.hide()
+        }
     }
 
     private fun launchCustomerInfoFragment(salesUserId: String?) {
@@ -116,9 +123,10 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         findNavController().run {
             if (isCurrentDestination(R.id.salesUserFragment)) {
                 navigate(
-                    resId = R.id.action_salesUserFragment_to_customerInfoFragment,
+                    resId = R.id.action_unitListFragment_to_customerInfoFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
+                        putString(KEY_UNIT_ID, salesUserId)
                         putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                     }
                 )

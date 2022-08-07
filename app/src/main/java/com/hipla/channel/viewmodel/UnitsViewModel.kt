@@ -25,7 +25,7 @@ class UnitsViewModel : BaseViewModel() {
     fun fetchUnits() {
         if (canDownload()) {
             launchIO {
-                Timber.tag(LogConstant.FLOW_APP)
+                Timber.tag(LogConstant.SALES_LIST)
                     .d("downloading unit list for page ${currentPageAtomic.get()}")
                 with(
                     hiplaRepo.fetchUnits(
@@ -35,22 +35,22 @@ class UnitsViewModel : BaseViewModel() {
                     )
                 ) {
                     ifSuccessful {
-                        Timber.tag(LogConstant.FLOW_APP)
+                        Timber.tag(LogConstant.SALES_LIST)
                             .d("downloading unit list successful with size ${it.unitList?.size} for page ${currentPageAtomic.get()}")
                         totalPageAtomic = AtomicInteger(it.pagination.totalPage)
                         currentPageAtomic.getAndIncrement()
-                        Timber.tag(LogConstant.FLOW_APP).d("totalPage : ${it.pagination.totalPage}")
+                        Timber.tag(LogConstant.SALES_LIST).d("totalPage : ${it.pagination.totalPage}")
                         if (it.unitList.isNullOrEmpty().not()) {
                             unitList.addAll(it.unitList!!)
                             unitListLiveData.postValue(unitList)
                         }
-                        Timber.tag(LogConstant.FLOW_APP)
+                        Timber.tag(LogConstant.SALES_LIST)
                             .d("loading unit list successful ${it.unitList?.size}")
                     }
                     ifError {
-                        Timber.tag(LogConstant.FLOW_APP).e("unit api error")
+                        Timber.tag(LogConstant.SALES_LIST).e("unit api error")
                         (it.throwable as? ApiError)?.run {
-                            Timber.tag(LogConstant.FLOW_APP)
+                            Timber.tag(LogConstant.SALES_LIST)
                                 .e("error unit list size ${this.errorList?.size}")
                             if (this.errorList?.isNotEmpty() == true) {
                                 appEvent.tryEmit(
@@ -59,9 +59,9 @@ class UnitsViewModel : BaseViewModel() {
                                         message = this.errorList.first().msg ?: "Connection error"
                                     )
                                 )
-                                Timber.tag(LogConstant.FLOW_APP).e("error")
+                                Timber.tag(LogConstant.SALES_LIST).e("error")
                             }
-                            Timber.tag(LogConstant.FLOW_APP).e("downloading unit list failed")
+                            Timber.tag(LogConstant.SALES_LIST).e("downloading unit list failed")
                         }
                     }
                     isDownloading.set(false)
@@ -71,11 +71,11 @@ class UnitsViewModel : BaseViewModel() {
     }
 
     private fun canDownload(): Boolean {
-        Timber.tag(LogConstant.FLOW_APP)
+        Timber.tag(LogConstant.SALES_LIST)
             .d("current page: ${currentPageAtomic.get()}  is downloading: ${isDownloading.get()}")
         val canDownload =
             isDownloading.get().not() && currentPageAtomic.get() <= totalPageAtomic.get()
-        Timber.tag(LogConstant.FLOW_APP).d("can download $canDownload")
+        Timber.tag(LogConstant.SALES_LIST).d("can download $canDownload")
         return canDownload
     }
 }

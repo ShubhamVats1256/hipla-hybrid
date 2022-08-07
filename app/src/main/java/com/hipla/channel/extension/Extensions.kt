@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.*
+import com.hipla.channel.common.AppConfig.APPLICATION_TAG
+import com.hipla.channel.common.AppConfig.INVENTORY_TAG
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.ToastBinding
@@ -337,4 +339,12 @@ fun RecordStatus.isSuccess(): Boolean {
 
 fun RecordStatus.isFailure(): Boolean {
     return this.statusCode == FAILURE
+}
+
+fun FlowConfig.isApplication(): Boolean {
+    return this.tag == APPLICATION_TAG
+}
+
+fun FlowConfig.isInventory(): Boolean {
+    return this.tag == INVENTORY_TAG
 }

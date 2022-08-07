@@ -4,7 +4,7 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/homeFragment">
 
-     <fragment
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.hipla.channel.ui.HomeFragment"
         android:label="Home" />
@@ -13,6 +13,11 @@
         android:id="@+id/salesUserFragment"
         android:name="com.hipla.channel.ui.SalesUserFragment"
         android:label="SalesUsers" />
+
+    <fragment
+        android:id="@+id/unitListFragment"
+        android:name="com.hipla.channel.ui.UnitListFragment"
+        android:label="Unit List" />
 
     <fragment
         android:id="@+id/customerInfoFragment"
@@ -35,9 +40,19 @@
         app:popUpTo="@+id/homeFragment" />
 
     <action
-        android:id="@+id/action_salesUserFragment_to_customerInfoFragment"
-        app:destination="@id/customerInfoFragment"
+        android:id="@+id/action_SalesFragment_to_unitListFragment"
+        app:destination="@id/unitListFragment"
         app:popUpTo="@+id/salesUserFragment" />
+
+    <action
+        android:id="@+id/action_unitListFragment_to_customerInfoFragment"
+        app:destination="@id/customerInfoFragment"
+        app:popUpTo="@+id/customerInfoFragment" />
+
+    <action
+        android:id="@+id/action_salesListFragment_to_customerInfoFragment"
+        app:destination="@id/customerInfoFragment"
+        app:popUpTo="@+id/customerInfoFragment" />
 
     <action
         android:id="@+id/action_customerInfoFragment_to_paymentInfoFragment"

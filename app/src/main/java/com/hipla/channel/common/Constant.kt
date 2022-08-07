@@ -19,6 +19,7 @@ internal annotation class ApiErrorCode
 
 const val KEY_SALES_USER_ID = "key_sales_user_id"
 const val KEY_FLOW_CONFIG = "key_flow_config"
+const val KEY_UNIT_ID = "key_unit_id"
 
 const val KEY_APP_REQ = "app_req"
 const val KEY_APPLICATION_SERVER_INF0 = "app_server_info"

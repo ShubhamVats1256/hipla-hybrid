@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.Utils.hide
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentSalesListBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
@@ -51,6 +53,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         setRecyclerView()
         observeViewModel()
         loadData()
+        viewModel.extractArguments(arguments)
     }
 
     private fun setRecyclerView() {
@@ -93,6 +96,10 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
                                 requireActivity().IActivityHelper().dismiss()
                                 launchCustomerInfoFragment(it.toSalesUserId())
                             }
+                            UNIT_LIST_FLOW -> {
+                                requireActivity().IActivityHelper().dismiss()
+                                launchUnitListFragment(it.toSalesUserId())
+                            }
                             OTP_VERIFYING -> {
                                 requireActivity().IActivityHelper().showLoader("Verifying OTP")
                             }
@@ -134,7 +141,13 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
     }
 
     private fun displaySalesUserList(salesUserList: List<SalesUser>) {
-        salesRecyclerAdapter.append(salesUserList)
+        if (salesUserList.isEmpty()) {
+            requireContext().showToastErrorMessage("No sales person data found")
+        } else {
+            salesRecyclerAdapter.append(salesUserList)
+            binding.salesRecyclerView.show()
+            binding.salesListLoader.hide()
+        }
     }
 
     private fun showOTPDialog(salesUserId: String?) {
@@ -157,7 +170,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         findNavController().run {
             if (isCurrentDestination(R.id.salesUserFragment)) {
                 navigate(
-                    resId = R.id.action_salesUserFragment_to_customerInfoFragment,
+                    resId = R.id.action_salesListFragment_to_customerInfoFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
                         putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
@@ -166,4 +179,20 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             }
         }
     }
+
+    private fun launchUnitListFragment(salesUserId: String?) {
+        salesUserId ?: return
+        findNavController().run {
+            if (isCurrentDestination(R.id.salesUserFragment)) {
+                navigate(
+                    resId = R.id.action_SalesFragment_to_unitListFragment,
+                    args = Bundle().apply {
+                        putString(KEY_SALES_USER_ID, salesUserId)
+                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                    }
+                )
+            }
+        }
+    }
+
 }

@@ -10,8 +10,8 @@ class AppEventWithData<T>(
 
 const val APP_EVENT_ERROR = 0
 
-const val APP_EVENT_START_APPLICATION_FLOW = 11
-
+const val APP_EVENT_START_APPLICATION_FLOW = 1000
+const val UNIT_LIST_FLOW = 1001
 
 const val APP_EVENT_APPLICATION_CREATING = 10
 const val APP_EVENT_APPLICATION_SUCCESS = 11
@@ -44,6 +44,6 @@ const val FETCH_USER_ERROR = 61
 
 const val API_ERROR = 500
 
-const val UNIT_LIST_LOADING = 600
-const val UNIT_LIST_SUCCESS = 601
-const val UNIT_LIST_ERROR = 602
+const val UNIT_LIST_LOADING = 70
+const val UNIT_LIST_SUCCESS = 71
+const val UNIT_LIST_ERROR = 72

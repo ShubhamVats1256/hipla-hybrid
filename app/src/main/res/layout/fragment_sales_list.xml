@@ -19,7 +19,6 @@
             tools:listitem="@layout/list_item_sales_user"
             tools:visibility="visible" />
 
-
         <ProgressBar
             android:id="@+id/salesListLoader"
             style="@style/Hipla.ContentLoader" />
