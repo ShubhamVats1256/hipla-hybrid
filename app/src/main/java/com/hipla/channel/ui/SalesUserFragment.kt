@@ -41,10 +41,6 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSalesListBinding.bind(view)
@@ -57,9 +53,9 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         }
         setRecyclerView()
         observeViewModel()
-        loadData()
         viewModel.extractArguments(arguments)
         requireActivity().IActivityHelper().setTitle(viewModel.getFlowTitle())
+        loadData()
     }
 
     private fun setRecyclerView() {
@@ -73,6 +69,9 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             adapter = salesRecyclerAdapter
             addItemDecoration(SalesGridItemDecoration())
             addOnScrollListener(scrollListener)
+            if (viewModel.salesUserMasterList.isNotEmpty()) {
+                displaySalesUserList(viewModel.salesUserMasterList)
+            }
         }
     }
 

@@ -25,7 +25,7 @@ class SalesUserViewModel : BaseViewModel() {
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
     private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
-    private val salesUserMasterList = mutableListOf<SalesUser>()
+    val salesUserMasterList = mutableListOf<SalesUser>()
     var salesUsersLiveData = MutableLiveData<List<SalesUser>>()
     private var generateOTPResponse: GenerateOTPResponse? = null
     lateinit var flowConfig: FlowConfig
@@ -60,7 +60,7 @@ class SalesUserViewModel : BaseViewModel() {
                             .d("totalPage : ${it.pagination.totalPage}")
                         if (it.salesUserList.isNullOrEmpty().not()) {
                             salesUserMasterList.addAll(it.salesUserList!!)
-                            salesUsersLiveData.postValue(salesUserMasterList)
+                            salesUsersLiveData.postValue(it.salesUserList!!)
                         }
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("loading sales user list successful ${it.salesUserList?.size}")

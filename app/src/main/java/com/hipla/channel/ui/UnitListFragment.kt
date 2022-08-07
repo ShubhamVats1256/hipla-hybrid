@@ -4,7 +4,6 @@ import UnitsViewModel
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -85,6 +84,9 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            if (viewModel.unitMasterList.isNotEmpty()) {
+                displayUnits(viewModel.unitMasterList)
+            }
         }
     }
 

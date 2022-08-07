@@ -19,7 +19,7 @@ class UnitsViewModel : BaseViewModel() {
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
     private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
-    private val unitList = mutableListOf<UnitInfo>()
+    val unitMasterList = mutableListOf<UnitInfo>()
     var unitListLiveData = MutableLiveData<List<UnitInfo>>()
 
     fun fetchUnits() {
@@ -41,8 +41,8 @@ class UnitsViewModel : BaseViewModel() {
                         currentPageAtomic.getAndIncrement()
                         Timber.tag(LogConstant.SALES_LIST).d("totalPage : ${it.pagination.totalPage}")
                         if (it.unitList.isNullOrEmpty().not()) {
-                            unitList.addAll(it.unitList!!)
-                            unitListLiveData.postValue(unitList)
+                            unitMasterList.addAll(it.unitList!!)
+                            unitListLiveData.postValue(it.unitList!!)
                         }
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("loading unit list successful ${it.unitList?.size}")

@@ -1,7 +1,7 @@
 package com.hipla.channel.common
 
 object AppConfig {
-    const val PAGE_DOWNLOAD_SIZE: Int = 500
+    const val PAGE_DOWNLOAD_SIZE: Int = 100
     const val HTTP_TIMEOUT: Long = 15
 
     const val APPLICATION_TAG = "APPLICATION_TRANSACTION_DETAILS"
