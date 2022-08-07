@@ -103,7 +103,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                                         )
                                         channelPartnerDetails = it.userInfo
                                         Timber.tag(LogConstant.PAYMENT_INFO)
-                                            .d("channel partner name ${it.userInfo.name}")
+                                            .d("channel partner name ${it.userInfo?.name}")
                                     }
                                     ifError {
                                         channelPartnerDetails = null
