@@ -35,10 +35,24 @@ class SalesRecyclerAdapter(
 
     override fun getItemCount(): Int = salesUserList.size
 
+    fun isListAlreadyAppended(tempSalesList: List<SalesUser>): Boolean {
+        if (salesUserList.isNotEmpty()) {
+            if (salesUserList.last().id == tempSalesList.last().id) {
+                return true
+            }
+        }
+        return false
+    }
+
     fun append(tempSalesList: List<SalesUser>) {
         val startPosition = salesUserList.size
         this.salesUserList.addAll(tempSalesList)
         notifyItemRangeInserted(startPosition, salesUserList.size)
+    }
+
+    fun clear() {
+        salesUserList.clear()
+        notifyDataSetChanged()
     }
 
     class RecyclerViewHolder(
