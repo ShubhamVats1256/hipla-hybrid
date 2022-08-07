@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.databinding.FragmentApplicationBinding
+import com.hipla.channel.databinding.FragmentSalesListBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
@@ -22,10 +22,10 @@ import com.hipla.channel.viewmodel.ApplicationFlowViewModel
 import com.hipla.channel.widget.OTPDialog
 import java.lang.ref.WeakReference
 
-class SalesUserFragment : Fragment(R.layout.fragment_application) {
+class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
 
     private lateinit var viewModel: ApplicationFlowViewModel
-    private lateinit var binding: FragmentApplicationBinding
+    private lateinit var binding: FragmentSalesListBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
     private var otpDialog: OTPDialog? = null
 
@@ -41,7 +41,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_application) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentApplicationBinding.bind(view)
+        binding = FragmentSalesListBinding.bind(view)
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // dev setting
