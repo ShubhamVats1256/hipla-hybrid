@@ -261,6 +261,17 @@ fun String.toUserDetails(): UserDetails? {
 }
 
 
+fun String.toUnitInfo(): UnitInfo? {
+    return try {
+        return getKoinInstance<Moshi>().adapter(UnitInfo::class.java)
+            .fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+
 fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
     return try {
         return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java)
@@ -274,6 +285,15 @@ fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
 fun UserDetails.toJsonString(): String? {
     return try {
         getKoinInstance<Moshi>().adapter(UserDetails::class.java).toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+fun UnitInfo.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(UnitInfo::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
@@ -315,6 +335,7 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
     }
     return null
 }
+
 
 fun AppEvent.toUserDetails(): UserDetails? {
     (this as? AppEventWithData<*>)?.let { appEventData ->

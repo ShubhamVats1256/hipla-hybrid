@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
-import com.hipla.channel.common.KEY_FLOW_CONFIG
-import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.common.KEY_UNIT_ID
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentUnitListBinding
@@ -25,12 +22,10 @@ import com.hipla.channel.entity.UNIT_LIST_ERROR
 import com.hipla.channel.entity.UNIT_LIST_LOADING
 import com.hipla.channel.entity.UNIT_LIST_SUCCESS
 import com.hipla.channel.entity.UnitInfo
-import com.hipla.channel.extension.canLoadNextGridPage
-import com.hipla.channel.extension.isCurrentDestination
-import com.hipla.channel.extension.launchSafely
-import com.hipla.channel.extension.showToastErrorMessage
+import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.UnitListAdapter
 import timber.log.Timber
+
 
 class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
 
@@ -56,7 +51,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         unitListAdapter = UnitListAdapter(requireContext()) {
             // dev setting
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
-            //launchCustomerInfoFragment("105")
+            showBookingConfirmationDialog(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -139,15 +134,27 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         }
     }
 
-    private fun launchCustomerInfoFragment(salesUserId: String?) {
-        salesUserId ?: return
+    private fun showBookingConfirmationDialog(unitInfo: UnitInfo) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("${unitInfo.name} Selected")
+            .setMessage("Are you sure you want to continue booking ${unitInfo.name}") // Specifying a listener allows you to take an action before dismissing the dialog.
+            .setPositiveButton(
+                android.R.string.yes
+            ) { _, _ ->
+                launchCustomerInfoFragment(unitInfo)
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .show()
+    }
+
+    private fun launchCustomerInfoFragment(unitInfo: UnitInfo) {
         findNavController().run {
-            if (isCurrentDestination(R.id.salesUserFragment)) {
+            if (isCurrentDestination(R.id.unitListFragment)) {
                 navigate(
                     resId = R.id.action_unitListFragment_to_customerInfoFragment,
                     args = Bundle().apply {
-                        putString(KEY_SALES_USER_ID, salesUserId)
-                        putString(KEY_UNIT_ID, salesUserId)
+                        putString(KEY_SALES_USER_ID, arguments?.getString(KEY_SALES_USER_ID))
+                        putString(KEY_UNIT, unitInfo.toJsonString())
                         putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                     }
                 )
