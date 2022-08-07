@@ -12,6 +12,6 @@ data class UnitInfo(
 
 @JsonClass(generateAdapter = true)
 data class UnitStatus(
-    val currentStatus: String,
-    val color: String
+    val currentStatus: String?,
+    val color: String?
 )

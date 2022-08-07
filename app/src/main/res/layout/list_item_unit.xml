@@ -24,6 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Unit 55000" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -1,6 +1,6 @@
 package com.hipla.channel.ui
 
-import UnitSalesViewModel
+import UnitsViewModel
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -25,7 +25,7 @@ import timber.log.Timber
 
 class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
 
-    private lateinit var viewModel: UnitSalesViewModel
+    private lateinit var viewModel: UnitsViewModel
     private lateinit var binding: FragmentUnitListBinding
     private lateinit var unitListAdapter: UnitListAdapter
     private var bookingConfirmationDialog: AlertDialog? = null
@@ -43,7 +43,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUnitListBinding.bind(view)
-        viewModel = ViewModelProvider(this)[UnitSalesViewModel::class.java]
+        viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
         unitListAdapter = UnitListAdapter {
             // dev setting
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
@@ -103,11 +103,11 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
 
     private fun observeUnitList() {
         viewModel.unitListLiveData.observe(viewLifecycleOwner) {
-            displaySalesUserList(it)
+            displayUnits(it)
         }
     }
 
-    private fun displaySalesUserList(unitInfoList: List<UnitInfo>) {
+    private fun displayUnits(unitInfoList: List<UnitInfo>) {
         unitListAdapter.append(unitInfoList)
     }
 

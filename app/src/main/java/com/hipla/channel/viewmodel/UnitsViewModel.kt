@@ -12,7 +12,7 @@ import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
-class UnitSalesViewModel : BaseViewModel() {
+class UnitsViewModel : BaseViewModel() {
 
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
     private val pageSize: Int = AppConfig.PAGE_DOWNLOAD_SIZE
@@ -45,13 +45,13 @@ class UnitSalesViewModel : BaseViewModel() {
                             unitListLiveData.postValue(unitList)
                         }
                         Timber.tag(LogConstant.FLOW_APP)
-                            .d("loading sales unit list successful ${it.unitList?.size}")
+                            .d("loading unit list successful ${it.unitList?.size}")
                     }
                     ifError {
                         Timber.tag(LogConstant.FLOW_APP).e("unit api error")
                         (it.throwable as? ApiError)?.run {
                             Timber.tag(LogConstant.FLOW_APP)
-                                .e("error list size ${this.errorList?.size}")
+                                .e("error unit list size ${this.errorList?.size}")
                             if (this.errorList?.isNotEmpty() == true) {
                                 appEvent.tryEmit(
                                     AppEvent(
@@ -61,7 +61,7 @@ class UnitSalesViewModel : BaseViewModel() {
                                 )
                                 Timber.tag(LogConstant.FLOW_APP).e("error")
                             }
-                            Timber.tag(LogConstant.FLOW_APP).e("downloading sales user list failed")
+                            Timber.tag(LogConstant.FLOW_APP).e("downloading unit list failed")
                         }
                     }
                     isDownloading.set(false)

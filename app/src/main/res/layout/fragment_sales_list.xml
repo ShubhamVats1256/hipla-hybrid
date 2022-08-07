@@ -14,17 +14,15 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
             tools:listitem="@layout/list_item_sales_user"
             tools:visibility="visible" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
+
+        <ProgressBar
             android:id="@+id/salesListLoader"
-            style="@style/Hipla.ContentLoader"
-            tools:visibility="visible" />
+            style="@style/Hipla.ContentLoader" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
