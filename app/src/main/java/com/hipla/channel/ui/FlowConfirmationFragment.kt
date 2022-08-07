@@ -110,7 +110,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
     }
 
     private fun goHome() {
-        findNavController().popBackStack(R.id.homeFragment, false)
+        findNavController().popBackStack(R.id.salesUserFragment, false)
     }
 
     private fun observeViewModel() {
@@ -179,7 +179,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             .d("setting info customer name ${applicationRequest.customerName}r")
         Timber.tag(LogConstant.APP_CONFIRM)
             .d("setting info application no ${applicationRequest.id}r")
-        val flowConfirmationMessage = "Validate your details"
+        val flowConfirmationMessage = "Validate your details \n"
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "
