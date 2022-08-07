@@ -12,6 +12,7 @@ import com.hipla.channel.databinding.ListItemUnitBinding
 import com.hipla.channel.entity.UnitInfo
 import com.hipla.channel.extension.isAvailable
 import com.hipla.channel.extension.isBooked
+import com.hipla.channel.extension.isHold
 
 class UnitListAdapter(
     private val context: Context,
@@ -38,7 +39,7 @@ class UnitListAdapter(
             } else if (this.isBooked()) {
                 holder.binding?.unit?.background =
                     ContextCompat.getDrawable(context, R.drawable.sales_unit_item_booked)
-            } else {
+            } else if (this.isHold()) {
                 holder.binding?.unit?.background =
                     ContextCompat.getDrawable(context, R.drawable.sales_unit_item_hold)
             }
