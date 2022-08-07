@@ -17,7 +17,7 @@
     <EditText
         android:id="@+id/customerFirstName"
         style="@style/Hipla.EditText"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:imeOptions="actionNext"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/form_item_space"
@@ -30,7 +30,7 @@
     <EditText
         android:id="@+id/customerLastName"
         style="@style/Hipla.EditText"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:layout_height="wrap_content"
         android:hint="@string/customer_last_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +53,8 @@
         android:id="@+id/panCardNumber"
         style="@style/Hipla.EditText"
         android:inputType="text"
+        android:textAllCaps="true"
+        android:maxLength="10"
         android:imeOptions="actionNext"
         android:layout_height="wrap_content"
         android:hint="@string/pan"

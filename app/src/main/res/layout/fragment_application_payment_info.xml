@@ -80,7 +80,7 @@
         android:layout_marginTop="@dimen/form_item_space"
         android:layout_marginEnd="@dimen/form_item_space"
         android:hint="@string/cheque_no"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:imeOptions="actionNext"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"
