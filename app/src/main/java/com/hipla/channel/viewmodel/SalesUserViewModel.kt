@@ -37,6 +37,8 @@ class SalesUserViewModel : BaseViewModel() {
         }
     }
 
+    fun getFlowTitle() = flowConfig.title
+
     fun loadUsers() {
         if (canDownload()) {
             launchIO {

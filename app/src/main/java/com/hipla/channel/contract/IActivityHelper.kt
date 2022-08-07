@@ -8,4 +8,8 @@ interface IActivityHelper {
 
     fun hideKeyboard()
 
+    fun setTitle(message: String)
+
+    fun hideTitle(message: String)
+
 }

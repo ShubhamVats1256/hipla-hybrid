@@ -6,9 +6,11 @@ object AppConfig {
 
     const val APPLICATION_TAG = "APPLICATION_TRANSACTION_DETAILS"
     const val APPLICATION_TYPE = "TransactionDetailsDto"
+    const val APPLICATION_TITLE = "Application"
 
     const val INVENTORY_TAG = "INVENTORY_TRANSACTION_DETAILS"
     const val INVENTORY_TYPE = "InventoryTransactionDto"
+    const val INVENTORY_TITLE = "Inventory"
 
 
     const val PAGE_LIST_SALES = "LIST_SALES_PERSON"

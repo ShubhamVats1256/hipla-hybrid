@@ -41,6 +41,10 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             }
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSalesListBinding.bind(view)
@@ -55,6 +59,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         observeViewModel()
         loadData()
         viewModel.extractArguments(arguments)
+        requireActivity().IActivityHelper().setTitle(viewModel.getFlowTitle())
     }
 
     private fun setRecyclerView() {
