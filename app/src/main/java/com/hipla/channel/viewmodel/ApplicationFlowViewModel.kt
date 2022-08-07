@@ -29,7 +29,13 @@ class ApplicationFlowViewModel : BaseViewModel() {
             launchIO {
                 Timber.tag(LogConstant.FLOW_APP)
                     .d("downloading sales user list for page ${currentPageAtomic.get()}")
-                with(hiplaRepo.fetchSalesUserList(currentPageAtomic.get(), pageSize)) {
+                with(
+                    hiplaRepo.fetchSalesUserList(
+                        currentPageAtomic.get(),
+                        pageSize,
+                        AppConfig.PAGE_LIST_SALES.lowercase()
+                    )
+                ) {
                     ifSuccessful {
                         Timber.tag(LogConstant.FLOW_APP)
                             .d("downloading sales user list successful with size ${it.salesUserList?.size} for page ${currentPageAtomic.get()}")
@@ -46,12 +52,15 @@ class ApplicationFlowViewModel : BaseViewModel() {
                     ifError {
                         Timber.tag(LogConstant.FLOW_APP).e("sales api error")
                         (it.throwable as? ApiError)?.run {
-                            Timber.tag(LogConstant.FLOW_APP).e("error list size ${this.errorList?.size}")
+                            Timber.tag(LogConstant.FLOW_APP)
+                                .e("error list size ${this.errorList?.size}")
                             if (this.errorList?.isNotEmpty() == true) {
-                                appEvent.tryEmit(AppEvent(
-                                    id = API_ERROR,
-                                    message = this.errorList.first().msg ?: "Connection error"
-                                ))
+                                appEvent.tryEmit(
+                                    AppEvent(
+                                        id = API_ERROR,
+                                        message = this.errorList.first().msg ?: "Connection error"
+                                    )
+                                )
                                 Timber.tag(LogConstant.FLOW_APP).e("error")
                             }
                             Timber.tag(LogConstant.FLOW_APP).e("downloading sales user list failed")

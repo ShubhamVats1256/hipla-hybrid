@@ -1,11 +1,11 @@
 package com.hipla.channel.repo
 
 import com.hipla.channel.api.HiplaApiService
+import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.api.Resource
 import com.hipla.channel.entity.api.ResourceError
-import com.hipla.channel.extension.asResource
-import com.hipla.channel.entity.ApplicationRequest
 import com.hipla.channel.entity.response.*
+import com.hipla.channel.extension.asResource
 import com.hipla.channel.extension.toCreateApplicationRequestMap
 import com.hipla.channel.extension.toUpdateApplicationRequestMap
 
@@ -23,7 +23,11 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun verifyOtp(otp: String, userId : String, referenceId : String): Resource<VerifyOTPResponse> {
+    suspend fun verifyOtp(
+        otp: String,
+        userId: String,
+        referenceId: String
+    ): Resource<VerifyOTPResponse> {
         return try {
             return hiplaApiService.verifyOtp(
                 otpRequestMap = mutableMapOf<String, String>().apply {
@@ -39,7 +43,8 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
 
     suspend fun createApplication(applicationRequest: ApplicationRequest): Resource<ApplicationCreateResponse> {
         return try {
-            return hiplaApiService.createApplication(applicationRequest.toCreateApplicationRequestMap()).asResource()
+            return hiplaApiService.createApplication(applicationRequest.toCreateApplicationRequestMap())
+                .asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }
@@ -56,15 +61,19 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
-    suspend fun fetchSalesUserList(currentPage: Int, pageSize: Int): Resource<SalesPageResponse> {
+    suspend fun fetchSalesUserList(
+        currentPage: Int,
+        pageSize: Int,
+        pageName: String
+    ): Resource<SalesPageResponse> {
         return try {
-            return hiplaApiService.fetchSalesUserList(currentPage, pageSize).asResource()
+            return hiplaApiService.fetchSalesUserList(currentPage, pageSize, pageName).asResource()
         } catch (e: Exception) {
             ResourceError(e)
         }
     }
 
-    suspend fun fetchUserDetails(userId : Int): Resource<UserDetailsResponse> {
+    suspend fun fetchUserDetails(userId: Int): Resource<UserDetailsResponse> {
         return try {
             return hiplaApiService.fetchUserDetails(userId).asResource()
         } catch (e: Exception) {

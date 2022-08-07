@@ -9,7 +9,8 @@ interface HiplaApiService {
     @GET("business/v1/user")
     suspend fun fetchSalesUserList(
         @Query("currentPage") currentPage: Int,
-        @Query("pageSize") pageSize: Int
+        @Query("pageSize") pageSize: Int,
+        @Header("page_name") pageName : String
     ): Response<SalesPageResponse>
 
     @POST("business/v1/user/generateOtp")
