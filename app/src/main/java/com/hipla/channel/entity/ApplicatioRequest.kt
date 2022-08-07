@@ -3,9 +3,6 @@ package com.hipla.channel.entity
 import com.squareup.moshi.JsonClass
 
 
-
-
-
 @JsonClass(generateAdapter = true)
 data class ApplicationRequest(
     var id: Int = -1,
@@ -25,5 +22,6 @@ data class ApplicationRequest(
     var floorPreferenceId: Int = -1,
     var ownerId: Int? = null,
     var createdBy: Int? = null,
+    var chequeDate: String? = null,
 )
 

@@ -69,7 +69,7 @@
     <string name="application_confirm_msg">Your application No : %1$s</string>
 
     <string name="application_confirm_application_no">Confirmation for Application No : %1$s\n</string>
-    <string name="application_confirm_inventory_no">Confirmation for booking of %1$s\n</string>
+    <string name="application_confirm_inventory_no">Confirmation for Booking of %1$s\n</string>
 
 
 </resources>

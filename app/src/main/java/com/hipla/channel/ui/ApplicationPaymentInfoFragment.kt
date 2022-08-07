@@ -17,8 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.datepicker.*
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator
+import com.google.android.material.datepicker.CompositeDateValidator
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
 import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.hide
@@ -278,11 +281,14 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setDate() {
+        viewModel.getPaymentDate()?.let {
+            binding.paymentDate.text = it
+        }
         binding.paymentDate.setOnClickListener {
             val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
             // prepare date range
             val constraintsBuilderRange = CalendarConstraints.Builder()
-            val oneDayInMillis : Long = 1000*60*60*24
+            val oneDayInMillis: Long = 1000 * 60 * 60 * 24
             val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 2 // days from today
             val dateValidatorMax: DateValidator =
                 DateValidatorPointBackward.before(endDateInMs)

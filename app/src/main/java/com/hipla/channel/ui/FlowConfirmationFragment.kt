@@ -86,7 +86,6 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
         }
     }
 
-
     private fun getConfirmationMessage(applicationRequest: ApplicationRequest): String {
         return if (viewModel.flowConfig.isApplication()) {
             getString(R.string.application_confirm_msg, applicationRequest.id.toString())
@@ -99,7 +98,10 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
 
     private fun getFlowConfirmationMessage(applicationRequest: ApplicationRequest): String {
         return if (viewModel.flowConfig.isApplication()) {
-            getString(R.string.application_confirm_application_no, viewModel.applicationRequest?.id.toString())
+            getString(
+                R.string.application_confirm_application_no,
+                viewModel.applicationRequest?.id.toString()
+            )
         } else if (viewModel.flowConfig.isInventory()) {
             getString(R.string.application_confirm_inventory_no, viewModel.unitInfo?.name)
         } else {
@@ -177,11 +179,11 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             .d("setting info customer name ${applicationRequest.customerName}r")
         Timber.tag(LogConstant.APP_CONFIRM)
             .d("setting info application no ${applicationRequest.id}r")
+        val flowConfirmationMessage = "Validate your details"
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "
         )
-        val flowConfirmationMessage =  getFlowConfirmationMessage(applicationRequest)
         val amountPayable = requireContext().getString(
             R.string.confirm_amount_payable,
             applicationRequest.amountPayable

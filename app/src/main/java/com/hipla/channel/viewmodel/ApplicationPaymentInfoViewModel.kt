@@ -29,7 +29,6 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     private var imageUploadUrl: String? = null
     var channelPartnerDetails: UserDetails? = null
     private var isProofUploadedAtomic = AtomicBoolean(false)
-    private var paymentDate: String? = null
     var unitInfo: UnitInfo? = null
     lateinit var flowConfig: FlowConfig
 
@@ -54,10 +53,10 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
     }
 
     fun setPaymentDate(paymentDate: String) {
-        this.paymentDate = paymentDate
+        this.applicationRequest?.chequeDate = paymentDate
     }
 
-    fun getPaymentDate() = this.paymentDate
+    fun getPaymentDate() = this.applicationRequest?.chequeDate
 
     fun getPaymentProofReadUrl() = applicationCreateResponse?.imageReadUrl
 
