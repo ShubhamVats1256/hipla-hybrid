@@ -7,9 +7,14 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.Utils.hide
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
+import com.hipla.channel.databinding.ActivityMainBinding
 import com.hipla.channel.databinding.DialogLoaderBinding
 import com.hipla.channel.extension.showToastErrorMessage
 import timber.log.Timber
@@ -19,13 +24,31 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
     private var loaderDialog: AlertDialog? = null
     private var dialogLoaderBinding: DialogLoaderBinding? = null
     private lateinit var inputMethodManager: InputMethodManager
-    
+    private val navController: NavController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment).navController
+    }
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         inputMethodManager = getSystemService(
             Context.INPUT_METHOD_SERVICE
         ) as InputMethodManager
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.flowTitle.hide()
+                }
+                else -> {
+                    binding.flowTitle.show()
+                }
+            }
+        }
     }
 
     override fun showLoader(message: String) {
