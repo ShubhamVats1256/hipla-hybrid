@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg"
+    android:padding="@dimen/page_margin">
+
+    <TextView
+        android:id="@+id/header"
+        style="@style/Hipla.Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/application_form"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/customerFirstName"
+        style="@style/Hipla.EditText"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:layout_marginBottom="@dimen/form_item_space"
+        android:hint="@string/customer_first_name"
+        app:layout_constraintEnd_toStartOf="@id/customerLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <EditText
+        android:id="@+id/customerLastName"
+        style="@style/Hipla.EditText"
+        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:hint="@string/customer_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/customerFirstName"
+        app:layout_constraintTop_toTopOf="@id/customerFirstName" />
+
+    <EditText
+        android:id="@+id/customerNumber"
+        style="@style/Hipla.EditText"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_item_space"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:hint="@string/customer_no"
+        app:layout_constraintEnd_toStartOf="@id/panCardNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerFirstName" />
+
+    <EditText
+        android:id="@+id/panCardNumber"
+        style="@style/Hipla.EditText"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:layout_height="wrap_content"
+        android:hint="@string/pan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/customerNumber"
+        app:layout_constraintTop_toTopOf="@id/customerNumber" />
+
+    <AutoCompleteTextView
+        android:id="@+id/floor_preference"
+        android:layout_marginTop="@dimen/form_item_space"
+        android:hint="@string/floor_pref"
+        style="@style/Hipla.AutoComplete"
+        app:layout_constraintEnd_toEndOf="@id/customerNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customerNumber" />
+
+    <TextView
+        android:id="@+id/continueBtn"
+        style="@style/PrimaryButton"
+        android:text="@string/continue_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backBtn"
+      />
+
+    <TextView
+        android:id="@+id/backBtn"
+        style="@style/SecondaryButton"
+        android:layout_marginEnd="@dimen/form_item_space"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/continueBtn"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

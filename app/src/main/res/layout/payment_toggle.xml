@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints,ContentDescription"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/payment_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:checkedButton="@id/cheque"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cheque"
+            style="@style/ToggleButton.Style"
+            android:text="@string/cheque" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rtgs"
+            style="@style/ToggleButton.Style"
+            android:text="@string/rtgs" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</merge>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="Hipla" />
+
+    <style name="Hipla.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:padding">@dimen/btn_padding</item>
+    </style>
+
+    <style name="Hipla.AutoComplete">
+        <item name="android:background">@drawable/autocomplete_bg</item>
+        <item name="drawableEndCompat">@drawable/icon_drop_down</item>
+        <item name="drawableTint">@color/primary</item>
+        <item name="drawableSize">16dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textColorHint">@color/header</item>
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:padding">@dimen/drop_down_padding</item>
+        <item name="android:inputType">none</item>
+    </style>
+
+    <style name="Hipla.Header">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:paddingBottom">@dimen/header_padding</item>
+    </style>
+
+    <style name="Hipla.EditText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
+        <item name="android:textColorHint">@color/edit_text_hint</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:padding">@dimen/component_padding</item>
+    </style>
+
+    <style name="Hipla.OTP">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:padding">@dimen/component_padding</item>
+    </style>
+
+
+    <style name="Hipla.Keyboard">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:alpha">0.3</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/keyboard_number_bg</item>
+        <item name="android:layout_marginTop">@dimen/key_item_space</item>
+        <item name="android:layout_marginEnd">@dimen/key_item_space</item>
+    </style>
+
+    <style name="Hipla.Keyboard.Submit" >
+        <item name="android:alpha">1</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/keyboard_submit_bg</item>
+    </style>
+
+    <style name="Hipla.Keyboard.clear" >
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Hipla.Button">
+        <item name="android:textColor">@color/primary_btn_text_color</item>
+        <item name="android:background">@drawable/primary_btn_bg</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Hipla.Button">
+        <item name="android:textColor">@color/secondary_btn_text_color</item>
+        <item name="android:background">@drawable/secondary_button</item>
+    </style>
+
+    <style name="Hipla.HomeScreenItemTitle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:paddingRight">40dp</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:background">@drawable/home_screen_item_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="layout_constraintStart_toStartOf">@id/pageDivider1</item>
+        <item name="layout_constraintEnd_toEndOf">@id/pageDivider2</item>
+    </style>
+
+    <style name="Sales" />
+
+    <style name="Sales.User" />
+
+    <style name="Sales.User.ProfileImage">
+        <item name="android:minHeight">@dimen/sales_grid_item_image</item>
+        <item name="android:minWidth">@dimen/sales_grid_item_image</item>
+        <item name="android:layout_width">@dimen/sales_grid_item_image</item>
+        <item name="android:layout_height">@dimen/sales_grid_item_image</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="Sales.User.ChannelPartner">
+        <item name="android:minHeight">@dimen/channel_partner_prof_pic</item>
+        <item name="android:minWidth">@dimen/channel_partner_prof_pic</item>
+        <item name="android:layout_width">@dimen/channel_partner_prof_pic</item>
+        <item name="android:layout_height">@dimen/channel_partner_prof_pic</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="ToggleButton.Style" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:paddingLeft">26dp</item>
+        <item name="android:paddingRight">26dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:backgroundTint">@color/page_bg</item>
+        <item name="android:strokeWidth">4</item>
+    </style>
+
+    <style name="Hipla.ChannelPartnerHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Hipla.ChannelPartnerInfo">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingBottom">@dimen/header_padding</item>
+    </style>
+</resources>

@@ -1,0 +1,55 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="rounded_image_default_corner_radius">12dp</dimen>
+
+    <dimen name="page_margin">32dp</dimen>
+
+    <dimen name="component_corner_radius">20dp</dimen>
+    <dimen name="component_padding">22dp</dimen>
+    <dimen name="component_text_size">24sp</dimen>
+
+    <dimen name="btn_corner_radius">@dimen/component_corner_radius</dimen>
+    <dimen name="btn_text_size">26sp</dimen>
+    <dimen name="btn_padding">@dimen/component_padding</dimen>
+
+    <dimen name="drop_down_corner_radius">@dimen/component_corner_radius</dimen>
+    <dimen name="drop_down_padding">@dimen/component_padding</dimen>
+    <dimen name="drop_down_text_size">@dimen/component_text_size</dimen>
+
+    <dimen name="sales_grid_item_width">246dp</dimen>
+    <dimen name="sales_grid_item_height">270dp</dimen>
+    <dimen name="sales_grid_item_corner_radius">16dp</dimen>
+
+    <dimen name="sales_grid_item_image">135dp</dimen>
+    <dimen name="sales_grid_item_image_margin_start">20dp</dimen>
+    <dimen name="sales_grid_item_image_margin_end">20dp</dimen>
+    <dimen name="sales_grid_item_image_margin_top">12dp</dimen>
+    <dimen name="sales_grid_item_image_margin_bottom">4dp</dimen>
+
+    <dimen name="sales_grid_item_name_margin_start">24dp</dimen>
+    <dimen name="sales_grid_item_name_margin_end">24dp</dimen>
+    <dimen name="sales_grid_item_name_margin_top">24dp</dimen>
+    <dimen name="sales_grid_item_name_margin_bottom">16dp</dimen>
+
+    <dimen name="sales_grid_item_name_text_size">24sp</dimen>
+
+    <dimen name="application_otp_confirm_customer_top_margin">20dp</dimen>
+
+    <dimen name="form_item_space">20dp</dimen>
+
+    <dimen name="header_text_size">26sp</dimen>
+    <dimen name="header_padding">16dp</dimen>
+    <dimen name="keyboard_item_corner_radius">16dp</dimen>
+
+    <dimen name="key_item_space">12dp</dimen>
+
+    <dimen name="channel_partner_prof_pic">100dp</dimen>
+    <dimen name="channel_partner_info_space">16dp</dimen>
+
+</resources>

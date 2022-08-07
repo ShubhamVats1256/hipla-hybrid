@@ -1,0 +1,45 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+
+buildscript {
+    ext.kotlin_version = "1.5.32"
+
+    ext {
+
+        build_versions = [:]
+        build_versions.tools = "30.0.2"
+
+        versions = [:]
+        versions.glide = "4.11.0"
+        versions.glide_transformations = "4.3.0"
+        versions.android_svg = "1.4"
+        versions.logging_interceptor = '4.9.0'
+        versions.moshi_converter = "2.9.0"
+        versions.moshi = '1.12.0'
+        versions.retrofit = "2.9.0"
+
+        versions.kotlin = kotlin_version
+        //di
+        versions.koin = "2.2.3"
+        //logging
+        versions.timber = "4.7.1"
+        versions.coroutines = "1.3.8"
+        versions.gradle = '7.1.0'
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$versions.gradle"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://mvnrepository.com/artifact/io.insert-koin' }
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

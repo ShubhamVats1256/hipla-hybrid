@@ -1,0 +1,104 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 32
+    buildToolsVersion build_versions.tools
+
+    defaultConfig {
+        applicationId "com.hipla.channel"
+        minSdk 28
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+            buildConfigField "boolean", "DEV_MODE", "true"
+            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io\""
+            buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
+        }
+        release {
+            minifyEnabled false
+            buildConfigField "boolean", "DEV_MODE", "false"
+            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io\""
+            buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    dataBinding {
+        enabled = true
+    }
+
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
+
+    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.1'
+
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    implementation "jp.wasabeef:glide-transformations:$versions.glide_transformations"
+    implementation 'com.google.android.gms:play-services-basement:18.1.0'
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+
+    //koin
+    implementation "io.insert-koin:koin-android:$versions.koin"
+    implementation "io.insert-koin:koin-androidx-scope:$versions.koin"
+    implementation "io.insert-koin:koin-androidx-viewmodel:$versions.koin"
+
+    //logging
+    implementation "com.jakewharton.timber:timber:4.7.1"
+
+    //rest api
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.logging_interceptor"
+
+    //moshi
+    implementation("com.squareup.moshi:moshi-kotlin:$versions.moshi")
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-adapters:$versions.moshi"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.moshi_converter"
+    annotationProcessor  "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

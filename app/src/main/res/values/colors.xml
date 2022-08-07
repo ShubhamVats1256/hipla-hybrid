@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#29559E</color>
+    <color name="primary_dark">#2958A6</color>
+    <color name="primary_light">#DFE9FC</color>
+    <color name="page_bg">#E6E6E6</color>
+    <color name="text_color_light_black">#333333</color>
+
+    <color name="blue_light">#DFE9FC</color>
+
+    <!-- application flow-->
+    <color name="sales_grid_item_bg">#FFFFFF</color>
+    <color name="sales_grid_item_border">#A0B9E8</color>
+
+    <color name="image_placeholder">@android:color/darker_gray</color>
+
+    <color name="primary_btn">@color/primary_dark</color>
+    <color name="primary_btn_text_color">#FFFFFF</color>
+
+    <color name="secondary_btn">#E6E6E6</color>
+    <color name="secondary_btn_text_color">@color/primary_btn</color>
+
+    <color name="edit_text_border">#668BC8</color>
+    <color name="edit_text_hint">@color/text_color_light_black</color>
+
+    <color name="spinner_border">#668BC8</color>
+    <color name="spinner_text_hint">@color/text_color_light_black</color>
+
+    <color name="header">@color/text_color_light_black</color>
+
+    <color name="confirm_otp_action_bar_color">#DFE9FC</color>
+    <color name="close">#4059A2</color>
+    <color name="your_cheque">#F7F9FF</color>
+
+    <color name="tab_selected">#DFE9FC</color>
+    <color name="tab_unselected">@android:color/transparent</color>
+    <color name="booking_success">#3BB54A</color>
+
+</resources>
