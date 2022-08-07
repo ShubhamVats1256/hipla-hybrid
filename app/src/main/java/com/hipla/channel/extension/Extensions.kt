@@ -152,6 +152,7 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["amountPayable"] = this.amountPayable!!
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
+    requestMap["chequeDate"] = chequeDate.toString()
     if (unitId >= 0) {
         requestMap["unitId"] = unitId.toString()
     }
