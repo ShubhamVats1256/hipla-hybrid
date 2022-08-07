@@ -65,9 +65,9 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     }
 
     // getCustomerFloorPreferenceId function is used only in application flow
-    fun getCustomerFloorPreferenceId(): Int {
+    fun getCustomerFloorPreferenceId(): Int? {
         return if (flowConfig.isApplication()) {
-            selectedFloorPreference?.id!!
+            selectedFloorPreference?.id
         } else if (flowConfig.isInventory()) {
             unitInfo!!.floorId
         } else {

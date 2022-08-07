@@ -60,7 +60,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             val dialogBinding =
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.flowSuccessTitle.text = getConfirmationMessage(applicationRequest)
+            dialogBinding.flowSuccessTitle.text = getSuccessMessage()
             dialogBinding.appInfo.text = getConfirmationMessage(applicationRequest)
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
@@ -79,6 +79,17 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             applicationSuccessDialog?.setCanceledOnTouchOutside(false)
         }
     }
+
+    private fun getSuccessMessage(): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            getString(R.string.application_success)
+        } else if (viewModel.flowConfig.isInventory()) {
+            getString(R.string.inventory_success)
+        } else {
+            Constant.EMPTY_STRING
+        }
+    }
+
 
     private fun getConfirmationMessage(applicationRequest: ApplicationRequest): String {
         return if (viewModel.flowConfig.isApplication()) {
