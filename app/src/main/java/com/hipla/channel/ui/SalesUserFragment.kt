@@ -48,8 +48,6 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // dev setting
             viewModel.generateOTP(it)
-            //launchCustomerInfoFragment("105")
-            //launchUnitListFragment("105")
         }
         setRecyclerView()
         observeViewModel()
@@ -178,7 +176,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
                     resId = R.id.action_salesListFragment_to_customerInfoFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
-                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                        putString(KEY_FLOW_CONFIG, viewModel.flowConfig.toJsonString())
                     }
                 )
             }
@@ -193,7 +191,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
                     resId = R.id.action_SalesFragment_to_unitListFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
-                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                        putString(KEY_FLOW_CONFIG, viewModel.flowConfig.toJsonString())
                     }
                 )
             }

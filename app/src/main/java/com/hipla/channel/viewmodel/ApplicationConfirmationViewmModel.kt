@@ -86,6 +86,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                             applicationRequest?.ownerId = generateOTPResponse?.recordReference?.id
                             updateApplication()
                         } else {
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP invalid")
                         }
                     }

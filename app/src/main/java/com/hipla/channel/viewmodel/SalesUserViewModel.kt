@@ -31,8 +31,8 @@ class SalesUserViewModel : BaseViewModel() {
     lateinit var flowConfig: FlowConfig
 
     fun extractArguments(arguments: Bundle?) {
+        flowConfig = FlowConfig.createApplicationFlowConfig()
         arguments?.let {
-            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
             Timber.tag(LogConstant.SALES_LIST).d("flow config: $flowConfig")
         }
     }
