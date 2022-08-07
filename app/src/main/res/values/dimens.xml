@@ -52,4 +52,8 @@
     <dimen name="channel_partner_prof_pic">100dp</dimen>
     <dimen name="channel_partner_info_space">16dp</dimen>
 
+    <dimen name="unit_grid_width">148dp</dimen>
+    <dimen name="unit_grid_height">88dp</dimen>
+    <dimen name="unit_grid_item_name_text_size">22sp</dimen>
+
 </resources>

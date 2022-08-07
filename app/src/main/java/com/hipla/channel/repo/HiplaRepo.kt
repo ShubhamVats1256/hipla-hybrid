@@ -73,6 +73,18 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
+    suspend fun fetchUnits(
+        currentPage: Int,
+        pageSize: Int,
+        pageName: String
+    ): Resource<UnitPageResponse> {
+        return try {
+            return hiplaApiService.fetchUnits(currentPage, pageSize, pageName).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
     suspend fun fetchUserDetails(userId: Int): Resource<UserDetailsResponse> {
         return try {
             return hiplaApiService.fetchUserDetails(userId).asResource()

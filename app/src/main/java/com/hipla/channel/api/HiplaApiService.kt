@@ -32,4 +32,11 @@ interface HiplaApiService {
         @Path("userId") userId: Int,
     ): Response<UserDetailsResponse>
 
+    @GET("business/v1/unit")
+    suspend fun fetchUnits(
+        @Query("currentPage") currentPage: Int,
+        @Query("pageSize") pageSize: Int,
+        @Header("page_name") pageName : String
+    ): Response<UnitPageResponse>
+
 }

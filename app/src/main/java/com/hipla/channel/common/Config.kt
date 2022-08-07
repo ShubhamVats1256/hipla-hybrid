@@ -16,5 +16,6 @@ object AppConfig {
     const val PAGE_PAYMENT_DETAILS = "PAYMENT_DETAILS"
     const val PAGE_VERIFY_OTP = "VERIFY_OTP"
     const val PAGE_GENERATE_OTP = "GENERATE_OTP"
+    const val PAGE_INVENTORY = "INVENTORY"
 
 }

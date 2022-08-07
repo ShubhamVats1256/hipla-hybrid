@@ -26,3 +26,7 @@ const val KEY_PARTNER = "partner_mobile_no"
 
 const val SUCCESS = "success"
 const val FAILURE = "failure"
+
+const val UNIT_AVAILABLE = "AVAILABLE"
+const val UNIT_HOLD = "HOLD"
+const val UNIT_BOOKED = "BOOKED"

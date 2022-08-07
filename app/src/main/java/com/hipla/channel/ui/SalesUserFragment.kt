@@ -18,13 +18,13 @@ import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
-import com.hipla.channel.viewmodel.ApplicationFlowViewModel
+import com.hipla.channel.viewmodel.SalesUserViewModel
 import com.hipla.channel.widget.OTPDialog
 import java.lang.ref.WeakReference
 
 class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
 
-    private lateinit var viewModel: ApplicationFlowViewModel
+    private lateinit var viewModel: SalesUserViewModel
     private lateinit var binding: FragmentSalesListBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
     private var otpDialog: OTPDialog? = null
@@ -34,7 +34,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (recyclerView.canLoadNextGridPage(newState)) {
-                    viewModel.loadUsers()
+                    loadData()
                 }
             }
         }
@@ -42,7 +42,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSalesListBinding.bind(view)
-        viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // dev setting
             viewModel.generateOTP(it)

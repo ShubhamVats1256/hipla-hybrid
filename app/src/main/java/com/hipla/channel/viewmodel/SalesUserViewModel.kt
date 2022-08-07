@@ -14,7 +14,7 @@ import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
-class ApplicationFlowViewModel : BaseViewModel() {
+class SalesUserViewModel : BaseViewModel() {
     private val hiplaRepo: HiplaRepo by inject(HiplaRepo::class.java)
     private val pageSize: Int = AppConfig.PAGE_DOWNLOAD_SIZE
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)

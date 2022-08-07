@@ -9,4 +9,5 @@ object LogConstant {
     const val CUSTOMER_INFO = "hipla_customer_info"
     const val PAYMENT_INFO = "hipla_payment_info"
     const val APP_CONFIRM = "hipla_app_confirm"
+    const val UNIT = "hipla_unit"
 }

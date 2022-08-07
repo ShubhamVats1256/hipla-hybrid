@@ -44,4 +44,6 @@ const val FETCH_USER_ERROR = 61
 
 const val API_ERROR = 500
 
-
+const val UNIT_LIST_LOADING = 600
+const val UNIT_LIST_SUCCESS = 601
+const val UNIT_LIST_ERROR = 602
