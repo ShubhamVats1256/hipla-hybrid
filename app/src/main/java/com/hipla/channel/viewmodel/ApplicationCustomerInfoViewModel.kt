@@ -1,12 +1,14 @@
 package com.hipla.channel.viewmodel
 
 import android.os.Bundle
+import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.ApplicationCreateResponse
+import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
@@ -18,9 +20,14 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     var floorList: List<FloorDetails> = generateFloors()
     var applicationCreateResponse: ApplicationCreateResponse? = null
     private var applicationRequest: ApplicationRequest? = null
+    private lateinit var flowConfig: FlowConfig
 
     fun extractArguments(arguments: Bundle?) {
-        salesUserId = arguments?.getString(KEY_SALES_USER_ID);
+        arguments?.let {
+            salesUserId = it.getString(KEY_SALES_USER_ID)
+            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
+        }
     }
 
     fun selectedFloorId(selectionFloorDetailsIndex: Int) {
@@ -53,7 +60,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                     Timber.tag(LogConstant.CUSTOMER_INFO)
                         .d("application ID : :${applicationRequest.id} created for ${applicationRequest.customerName}")
 
-                    if ((applicationRequest.id ?: 0) > 0) {
+                    if (applicationRequest.id > 0) {
                         Timber.tag(LogConstant.CUSTOMER_INFO).d("customer info collection complete")
                         appEvent.tryEmit(
                             AppEventWithData(
@@ -68,6 +75,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
                     }
                 }
                 ifError {
+                    this@ApplicationCustomerInfoViewModel.applicationRequest = null
                     appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_FAILED))
                     Timber.tag(LogConstant.CUSTOMER_INFO)
                         .e(it.throwable?.message.toString())
@@ -96,7 +104,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             .d("floor preference Id : $floorId")
         Timber.tag(LogConstant.CUSTOMER_INFO)
             .d("application created by  : $salesUserId")
-        ApplicationRequest().apply {
+        ApplicationRequest(tag = flowConfig.tag, type =  flowConfig.type).apply {
             this.customerName = customerFirstName
             this.customerLastName = customerLastName
             this.customerPhoneNumber = customerPhone
@@ -104,7 +112,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
             this.floorPreferenceId = floorId
             this.createdBy = salesUserId?.toInt()
         }.also {
-            // save locally
+            // save in-memory for reference
             this.applicationRequest = it
         }.also {
             // create application in server

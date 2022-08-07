@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
-import com.hipla.channel.databinding.FragmentApplicationConfirmBinding
+import com.hipla.channel.databinding.FragmentFlowConfirmBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.extension.launchSafely
@@ -23,20 +23,20 @@ import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
-class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_confirm) {
+class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
 
     private lateinit var applicationConfirmationViewModel: ApplicationConfirmationViewModel
-    private lateinit var binding: FragmentApplicationConfirmBinding
+    private lateinit var binding: FragmentFlowConfirmBinding
     private var applicationSuccessDialog: AlertDialog? = null
     private var otpConfirmDialog: OTPDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentApplicationConfirmBinding.bind(view)
+        binding = FragmentFlowConfirmBinding.bind(view)
         applicationConfirmationViewModel =
             ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
-        observeViewModel()
         applicationConfirmationViewModel.extractArguments(arguments)
+        observeViewModel()
         setUI()
     }
 
@@ -83,7 +83,7 @@ class ApplicationConfirmationFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun goHome() {
-        findNavController().popBackStack(R.id.mainFragment, false)
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 
     private fun observeViewModel() {

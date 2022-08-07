@@ -2,44 +2,47 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/homeFragment">
 
-    <fragment
-        android:id="@+id/mainFragment"
+     <fragment
+        android:id="@+id/homeFragment"
         android:name="com.hipla.channel.ui.HomeFragment"
         android:label="Home" />
 
     <fragment
+        android:id="@+id/salesUserFragment"
+        android:name="com.hipla.channel.ui.SalesUserFragment"
+        android:label="SalesUsers" />
+
+    <fragment
         android:id="@+id/customerInfoFragment"
         android:name="com.hipla.channel.ui.ApplicationCustomerInfoFragment"
-        android:label="Customer Info" />
+        android:label="Customer Information" />
 
     <fragment
         android:id="@+id/paymentInfoFragment"
         android:name="com.hipla.channel.ui.ApplicationPaymentInfoFragment"
-        android:label="Payment Info" />
+        android:label="Payment Information" />
 
     <fragment
         android:id="@+id/applicationConfirmFragment"
-        android:name="com.hipla.channel.ui.ApplicationConfirmationFragment"
-        android:label="Application Confirm" />
+        android:name="com.hipla.channel.ui.FlowConfirmationFragment"
+        android:label="Application Confirmation" />
 
     <action
-        android:id="@+id/action_mainFragment_to_customerInfoFragment"
+        android:id="@+id/action_homeFragment_to_salesUserFragment"
         app:destination="@id/customerInfoFragment"
-        app:popUpTo="@+id/mainFragment" />
+        app:popUpTo="@+id/homeFragment" />
+
+    <action
+        android:id="@+id/action_salesUserFragment_to_customerInfoFragment"
+        app:destination="@id/customerInfoFragment"
+        app:popUpTo="@+id/salesUserFragment" />
 
     <action
         android:id="@+id/action_customerInfoFragment_to_paymentInfoFragment"
         app:destination="@id/paymentInfoFragment"
         app:popUpTo="@+id/customerInfoFragment" />
-
-    <action
-        android:id="@+id/action_home"
-        app:destination="@id/mainFragment"
-        app:launchSingleTop="true"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true" />
 
     <action
         android:id="@+id/action_paymentInfoFragment_to_applicationConfirmFragment"

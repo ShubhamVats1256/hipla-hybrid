@@ -3,60 +3,48 @@ package com.hipla.channel.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
+import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
-import com.hipla.channel.databinding.FragmentMainBinding
+import com.hipla.channel.common.KEY_FLOW_CONFIG
+import com.hipla.channel.databinding.FragmentHomeBinding
+import com.hipla.channel.entity.FlowConfig
+import com.hipla.channel.extension.isCurrentDestination
+import com.hipla.channel.extension.toJsonString
 
-class HomeFragment : Fragment(R.layout.fragment_main) {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private lateinit var binding: FragmentMainBinding
-    private var mainPageAdapter: MainPageAdapter? = null
+    private lateinit var fragmentHomeBinding: FragmentHomeBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMainBinding.bind(view)
-        setupViewPager()
+        fragmentHomeBinding = FragmentHomeBinding.bind(view)
+        setUI()
     }
 
-    private fun setupViewPager() {
-        binding.pager.run {
-            mainPageAdapter = MainPageAdapter(this@HomeFragment)
-            adapter = mainPageAdapter
-            setCurrentItem(APPLICATION, false)
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                }
+    private fun setUI() {
+        fragmentHomeBinding.applicationFlow.setOnClickListener {
+            launchSalesUserFragment(FlowConfig.createApplicationFlowConfig())
+        }
 
-                override fun onPageSelected(position: Int) {
-                    when (position) {
-                        APPLICATION -> {
-                            // sent message to activity to change tab
-                        }
-                    }
-                }
+        fragmentHomeBinding.inventoryFlow.setOnClickListener {
+            launchSalesUserFragment(FlowConfig.createInventoryFlowConfig())
+        }
 
-                override fun onPageScrollStateChanged(state: Int) {}
-            })
+        fragmentHomeBinding.pantryFlow.setOnClickListener {
+
         }
     }
 
-
-    inner class MainPageAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-        override fun getItemCount(): Int = 1
-
-        override fun createFragment(position: Int): Fragment {
-            return SalesUserFragment()
+    private fun launchSalesUserFragment(flowConfig: FlowConfig) {
+        findNavController().run {
+            if (isCurrentDestination(R.id.homeFragment)) {
+                navigate(
+                    resId = R.id.action_homeFragment_to_salesUserFragment,
+                    args = Bundle().apply {
+                        putString(KEY_FLOW_CONFIG, flowConfig.toJsonString())
+                    })
+            }
         }
-    }
-
-    companion object {
-        const val APPLICATION = 0
-        const val INVENTORY = 1
     }
 
 }

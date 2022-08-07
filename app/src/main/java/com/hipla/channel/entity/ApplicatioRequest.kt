@@ -2,11 +2,15 @@ package com.hipla.channel.entity
 
 import com.squareup.moshi.JsonClass
 
+
+
+
+
 @JsonClass(generateAdapter = true)
 data class ApplicationRequest(
     var id: Int = -1,
-    val tag: String = "APPLICATION_TRANSACTION_DETAILS",
-    val type: String = "TransactionDetailsDto",
+    val tag: String,
+    val type: String,
     var unitId: Int = -1,
     var customerName: String? = null,
     var customerLastName: String? = null,

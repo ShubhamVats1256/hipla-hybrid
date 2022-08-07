@@ -12,7 +12,7 @@
             style="@style/Hipla.Header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="@id/pageDivider1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -23,6 +23,7 @@ import com.hipla.channel.databinding.ToastErrorBinding
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.AppEventWithData
 import com.hipla.channel.entity.ApplicationRequest
+import com.hipla.channel.entity.FlowConfig
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ErrorInfo
 import com.hipla.channel.entity.response.ApplicationCreateResponse
@@ -173,10 +174,6 @@ fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     }
 }
 
-fun EditText.hasValidPhone(): Boolean {
-    return this.text.toString().length == 10
-}
-
 fun EditText.hasValidData(): Boolean {
     return this.text.trim().isEmpty().not()
 }
@@ -246,6 +243,15 @@ fun String.toApplicationRequest(): ApplicationRequest? {
     }
 }
 
+fun String.toFlowConfig(): FlowConfig? {
+    return try {
+        getKoinInstance<Moshi>().adapter(FlowConfig::class.java).fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
 fun String.toUserDetails(): UserDetails? {
     return try {
         return getKoinInstance<Moshi>().adapter(UserDetails::class.java).fromJson(this)
@@ -278,6 +284,15 @@ fun UserDetails.toJsonString(): String? {
 fun ApplicationRequest.toJsonString(): String? {
     return try {
         getKoinInstance<Moshi>().adapter(ApplicationRequest::class.java).toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+fun FlowConfig.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(FlowConfig::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null

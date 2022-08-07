@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
+import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.databinding.FragmentApplicationBinding
 import com.hipla.channel.entity.*
@@ -44,8 +45,8 @@ class SalesUserFragment : Fragment(R.layout.fragment_application) {
         viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // dev setting
-            // viewModel.generateOTP(it)
-            launchCustomerInfoFragment("105")
+            viewModel.generateOTP(it)
+            //launchCustomerInfoFragment("105")
         }
         setRecyclerView()
         observeViewModel()
@@ -151,15 +152,17 @@ class SalesUserFragment : Fragment(R.layout.fragment_application) {
         }
     }
 
-    private fun launchCustomerInfoFragment(salesUserId: String? = "105") {
+    private fun launchCustomerInfoFragment(salesUserId: String?) {
         salesUserId ?: return
         findNavController().run {
-            if (isCurrentDestination(R.id.mainFragment)) {
+            if (isCurrentDestination(R.id.salesUserFragment)) {
                 navigate(
-                    resId = R.id.action_mainFragment_to_customerInfoFragment,
+                    resId = R.id.action_salesUserFragment_to_customerInfoFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
-                    })
+                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                    }
+                )
             }
         }
     }
