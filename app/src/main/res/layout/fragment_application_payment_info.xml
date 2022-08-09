@@ -56,9 +56,9 @@
         >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/cash"
+            android:id="@+id/dd"
             style="@style/ToggleButton.Style"
-            android:text="@string/cash" />
+            android:text="@string/demand_draft" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cheque"
@@ -81,6 +81,7 @@
         android:layout_marginEnd="@dimen/form_item_space"
         android:hint="@string/cheque_no"
         android:inputType="text"
+        android:textAllCaps="true"
         android:imeOptions="actionNext"
         app:layout_constraintEnd_toStartOf="@id/pageDivider1"
         app:layout_constraintStart_toStartOf="parent"

@@ -10,14 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
+import com.hipla.channel.common.Constant
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
 import com.hipla.channel.databinding.FragmentFlowConfirmBinding
 import com.hipla.channel.entity.*
-import com.hipla.channel.extension.IActivityHelper
-import com.hipla.channel.extension.launchSafely
-import com.hipla.channel.extension.showToastErrorMessage
-import com.hipla.channel.extension.toApplicationRequest
+import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationConfirmationViewModel
 import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
@@ -25,7 +23,7 @@ import java.lang.ref.WeakReference
 
 class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
 
-    private lateinit var applicationConfirmationViewModel: ApplicationConfirmationViewModel
+    private lateinit var viewModel: ApplicationConfirmationViewModel
     private lateinit var binding: FragmentFlowConfirmBinding
     private var applicationSuccessDialog: AlertDialog? = null
     private var otpConfirmDialog: OTPDialog? = null
@@ -33,22 +31,22 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFlowConfirmBinding.bind(view)
-        applicationConfirmationViewModel =
+        viewModel =
             ViewModelProvider(this)[ApplicationConfirmationViewModel::class.java]
-        applicationConfirmationViewModel.extractArguments(arguments)
+        viewModel.extractArguments(arguments)
         observeViewModel()
         setUI()
     }
 
     private fun setUI() {
-        applicationConfirmationViewModel.applicationRequest?.let {
+        viewModel.applicationRequest?.let {
             setHeader(it)
         }
-        applicationConfirmationViewModel.channelPartnerDetails?.let {
+        viewModel.channelPartnerDetails?.let {
             binding.channelPartnerWidget.setChannelPartnerDetails(it)
         }
         binding.submit.setOnClickListener {
-            applicationConfirmationViewModel.generateCustomerOTP()
+            viewModel.generateCustomerOTP()
         }
         binding.backBtn.setOnClickListener {
             findNavController().navigateUp()
@@ -62,8 +60,8 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             val dialogBinding =
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.appInfo.text =
-                getString(R.string.application_confirm_msg, applicationRequest.id.toString())
+            dialogBinding.flowSuccessTitle.text = getSuccessMessage()
+            dialogBinding.appInfo.text = getConfirmationMessage(applicationRequest)
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
                 goHome()
@@ -72,25 +70,54 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
                 applicationSuccessDialog?.dismiss()
                 goHome()
             }
-            dialogBinding.appInfo.text = getString(
-                R.string.application_confirm_application_no,
-                applicationRequest.id.toString()
-            )
             applicationSuccessDialog = dialogBuilder.show()
             applicationSuccessDialog?.setCancelable(false)
             applicationSuccessDialog?.setCanceledOnTouchOutside(false)
         }
     }
 
+    private fun getSuccessMessage(): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            getString(R.string.application_success)
+        } else if (viewModel.flowConfig.isInventory()) {
+            getString(R.string.inventory_success)
+        } else {
+            Constant.EMPTY_STRING
+        }
+    }
+
+    private fun getConfirmationMessage(applicationRequest: ApplicationRequest): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            getString(R.string.application_confirm_msg, applicationRequest.id.toString())
+        } else if (viewModel.flowConfig.isInventory()) {
+            getString(R.string.inventory_confirm_msg, applicationRequest.id.toString())
+        } else {
+            Constant.EMPTY_STRING
+        }
+    }
+
+    private fun getFlowConfirmationMessage(applicationRequest: ApplicationRequest): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            getString(
+                R.string.application_confirm_application_no,
+                viewModel.applicationRequest?.id.toString()
+            )
+        } else if (viewModel.flowConfig.isInventory()) {
+            getString(R.string.application_confirm_inventory_no, viewModel.unitInfo?.name)
+        } else {
+            Constant.EMPTY_STRING
+        }
+    }
+
     private fun goHome() {
-        findNavController().popBackStack(R.id.homeFragment, false)
+        findNavController().popBackStack(R.id.salesUserFragment, false)
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launchSafely {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launchSafely {
-                    applicationConfirmationViewModel.appEvent.collect {
+                    viewModel.appEvent.collect {
                         when (it.id) {
                             APPLICATION_UPDATING -> {
                                 requireActivity().IActivityHelper()
@@ -152,28 +179,22 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             .d("setting info customer name ${applicationRequest.customerName}r")
         Timber.tag(LogConstant.APP_CONFIRM)
             .d("setting info application no ${applicationRequest.id}r")
+        val flowConfirmationMessage = "Validate your details \n\n"
         val customerName = requireContext().getString(
             R.string.application_confirm_customer_name,
             "${applicationRequest.customerName} ${applicationRequest.customerLastName} "
-        )
-        val applicationNo = requireContext().getString(
-            R.string.application_confirm_application_no,
-            applicationRequest.id.toString()
         )
         val amountPayable = requireContext().getString(
             R.string.confirm_amount_payable,
             applicationRequest.amountPayable
         )
-        val channelPartnerMobileNoText = requireContext().getString(
-            R.string.confirm_channel_partner_no,
-            applicationConfirmationViewModel.channelPartnerDetails?.phoneNumber
-        )
         binding.header.text = StringBuilder().apply {
+            append(flowConfirmationMessage)
             append(customerName)
-            append(applicationNo)
             append(amountPayable)
         }.toString()
     }
+
 
     private fun showOTPDialog(customerUserId: String) {
         Timber.tag(LogConstant.CUSTOMER_INFO).d(": $customerUserId.")
@@ -185,7 +206,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
                 onSubmitListener = object : OTPDialog.OnOTPSubmitListener {
                     override fun onSubmit(otp: String) {
                         Timber.tag(LogConstant.CUSTOMER_INFO).d("submitting otp $otp")
-                        applicationConfirmationViewModel.verifyCustomerOTP(otp)
+                        viewModel.verifyCustomerOTP(otp)
                         requireActivity().IActivityHelper()
                             .showLoader(getString(R.string.verifying))
                     }

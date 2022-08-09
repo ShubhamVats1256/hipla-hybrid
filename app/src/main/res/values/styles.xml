@@ -71,14 +71,14 @@
         <item name="android:layout_marginEnd">@dimen/key_item_space</item>
     </style>
 
-    <style name="Hipla.Keyboard.Submit" >
+    <style name="Hipla.Keyboard.Submit">
         <item name="android:alpha">1</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/keyboard_submit_bg</item>
     </style>
 
-    <style name="Hipla.Keyboard.clear" >
+    <style name="Hipla.Keyboard.clear">
         <item name="android:textSize">26sp</item>
     </style>
 
@@ -165,4 +165,17 @@
         <item name="android:textSize">24sp</item>
         <item name="android:paddingBottom">@dimen/header_padding</item>
     </style>
+
+    <style name="Hipla.ContentLoader">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/primary</item>
+        <item name="android:visibility">visible</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
 </resources>

@@ -13,18 +13,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.Utils.hide
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentSalesListBinding
 import com.hipla.channel.entity.*
 import com.hipla.channel.extension.*
 import com.hipla.channel.ui.adapter.SalesRecyclerAdapter
 import com.hipla.channel.ui.decoration.SalesGridItemDecoration
-import com.hipla.channel.viewmodel.ApplicationFlowViewModel
+import com.hipla.channel.viewmodel.SalesUserViewModel
 import com.hipla.channel.widget.OTPDialog
 import java.lang.ref.WeakReference
 
 class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
 
-    private lateinit var viewModel: ApplicationFlowViewModel
+    private lateinit var viewModel: SalesUserViewModel
     private lateinit var binding: FragmentSalesListBinding
     private lateinit var salesRecyclerAdapter: SalesRecyclerAdapter
     private var otpDialog: OTPDialog? = null
@@ -34,7 +36,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (recyclerView.canLoadNextGridPage(newState)) {
-                    viewModel.loadUsers()
+                    loadData()
                 }
             }
         }
@@ -42,14 +44,15 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSalesListBinding.bind(view)
-        viewModel = ViewModelProvider(this)[ApplicationFlowViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
             // dev setting
             viewModel.generateOTP(it)
-            //launchCustomerInfoFragment("105")
         }
         setRecyclerView()
         observeViewModel()
+        viewModel.extractArguments(arguments)
+        requireActivity().IActivityHelper().setTitle(viewModel.getFlowTitle())
         loadData()
     }
 
@@ -64,6 +67,9 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
             adapter = salesRecyclerAdapter
             addItemDecoration(SalesGridItemDecoration())
             addOnScrollListener(scrollListener)
+            if (viewModel.salesUserMasterList.isNotEmpty()) {
+                displaySalesUserList(viewModel.salesUserMasterList)
+            }
         }
     }
 
@@ -92,6 +98,10 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
                             APP_EVENT_START_APPLICATION_FLOW -> {
                                 requireActivity().IActivityHelper().dismiss()
                                 launchCustomerInfoFragment(it.toSalesUserId())
+                            }
+                            UNIT_LIST_FLOW -> {
+                                requireActivity().IActivityHelper().dismiss()
+                                launchUnitListFragment(it.toSalesUserId())
                             }
                             OTP_VERIFYING -> {
                                 requireActivity().IActivityHelper().showLoader("Verifying OTP")
@@ -134,7 +144,13 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
     }
 
     private fun displaySalesUserList(salesUserList: List<SalesUser>) {
-        salesRecyclerAdapter.append(salesUserList)
+        if (salesUserList.isNotEmpty() && salesRecyclerAdapter.isListAlreadyAppended(salesUserList)
+                .not()
+        ) {
+            salesRecyclerAdapter.append(salesUserList)
+            binding.salesRecyclerView.show()
+            binding.salesListLoader.hide()
+        }
     }
 
     private fun showOTPDialog(salesUserId: String?) {
@@ -157,13 +173,29 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         findNavController().run {
             if (isCurrentDestination(R.id.salesUserFragment)) {
                 navigate(
-                    resId = R.id.action_salesUserFragment_to_customerInfoFragment,
+                    resId = R.id.action_salesListFragment_to_customerInfoFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
-                        putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                        putString(KEY_FLOW_CONFIG, viewModel.flowConfig.toJsonString())
                     }
                 )
             }
         }
     }
+
+    private fun launchUnitListFragment(salesUserId: String?) {
+        salesUserId ?: return
+        findNavController().run {
+            if (isCurrentDestination(R.id.salesUserFragment)) {
+                navigate(
+                    resId = R.id.action_SalesFragment_to_unitListFragment,
+                    args = Bundle().apply {
+                        putString(KEY_SALES_USER_ID, salesUserId)
+                        putString(KEY_FLOW_CONFIG, viewModel.flowConfig.toJsonString())
+                    }
+                )
+            }
+        }
+    }
+
 }

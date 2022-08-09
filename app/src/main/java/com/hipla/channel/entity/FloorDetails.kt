@@ -9,7 +9,7 @@ fun generateFloors(): List<FloorDetails> {
         add(FloorDetails(2, "2nd floor"))
         add(FloorDetails(3, "3rd floor"))
         add(FloorDetails(4, "4th floor"))
-        add(FloorDetails(5, "5th floor"))
+       /* add(FloorDetails(5, "5th floor"))
         add(FloorDetails(6, "6th floor"))
         add(FloorDetails(7, "7th floor"))
         add(FloorDetails(8, "8th floor"))
@@ -54,6 +54,6 @@ fun generateFloors(): List<FloorDetails> {
         add(FloorDetails(47, "47th floor"))
         add(FloorDetails(48, "48th floor"))
         add(FloorDetails(49, "49th floor"))
-        add(FloorDetails(50, "50th floor"))
+        add(FloorDetails(50, "50th floor"))*/
     }
 }

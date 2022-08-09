@@ -1,17 +1,13 @@
 package com.hipla.channel.viewmodel
 
 import android.os.Bundle
-import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.KEY_PARTNER
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.UserDetails
-import com.hipla.channel.extension.isSuccess
-import com.hipla.channel.extension.toApplicationRequest
-import com.hipla.channel.extension.toUserDetails
+import com.hipla.channel.extension.*
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent
 import timber.log.Timber
@@ -21,6 +17,8 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
     var applicationRequest: ApplicationRequest? = null
     private var generateOTPResponse: GenerateOTPResponse? = null
     var channelPartnerDetails: UserDetails? = null
+    lateinit var flowConfig: FlowConfig
+    var unitInfo: UnitInfo? = null
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.getString(KEY_PARTNER)?.toUserDetails()?.let {
@@ -32,6 +30,12 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
             this.applicationRequest = it
             Timber.tag(LogConstant.APP_CONFIRM)
                 .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
+        }
+        arguments?.let {
+            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
+            unitInfo = it.getString(KEY_UNIT)?.toUnitInfo()
+            Timber.tag(LogConstant.APP_CONFIRM).d("Unit selected: $unitInfo")
+            Timber.tag(LogConstant.APP_CONFIRM).d("Flow config: $flowConfig")
         }
     }
 
@@ -82,6 +86,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                             applicationRequest?.ownerId = generateOTPResponse?.recordReference?.id
                             updateApplication()
                         } else {
+                            appEvent.tryEmit(AppEvent(OTP_VERIFICATION_INVALID))
                             Timber.tag(LogConstant.CUSTOMER_INFO).e("customer OTP invalid")
                         }
                     }

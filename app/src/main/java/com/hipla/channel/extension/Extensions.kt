@@ -16,14 +16,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
 import com.hipla.channel.common.*
+import com.hipla.channel.common.AppConfig.APPLICATION_TAG
+import com.hipla.channel.common.AppConfig.INVENTORY_TAG
 import com.hipla.channel.common.Utils.tryCatch
 import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.ToastBinding
 import com.hipla.channel.databinding.ToastErrorBinding
-import com.hipla.channel.entity.AppEvent
-import com.hipla.channel.entity.AppEventWithData
-import com.hipla.channel.entity.ApplicationRequest
-import com.hipla.channel.entity.FlowConfig
+import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ErrorInfo
 import com.hipla.channel.entity.response.ApplicationCreateResponse
@@ -153,6 +152,7 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["amountPayable"] = this.amountPayable!!
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
+    requestMap["chequeDate"] = chequeDate.toString()
     if (unitId >= 0) {
         requestMap["unitId"] = unitId.toString()
     }
@@ -172,6 +172,10 @@ fun RecyclerView.canLoadNextGridPage(newScrollState: Int): Boolean {
     } else {
         false
     }
+}
+
+fun EditText.isValidPAN(): Boolean {
+    return this.text.trim().length == 10
 }
 
 fun EditText.hasValidData(): Boolean {
@@ -262,6 +266,17 @@ fun String.toUserDetails(): UserDetails? {
 }
 
 
+fun String.toUnitInfo(): UnitInfo? {
+    return try {
+        return getKoinInstance<Moshi>().adapter(UnitInfo::class.java)
+            .fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+
 fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
     return try {
         return getKoinInstance<Moshi>().adapter(ApplicationCreateResponse::class.java)
@@ -275,6 +290,15 @@ fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
 fun UserDetails.toJsonString(): String? {
     return try {
         getKoinInstance<Moshi>().adapter(UserDetails::class.java).toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+fun UnitInfo.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(UnitInfo::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
@@ -317,6 +341,7 @@ fun AppEvent.toApplicationRequest(): ApplicationRequest? {
     return null
 }
 
+
 fun AppEvent.toUserDetails(): UserDetails? {
     (this as? AppEventWithData<*>)?.let { appEventData ->
         appEventData.extras?.let { appRequest ->
@@ -337,4 +362,24 @@ fun RecordStatus.isSuccess(): Boolean {
 
 fun RecordStatus.isFailure(): Boolean {
     return this.statusCode == FAILURE
+}
+
+fun FlowConfig.isApplication(): Boolean {
+    return this.tag == APPLICATION_TAG
+}
+
+fun FlowConfig.isInventory(): Boolean {
+    return this.tag == INVENTORY_TAG
+}
+
+fun UnitInfo.isAvailable(): Boolean {
+    return this.status?.currentStatus == UNIT_AVAILABLE
+}
+
+fun UnitInfo.isBooked(): Boolean {
+    return this.status?.currentStatus == UNIT_BOOKED
+}
+
+fun UnitInfo.isHold(): Boolean {
+    return this.status?.currentStatus == UNIT_HOLD
 }

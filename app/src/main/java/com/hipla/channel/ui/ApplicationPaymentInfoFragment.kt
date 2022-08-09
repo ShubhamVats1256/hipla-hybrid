@@ -17,11 +17,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.CalendarConstraints.DateValidator
+import com.google.android.material.datepicker.CompositeDateValidator
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.hipla.channel.R
-import com.hipla.channel.common.KEY_APP_REQ
-import com.hipla.channel.common.KEY_PARTNER
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.common.Utils.tryCatch
@@ -36,6 +38,7 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_payment_info) {
 
@@ -145,6 +148,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                                 KEY_PARTNER,
                                 viewModel.channelPartnerDetails?.toJsonString()
                             )
+                            putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
+                            putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                         }
                     )
                 }
@@ -173,6 +178,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setUI() {
+        setHeader()
         setContinueBtn()
         setBackBtn()
         setDate()
@@ -186,6 +192,20 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         setPaymentProofImage()
         // dev settings
         //setTestData()
+    }
+
+    private fun setHeader() {
+        binding.header.text = getFormTitle()
+    }
+
+    private fun getFormTitle(): String {
+        return if (viewModel.flowConfig.isApplication()) {
+            "Payment Information"
+        } else if (viewModel.flowConfig.isInventory()) {
+            "Booking for ${viewModel.unitInfo?.name}"
+        } else {
+            Constant.EMPTY_STRING
+        }
     }
 
     private fun setPaymentDate() {
@@ -261,9 +281,23 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun setDate() {
+        viewModel.getPaymentDate()?.let {
+            binding.paymentDate.text = it
+        }
         binding.paymentDate.setOnClickListener {
             val materialDateBuilder = MaterialDatePicker.Builder.datePicker()
-            materialDateBuilder.setTitleText("Select Payment Date")
+            // prepare date range
+            val constraintsBuilderRange = CalendarConstraints.Builder()
+            val oneDayInMillis: Long = 1000 * 60 * 60 * 24
+            val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 3// days from today
+            val dateValidatorMax: DateValidator =
+                DateValidatorPointBackward.before(endDateInMs)
+            val listValidators = ArrayList<DateValidator>()
+            listValidators.add(dateValidatorMax)
+            val validators = CompositeDateValidator.allOf(listValidators)
+            constraintsBuilderRange.setValidator(validators)
+            materialDateBuilder.setCalendarConstraints(constraintsBuilderRange.build())
+            materialDateBuilder.setTitleText("Select Date")
             val picker = materialDateBuilder.build()
             picker.show(requireActivity().supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {
@@ -278,8 +312,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         binding.paymentToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
-                    R.id.cash -> {
-                        setReferenceEditTextHint("Cash Receipt Number")
+                    R.id.dd -> {
+                        setReferenceEditTextHint("DD Number")
                     }
                     R.id.cheque -> {
                         setReferenceEditTextHint("Cheque Number")
@@ -298,8 +332,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun getSelectedPaymentCheckedId(selectedPaymentType: PaymentType): Int {
         return when (selectedPaymentType) {
-            PaymentType.Cash() -> {
-                R.id.cash
+            PaymentType.DD() -> {
+                R.id.dd
             }
             PaymentType.Rtgs() -> {
                 R.id.rtgs
@@ -318,8 +352,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             R.id.rtgs -> {
                 getString(R.string.your_rtgs_photo)
             }
+            R.id.dd -> {
+                getString(R.string.upload_dd)
+            }
             else -> {
-                getString(R.string.upload_cash)
+                getString(R.string.upload_receipt)
             }
         }
     }
@@ -359,7 +396,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         return when (binding.paymentToggle.checkedButtonId) {
             R.id.rtgs -> PaymentType.Rtgs()
             R.id.cheque -> PaymentType.Cheque()
-            R.id.cash -> PaymentType.Cash()
+            R.id.dd -> PaymentType.DD()
             else -> PaymentType.Unknown()
         }
     }
@@ -389,7 +426,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 DialogUploadPhotoBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.chequePhoto.setImageBitmap(bitmap)
-            dialogBinding.paymentTitle.text = binding.continueBtn.text
+            dialogBinding.paymentTitle.text = getPaymentTitle()
             dialogBinding.upload.setOnClickListener {
                 Timber.tag(LogConstant.PAYMENT_INFO).d("upload image")
                 uploadChequeDialog?.dismiss()

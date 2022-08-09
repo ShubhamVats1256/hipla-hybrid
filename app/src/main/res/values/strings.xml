@@ -20,13 +20,11 @@
 
     <string name="rtgs">RTGS</string>
     <string name="cash">Cash</string>
+    <string name="demand_draft">DD</string>
     <string name="date">Date</string>
     <string name="amount_payable">Amount Payable*</string>
     <string name="pan">Pan Card Number*</string>
-    <string name="cheque_upload_instruction">Take your cheque photo and Upload to submit</string>
-
-    <string name="application_success">Your Booking is successful</string>
-    <string name="application_confirm_msg">Your Booking ID: %1$s</string>
+    <string name="cheque_upload_instruction">Take your cheque photo and upload to submit</string>
 
     <string name="channel_partner">Channel Partner</string>
     <string name="channel_partner_name">Channel Partner Name*</string>
@@ -45,23 +43,33 @@
 
     <string name="demo_otp_confirm_header">Confirmation for Application No: 1 \nCustomer name: Sreyansh Kumar \nChannel partner: Deepak Dev</string>
     <string name="enter_the_otp_info">Enter the OTP you just received via mobile</string>
-    <string name="take_cheque_instruction">Take your cheque photo and\nUpload to submit</string>
-    <string name="verify_customer_otp">Verifying customer OTP</string>
+    <string name="take_cheque_instruction">Take your proof and\nUpload to submit</string>
+    <string name="verify_customer_otp">Verifying Customer OTP</string>
     <string name="verifying">Verifying</string>
-    <string name="verify_channel_partner_no">Verifying partner Mobile No</string>
-    <string name="verify_channel_partner_otp">Verifying partner OTP</string>
+    <string name="verify_channel_partner_no">Verifying Partner Mobile No</string>
+    <string name="verify_channel_partner_otp">Verifying Partner OTP</string>
 
     <string name="application_confirm_customer_name">Customer Name : %1$s\n</string>
-    <string name="application_confirm_application_no">Confirmation for Application No : %1$s\n</string>
     <string name="confirm_channel_partner_no">Channel Partner Mobile No: %1$s\n</string>
     <string name="confirm_amount_payable">Amount Payable :%1$s\n</string>
-    <string name="upload_cash">Upload Cash Receipt</string>
+    <string name="upload_dd">Upload DD Photo</string>
     <string name="upload_cheque">Upload Cheque Photo</string>
     <string name="your_rtgs_photo">Upload RTGS Photo</string>
+    <string name="upload_receipt">Upload Receipt</string>
     <string name="clear">Clear</string>
     <string name="okay">Okay</string>
 
-
+    <string name="units">Units</string>
     <string name="channel_partner_details">Channel Partner Details</string>
+
+    <string name="inventory_success">Your booking is successful</string>
+    <string name="inventory_confirm_msg">Your Booking ID : %1$s</string>
+
+    <string name="application_success">Your application is successful</string>
+    <string name="application_confirm_msg">Your application No : %1$s</string>
+
+    <string name="application_confirm_application_no">Confirmation for Application No : %1$s\n</string>
+    <string name="application_confirm_inventory_no">Confirmation for Booking of %1$s\n</string>
+
 
 </resources>

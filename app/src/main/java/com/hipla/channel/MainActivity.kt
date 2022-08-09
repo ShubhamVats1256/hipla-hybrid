@@ -83,6 +83,15 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
         }
     }
 
+    override fun setTitle(message: String) {
+        binding.flowTitle.text = message
+        binding.flowTitle.show()
+    }
+
+    override fun hideTitle(message: String) {
+        binding.flowTitle.hide()
+    }
+
     override fun onResume() {
         super.onResume()
         checkCameraPermission()
