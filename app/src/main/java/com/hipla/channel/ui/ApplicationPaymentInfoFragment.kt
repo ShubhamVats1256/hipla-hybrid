@@ -402,16 +402,27 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun isMandatoryInfoFilled(): Boolean {
-        if (binding.channelPartnerMobileNo.hasValidData().not()) {
-            binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
-            requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
-            return false
-        }
+
         if (binding.amountPayable.hasValidData().not()) {
             binding.amountPayable.error = "Amount payable is mandatory";
             requireContext().showToastErrorMessage("Amount payable is mandatory")
             return false
         }
+
+        if (Integer.parseInt(binding.amountPayable.text.toString())<500000) {
+            binding.amountPayable.error = "Minimum amount payable is 5 lack";
+            requireContext().showToastErrorMessage("Minimum amount payable is 5 lack")
+            return false
+        }
+
+        if (binding.channelPartnerMobileNo.hasValidData().not()) {
+            binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
+            requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
+            return false
+        }
+
+
+
         if (viewModel.isPaymentProofUploaded().not()) {
             requireContext().showToastErrorMessage("Kindly ${getPaymentTitle()}")
             return false

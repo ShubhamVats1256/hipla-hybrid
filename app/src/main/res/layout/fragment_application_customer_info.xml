@@ -30,6 +30,7 @@
     <EditText
         android:id="@+id/customerLastName"
         style="@style/Hipla.EditText"
+        android:imeOptions="actionSend"
         android:inputType="textCapSentences"
         android:layout_height="wrap_content"
         android:hint="@string/customer_last_name"
@@ -41,6 +42,7 @@
         android:id="@+id/customerNumber"
         style="@style/Hipla.EditText"
         android:inputType="number"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_item_space"
         android:layout_marginEnd="@dimen/form_item_space"
