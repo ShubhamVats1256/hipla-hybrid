@@ -89,7 +89,9 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                 hiplaRepo.verifyOtp(
                     otp = otp,
                     userId = channelPartnerUserId.toString(),
-                    referenceId = generateOTPResponse!!.referenceId
+                    referenceId = generateOTPResponse!!.referenceId,
+                    pageName = AppConfig.PAGE_VERIFY_OTP,
+                    appCode = flowConfig.appCode
                 ).run {
                     ifSuccessful { verifyOTPResponse ->
                         if (verifyOTPResponse.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && verifyOTPResponse.verifyOTPData.isVerified) {
@@ -100,7 +102,13 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
                                 .d("channel partnerId updated to application request")
                             Timber.tag(LogConstant.PAYMENT_INFO).d("channel OTP verified")
                             launchIO {
-                                with(hiplaRepo.fetchUserDetails(channelPartnerUserId!!)) {
+                                with(
+                                    hiplaRepo.fetchUserDetails(
+                                        channelPartnerUserId!!,
+                                        pageName = AppConfig.FETCH_USER_INFO,
+                                        appCode = flowConfig.appCode
+                                    )
+                                ) {
                                     ifSuccessful {
                                         appEvent.tryEmit(AppEvent(OTP_VERIFICATION_SUCCESS))
                                         appEvent.tryEmit(
@@ -144,7 +152,10 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         launchIO {
             channelPartnerMobileNo.let { phoneNo ->
                 appEvent.tryEmit(AppEvent(OTP_GENERATING))
-                hiplaRepo.generateOtp(phoneNo).run {
+                hiplaRepo.generateOtp(
+                    phoneNo = phoneNo, pageName = AppConfig.PAGE_VERIFY_OTP,
+                    appCode = flowConfig.appCode
+                ).run {
                     ifSuccessful {
                         Timber.tag(LogConstant.PAYMENT_INFO)
                             .d("generate OTP successful for mobile $phoneNo, referenceId:${it.referenceId}")

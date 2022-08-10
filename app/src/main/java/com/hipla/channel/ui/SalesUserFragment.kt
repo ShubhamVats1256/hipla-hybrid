@@ -46,7 +46,6 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         binding = FragmentSalesListBinding.bind(view)
         viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
         salesRecyclerAdapter = SalesRecyclerAdapter {
-            // dev setting
             viewModel.generateOTP(it)
         }
         setRecyclerView()
