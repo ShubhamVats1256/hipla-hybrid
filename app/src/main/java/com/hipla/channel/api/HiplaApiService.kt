@@ -18,8 +18,17 @@ interface HiplaApiService {
     suspend fun generateOTP(
         @Body otpRequestMap: Map<String, String>,
         @Query("app_code") appCode: String,
-        @Query("page_name") pageName: String
+        @Query("page_name") pageName: String,
     ): Response<GenerateOTPResponse>
+
+    @POST("business/v1/user/generateOtp")
+    suspend fun generateOTPForRole(
+        @Body otpRequestMap: Map<String, String>,
+        @Query("app_code") appCode: String,
+        @Query("page_name") pageName: String,
+        @Query("role") role: String
+    ): Response<GenerateOTPResponse>
+
 
     @POST("notification/v1/verifyAnonymousOTP")
     suspend fun verifyOtp(
