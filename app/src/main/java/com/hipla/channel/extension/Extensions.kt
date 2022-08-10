@@ -152,7 +152,8 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
     requestMap["chequeDate"] = chequeDate.toString()
-    requestMap["paymentDetails"] = paymentDetails.toString()
+    // Todo: uncomment once server check is removed
+   // requestMap["paymentDetails"] = paymentDetails.toString()
     if (unitId >= 0) {
         requestMap["unitId"] = unitId.toString()
     }
