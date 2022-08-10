@@ -26,7 +26,7 @@ val apiModule = module {
         httpBuilder.readTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.connectTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.writeTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && BuildConfig.DEV_MODE) {
             httpBuilder.addInterceptor(get<ChuckerInterceptor>())
             httpBuilder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
                 HttpLoggingInterceptor.Level.BODY

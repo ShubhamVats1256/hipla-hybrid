@@ -117,7 +117,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
             applicationRequest?.customerPhoneNumber?.let { customerPhoneNo ->
                 hiplaRepo.generateOtp(
                     phoneNo = customerPhoneNo,
-                    pageName = AppConfig.PAGE_VERIFY_OTP,
+                    pageName = AppConfig.PAGE_GENERATE_OTP,
                     appCode = flowConfig.appCode
                 ).run {
                     ifSuccessful {

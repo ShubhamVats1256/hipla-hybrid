@@ -153,7 +153,7 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
             channelPartnerMobileNo.let { phoneNo ->
                 appEvent.tryEmit(AppEvent(OTP_GENERATING))
                 hiplaRepo.generateOtp(
-                    phoneNo = phoneNo, pageName = AppConfig.PAGE_VERIFY_OTP,
+                    phoneNo = phoneNo, pageName = AppConfig.PAGE_GENERATE_OTP,
                     appCode = flowConfig.appCode
                 ).run {
                     ifSuccessful {
