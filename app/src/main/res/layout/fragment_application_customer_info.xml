@@ -52,7 +52,7 @@
     <EditText
         android:id="@+id/panCardNumber"
         style="@style/Hipla.EditText"
-        android:inputType="text"
+        android:inputType="textCapCharacters"
         android:textAllCaps="true"
         android:maxLength="10"
         android:imeOptions="actionNext"
