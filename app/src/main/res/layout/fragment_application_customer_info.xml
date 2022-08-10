@@ -42,7 +42,7 @@
         android:id="@+id/customerNumber"
         style="@style/Hipla.EditText"
         android:inputType="number"
-
+        android:imeOptions="actionSend"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_item_space"
         android:layout_marginEnd="@dimen/form_item_space"
@@ -57,7 +57,7 @@
         android:inputType="text"
         android:textAllCaps="true"
         android:maxLength="10"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionSend"
         android:layout_height="wrap_content"
         android:hint="@string/pan"
         app:layout_constraintEnd_toEndOf="parent"

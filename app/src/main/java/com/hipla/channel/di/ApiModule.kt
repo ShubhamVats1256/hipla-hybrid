@@ -26,12 +26,12 @@ val apiModule = module {
         httpBuilder.readTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.connectTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS)
         httpBuilder.writeTimeout(HTTP_TIMEOUT, TimeUnit.SECONDS) //Backend is really slow
-/*        if (BuildConfig.DEBUG) {
-            httpBuilder.addInterceptor(get<ChuckerInterceptor>())
-            httpBuilder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                HttpLoggingInterceptor.Level.BODY
-            })
-        }*/
+//        if (BuildConfig.DEBUG) {
+//            httpBuilder.addInterceptor(get<ChuckerInterceptor>())
+//            httpBuilder.addNetworkInterceptor(HttpLoggingInterceptor().apply {
+//                HttpLoggingInterceptor.Level.BODY
+//            })
+//        }
         return@single httpBuilder
     }
 

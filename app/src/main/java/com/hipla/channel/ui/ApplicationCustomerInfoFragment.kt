@@ -155,6 +155,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun isMandatoryCustomerInfoFilled(): Boolean {
+
+
+
+
         if (binding.customerFirstName.hasValidData().not()) {
             binding.customerFirstName.error = "Customer first name is mandatory";
             requireContext().showToastErrorMessage("Customer first name is mandatory")
@@ -223,6 +227,28 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
                 else -> false
             }
         }
+
+        binding.customerNumber.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    binding.panCardNumber.requestFocus()
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+        binding.panCardNumber.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    requireActivity().IActivityHelper().hideKeyboard()
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 
 
