@@ -184,11 +184,13 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
         amountPayable: String,
         paymentType: PaymentType,
         chequeNo: String,
+        remark: String,
     ): ApplicationRequest? {
         return applicationRequest?.apply {
             this.channelPartnerId = generateOTPResponse?.recordReference?.id.toString()
             this.amountPayable = amountPayable
             this.paymentDetails = chequeNo
+            this.remark = remark
             this.paymentType = paymentType
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
         }

@@ -132,7 +132,8 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         viewModel.updateApplicationRequest(
             amountPayable = binding.amountPayable.content(),
             chequeNo = binding.paymentRefNo.content(),
-            paymentType = getPaymentTypeFromCheckedId()
+            paymentType = getPaymentTypeFromCheckedId(),
+            remark = binding.etRemark.content()
         ).also { appRequest ->
             findNavController().run {
                 Timber.tag(LogConstant.CUSTOMER_INFO)

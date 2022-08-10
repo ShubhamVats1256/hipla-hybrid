@@ -12,6 +12,7 @@ data class ApplicationRequest(
     var customerName: String? = null,
     var customerLastName: String? = null,
     var customerPhoneNumber: String? = null,
+    var remark: String? = null,
     var panNumber: String? = null,
     var channelPartnerId: String? = null,
     var amountPayable: String? = null,

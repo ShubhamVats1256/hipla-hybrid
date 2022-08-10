@@ -30,6 +30,7 @@
     <string name="channel_partner_name">Channel Partner Name*</string>
     <string name="channel_partner_otp">Channel Partner OTP</string>
     <string name="channel_partner_mobile_no">Channel Partner Mobile No*</string>
+    <string name="channel_partner_remark">Remark</string>
 
     <string name="customer_otp">Customer OTP</string>
     <string name="customer_first_name">Customer First Name*</string>
