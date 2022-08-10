@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -289,7 +290,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             // prepare date range
             val constraintsBuilderRange = CalendarConstraints.Builder()
             val oneDayInMillis: Long = 1000 * 60 * 60 * 24
-            val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 3// days from today
+            val endDateInMs = System.currentTimeMillis() + oneDayInMillis * 2// days from today
             val dateValidatorMax: DateValidator =
                 DateValidatorPointBackward.before(endDateInMs)
             val listValidators = ArrayList<DateValidator>()
@@ -402,16 +403,34 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun isMandatoryInfoFilled(): Boolean {
-        if (binding.channelPartnerMobileNo.hasValidData().not()) {
-            binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
-            requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
-            return false
-        }
+
         if (binding.amountPayable.hasValidData().not()) {
             binding.amountPayable.error = "Amount payable is mandatory";
             requireContext().showToastErrorMessage("Amount payable is mandatory")
             return false
         }
+
+
+           if (binding.amountPayable.text.toString().toFloat()<500000) {
+               binding.amountPayable.error = "Minimum amount payable is 5,00,000";
+               requireContext().showToastErrorMessage("Minimum amount payable is 5,00,000")
+               return false
+           }
+
+
+        if (binding.paymentDate.text.toString() == "Date") {
+            requireContext().showToastErrorMessage("Please select date")
+            return false
+        }
+
+        if (binding.channelPartnerMobileNo.hasValidData().not()) {
+            binding.channelPartnerMobileNo.error = "Channel partner mobile number is mandatory";
+            requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
+            return false
+        }
+
+
+
         if (viewModel.isPaymentProofUploaded().not()) {
             requireContext().showToastErrorMessage("Kindly ${getPaymentTitle()}")
             return false

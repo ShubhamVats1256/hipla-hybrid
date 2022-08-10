@@ -3,6 +3,7 @@ package com.hipla.channel.ui
 import android.os.Bundle
 import android.view.KeyEvent.ACTION_UP
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
@@ -44,6 +45,9 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         setCustomerPhone()
         setPanNo()
         setFloorPreference()
+        setFocusRequest()
+
+
 
         // dev settings
 /*        binding.continueBtn.setOnClickListener {
@@ -66,6 +70,8 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     private fun setHeader() {
         binding.header.text = getFormTitle()
     }
+
+
 
     private fun getFormTitle(): String {
         return if (viewModel.flowConfig.isApplication()) {
@@ -149,6 +155,10 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun isMandatoryCustomerInfoFilled(): Boolean {
+
+
+
+
         if (binding.customerFirstName.hasValidData().not()) {
             binding.customerFirstName.error = "Customer first name is mandatory";
             requireContext().showToastErrorMessage("Customer first name is mandatory")
@@ -206,6 +216,41 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
             }
         }
     }
+
+    private fun setFocusRequest() {
+        binding.customerLastName.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    binding.customerNumber.requestFocus()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.customerNumber.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    binding.panCardNumber.requestFocus()
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+        binding.panCardNumber.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    requireActivity().IActivityHelper().hideKeyboard()
+                    true
+                }
+                else -> false
+            }
+        }
+
+    }
+
 
     private fun setFloorPreference() {
         if (viewModel.flowConfig.isApplication()) {
