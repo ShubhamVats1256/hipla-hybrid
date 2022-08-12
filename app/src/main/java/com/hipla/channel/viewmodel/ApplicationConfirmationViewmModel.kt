@@ -5,6 +5,7 @@ import com.hipla.channel.common.*
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.entity.response.ApplicationUpdateResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.UserDetails
 import com.hipla.channel.extension.*
@@ -52,7 +53,7 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                 ) {
                     ifSuccessful {
                         if (it.status.isSuccess()) {
-                            reportApplicationUpdateSuccess()
+                            reportApplicationUpdateSuccess(it)
                         } else {
                             reportApplicationUpdateFailed()
                         }
@@ -143,11 +144,11 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
         }
     }
 
-    private fun reportApplicationUpdateSuccess() {
+    private fun reportApplicationUpdateSuccess(applicationUpdateResponse: ApplicationUpdateResponse) {
         appEvent.tryEmit(
-            AppEventWithData(
+            AppEvent(
                 id = APPLICATION_UPDATING_SUCCESS,
-                extras = applicationRequest!!
+                message = applicationUpdateResponse.displayCounter?.toString() ?: ""
             )
         )
     }
