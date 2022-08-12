@@ -418,7 +418,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             return false
         }
 
-
         if (binding.paymentDate.text.toString() == "Date") {
             requireContext().showToastErrorMessage("Please select date")
             return false
@@ -429,8 +428,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
             return false
         }
-
-
 
         if (viewModel.isPaymentProofUploaded().not()) {
             requireContext().showToastErrorMessage("Kindly ${getPaymentTitle()}")
@@ -480,12 +477,13 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
                 var bitmap: Bitmap? = null
                 val contentResolver: ContentResolver = requireActivity().contentResolver
                 try {
+                    val startTime = System.currentTimeMillis()
                     val source = ImageDecoder.createSource(
                         contentResolver,
                         imageUri!!
                     )
                     bitmap = ImageDecoder.decodeBitmap(source)
-                    Timber.tag(LogConstant.PAYMENT_INFO).d("bitmap rendered from fileUri")
+                    Timber.tag(LogConstant.PAYMENT_INFO).d("bitmap rendered from fileUri ${System.currentTimeMillis() - startTime}")
                     showUploadChequeDialog(bitmap)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -495,7 +493,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             }
         }
     }
-
 
     override fun onDestroyView() {
         uploadChequeDialog?.dismiss()
