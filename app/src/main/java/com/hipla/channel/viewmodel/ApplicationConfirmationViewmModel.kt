@@ -5,6 +5,7 @@ import com.hipla.channel.common.*
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.entity.response.ApplicationUpdateResponse
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.entity.response.UserDetails
 import com.hipla.channel.extension.*
@@ -21,19 +22,19 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
     var unitInfo: UnitInfo? = null
 
     fun extractArguments(arguments: Bundle?) {
-        arguments?.getString(KEY_PARTNER)?.toUserDetails()?.let {
-            this.channelPartnerDetails = it
-            Timber.tag(LogConstant.APP_CONFIRM)
-                .d("channel partner name ${channelPartnerDetails?.name} mobile no ${channelPartnerDetails?.phoneNumber}")
-        }
-        arguments?.getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
-            this.applicationRequest = it
-            Timber.tag(LogConstant.APP_CONFIRM)
-                .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
-        }
-        arguments?.let {
-            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
-            unitInfo = it.getString(KEY_UNIT)?.toUnitInfo()
+        arguments?.run {
+            getString(KEY_PARTNER)?.toUserDetails()?.let {
+                this@ApplicationConfirmationViewModel.channelPartnerDetails = it
+                Timber.tag(LogConstant.APP_CONFIRM)
+                    .d("channel partner name ${channelPartnerDetails?.name} mobile no ${channelPartnerDetails?.phoneNumber}")
+            }
+            getString(KEY_APP_REQ)?.toApplicationRequest()?.let {
+                this@ApplicationConfirmationViewModel.applicationRequest = it
+                Timber.tag(LogConstant.APP_CONFIRM)
+                    .d("application request with id ${it.id} for customer : ${it.customerName} received in ")
+            }
+            flowConfig = this.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
+            unitInfo = this.getString(KEY_UNIT)?.toUnitInfo()
             Timber.tag(LogConstant.APP_CONFIRM).d("Unit selected: $unitInfo")
             Timber.tag(LogConstant.APP_CONFIRM).d("Flow config: $flowConfig")
         }
@@ -43,10 +44,16 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
         launchIO {
             appEvent.tryEmit(AppEvent(APPLICATION_UPDATING))
             if (applicationRequest != null) {
-                with(hiplaRepo.updateApplication(applicationRequest!!)) {
+                with(
+                    hiplaRepo.updateApplication(
+                        applicationRequest!!,
+                        pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                        appCode = flowConfig.appCode
+                    )
+                ) {
                     ifSuccessful {
                         if (it.status.isSuccess()) {
-                            reportApplicationUpdateSuccess()
+                            reportApplicationUpdateSuccess(it)
                         } else {
                             reportApplicationUpdateFailed()
                         }
@@ -77,7 +84,9 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
                 hiplaRepo.verifyOtp(
                     otp = otp,
                     userId = generateOTPResponse!!.recordReference.id.toString(),
-                    referenceId = generateOTPResponse!!.referenceId
+                    referenceId = generateOTPResponse!!.referenceId,
+                    pageName = AppConfig.PAGE_VERIFY_OTP,
+                    appCode = flowConfig.appCode
                 ).run {
                     ifSuccessful {
                         if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {
@@ -107,7 +116,11 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
         launchIO {
             appEvent.tryEmit(AppEvent(OTP_GENERATING))
             applicationRequest?.customerPhoneNumber?.let { customerPhoneNo ->
-                hiplaRepo.generateOtp(customerPhoneNo).run {
+                hiplaRepo.generateOtp(
+                    phoneNo = customerPhoneNo,
+                    pageName = AppConfig.PAGE_GENERATE_OTP,
+                    appCode = flowConfig.appCode
+                ).run {
                     ifSuccessful {
                         Timber.tag(LogConstant.CUSTOMER_INFO)
                             .d("generate OTP successful for customer name ${applicationRequest?.customerName}, referenceId:${it.referenceId}")
@@ -131,11 +144,11 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
         }
     }
 
-    private fun reportApplicationUpdateSuccess() {
+    private fun reportApplicationUpdateSuccess(applicationUpdateResponse: ApplicationUpdateResponse) {
         appEvent.tryEmit(
-            AppEventWithData(
+            AppEvent(
                 id = APPLICATION_UPDATING_SUCCESS,
-                extras = applicationRequest!!
+                message = applicationUpdateResponse.displayCounter?.toString() ?: ""
             )
         )
     }

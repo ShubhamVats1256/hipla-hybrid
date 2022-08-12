@@ -3,7 +3,6 @@ package com.hipla.channel.viewmodel
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.hipla.channel.common.AppConfig
-import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ApiError
@@ -12,7 +11,6 @@ import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.extension.isApplication
 import com.hipla.channel.extension.isInventory
-import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
@@ -46,9 +44,10 @@ class SalesUserViewModel : BaseViewModel() {
                     .d("downloading sales user list for page ${currentPageAtomic.get()}")
                 with(
                     hiplaRepo.fetchSalesUserList(
-                        currentPageAtomic.get(),
-                        pageSize,
-                        AppConfig.PAGE_LIST_SALES.lowercase()
+                        currentPage = currentPageAtomic.get(),
+                        pageSize = pageSize,
+                        pageName = AppConfig.PAGE_LIST_SALES,
+                        appCode = flowConfig.appCode
                     )
                 ) {
                     ifSuccessful {
@@ -92,7 +91,11 @@ class SalesUserViewModel : BaseViewModel() {
     fun generateOTP(salesUser: SalesUser) {
         launchIO {
             appEvent.tryEmit(AppEvent(OTP_GENERATING))
-            hiplaRepo.generateOtp(salesUser.phoneNumber.toString()).run {
+            hiplaRepo.generateOtp(
+                phoneNo = salesUser.phoneNumber.toString(),
+                pageName = AppConfig.PAGE_GENERATE_OTP,
+                appCode = flowConfig.appCode
+            ).run {
                 ifSuccessful {
                     Timber.tag(LogConstant.SALES_LIST)
                         .d("generate OTP successful for ${salesUser.name} : ${salesUser.id}, referenceId:${it.referenceId}")
@@ -123,7 +126,9 @@ class SalesUserViewModel : BaseViewModel() {
                 hiplaRepo.verifyOtp(
                     otp = otp,
                     userId = salesUserId,
-                    referenceId = generateOTPResponse!!.referenceId
+                    referenceId = generateOTPResponse!!.referenceId,
+                    pageName = AppConfig.PAGE_VERIFY_OTP,
+                    appCode = flowConfig.appCode
                 ).run {
                     ifSuccessful {
                         if (it.verifyOTPData.referenceId == generateOTPResponse!!.referenceId && it.verifyOTPData.isVerified) {

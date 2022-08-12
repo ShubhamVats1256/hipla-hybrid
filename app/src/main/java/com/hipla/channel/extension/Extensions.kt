@@ -147,12 +147,12 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["panNumber"] = panNumber!!
     requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
-    // requestMap["paymentDetails"] = paymentDetails ?: Constant.EMPTY_STRING
     requestMap["paymentProofImageUrl"] = this.paymentProofImageUrl!!
     requestMap["amountPayable"] = this.amountPayable!!
     requestMap["ownerId"] = ownerId.toString()
     requestMap["createdBy"] = createdBy.toString()
     requestMap["chequeDate"] = chequeDate.toString()
+    requestMap["chequeNumber"] = paymentDetails.toString()
     if (unitId >= 0) {
         requestMap["unitId"] = unitId.toString()
     }

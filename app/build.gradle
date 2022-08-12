@@ -22,13 +22,13 @@ android {
         debug {
             versionNameSuffix "-debug"
             buildConfigField "boolean", "DEV_MODE", "true"
-            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {
             minifyEnabled false
             buildConfigField "boolean", "DEV_MODE", "false"
-            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -94,6 +94,10 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+
+    // image picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
 
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"

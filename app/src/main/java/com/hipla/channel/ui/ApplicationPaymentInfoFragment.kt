@@ -1,15 +1,14 @@
 package com.hipla.channel.ui
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator
 import com.google.android.material.datepicker.CompositeDateValidator
@@ -36,6 +36,7 @@ import com.hipla.channel.extension.*
 import com.hipla.channel.viewmodel.ApplicationPaymentInfoViewModel
 import com.hipla.channel.widget.OTPDialog
 import timber.log.Timber
+import java.io.File
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
@@ -411,12 +412,11 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         }
 
 
-           if (binding.amountPayable.text.toString().toFloat()<500000) {
-               binding.amountPayable.error = "Minimum amount payable is 5,00,000";
-               requireContext().showToastErrorMessage("Minimum amount payable is 5,00,000")
-               return false
-           }
-
+        if (binding.amountPayable.text.toString().toFloat() < 500000) {
+            binding.amountPayable.error = "Minimum amount payable is 5,00,000";
+            requireContext().showToastErrorMessage("Minimum amount payable is 5,00,000")
+            return false
+        }
 
         if (binding.paymentDate.text.toString() == "Date") {
             requireContext().showToastErrorMessage("Please select date")
@@ -428,8 +428,6 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
             return false
         }
-
-
 
         if (viewModel.isPaymentProofUploaded().not()) {
             requireContext().showToastErrorMessage("Kindly ${getPaymentTitle()}")
@@ -461,12 +459,12 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun takePicture() {
-        Timber.tag(LogConstant.PAYMENT_INFO).d("capture image")
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            requireContext().showToastErrorMessage("This device does not have camera application to proceed")
+        tryCatch {
+            Timber.tag(LogConstant.PAYMENT_INFO).d("capture image")
+            ImagePicker.with(this)
+                .saveDir(File(requireActivity().cacheDir, "ImagePicker"))
+                .cameraOnly()
+                .start(REQUEST_IMAGE_CAPTURE)
         }
     }
 
@@ -474,10 +472,22 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         Timber.tag(LogConstant.PAYMENT_INFO).d("on activity result")
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                val bitmap = data?.extras?.get("data") as Bitmap
-                val imageUri: Uri? = data.data
+                val imageUri: Uri? = data?.data
                 Timber.tag(LogConstant.PAYMENT_INFO).d("picture taken successfully : $imageUri")
-                showUploadChequeDialog(bitmap)
+                var bitmap: Bitmap? = null
+                val contentResolver: ContentResolver = requireActivity().contentResolver
+                try {
+                    val startTime = System.currentTimeMillis()
+                    val source = ImageDecoder.createSource(
+                        contentResolver,
+                        imageUri!!
+                    )
+                    bitmap = ImageDecoder.decodeBitmap(source)
+                    Timber.tag(LogConstant.PAYMENT_INFO).d("bitmap rendered from fileUri ${System.currentTimeMillis() - startTime}")
+                    showUploadChequeDialog(bitmap)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             } else {
                 requireContext().showToastSuccessMessage("Photo capture cancelled")
             }

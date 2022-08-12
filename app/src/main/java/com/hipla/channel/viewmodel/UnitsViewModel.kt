@@ -1,10 +1,17 @@
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.hipla.channel.common.AppConfig
+import com.hipla.channel.common.KEY_FLOW_CONFIG
+import com.hipla.channel.common.KEY_SALES_USER_ID
 import com.hipla.channel.common.LogConstant
-import com.hipla.channel.entity.*
+import com.hipla.channel.entity.API_ERROR
+import com.hipla.channel.entity.AppEvent
+import com.hipla.channel.entity.FlowConfig
+import com.hipla.channel.entity.UnitInfo
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import com.hipla.channel.viewmodel.BaseViewModel
 import org.koin.java.KoinJavaComponent
@@ -21,6 +28,16 @@ class UnitsViewModel : BaseViewModel() {
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
     val unitMasterList = mutableListOf<UnitInfo>()
     var unitListLiveData = MutableLiveData<List<UnitInfo>>()
+    lateinit var flowConfig: FlowConfig
+    private var salesUserId: String? = null
+
+    fun extractArguments(arguments: Bundle?) {
+        arguments?.let {
+            salesUserId = it.getString(KEY_SALES_USER_ID)
+            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("Flow config: $flowConfig")
+        }
+    }
 
     fun fetchUnits() {
         if (canDownload()) {
@@ -29,9 +46,10 @@ class UnitsViewModel : BaseViewModel() {
                     .d("downloading unit list for page ${currentPageAtomic.get()}")
                 with(
                     hiplaRepo.fetchUnits(
-                        currentPageAtomic.get(),
-                        pageSize,
-                        AppConfig.PAGE_INVENTORY.lowercase()
+                        currentPage = currentPageAtomic.get(),
+                        pageSize = pageSize,
+                        pageName = AppConfig.PAGE_UNITS,
+                        appCode = flowConfig.appCode,
                     )
                 ) {
                     ifSuccessful {
@@ -39,7 +57,8 @@ class UnitsViewModel : BaseViewModel() {
                             .d("downloading unit list successful with size ${it.unitList?.size} for page ${currentPageAtomic.get()}")
                         totalPageAtomic = AtomicInteger(it.pagination.totalPage)
                         currentPageAtomic.getAndIncrement()
-                        Timber.tag(LogConstant.SALES_LIST).d("totalPage : ${it.pagination.totalPage}")
+                        Timber.tag(LogConstant.SALES_LIST)
+                            .d("totalPage : ${it.pagination.totalPage}")
                         if (it.unitList.isNullOrEmpty().not()) {
                             unitMasterList.addAll(it.unitList!!)
                             unitListLiveData.postValue(it.unitList!!)

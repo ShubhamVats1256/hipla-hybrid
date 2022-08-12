@@ -1,10 +1,7 @@
 package com.hipla.channel.viewmodel
 
 import android.os.Bundle
-import com.hipla.channel.common.KEY_FLOW_CONFIG
-import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.common.KEY_UNIT
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
@@ -78,7 +75,13 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
     private fun createApplicationInServer(applicationRequest: ApplicationRequest?) {
         launchIO {
             appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_CREATING))
-            with(hiplaRepo.createApplication(applicationRequest!!)) {
+            with(
+                hiplaRepo.createApplication(
+                    applicationRequest = applicationRequest!!,
+                    pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                    appCode = flowConfig.appCode
+                )
+            ) {
                 ifSuccessful {
                     applicationCreateResponse = it
                     applicationRequest.id = it.userReference.id

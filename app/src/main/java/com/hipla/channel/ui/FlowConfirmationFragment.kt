@@ -53,7 +53,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
         }
     }
 
-    private fun showApplicationSuccessful(applicationRequest: ApplicationRequest) {
+    private fun showApplicationSuccessful(displayCounter : String) {
         Timber.tag(LogConstant.CUSTOMER_INFO).d("showing application request successful dialog")
         if (requireActivity().isDestroyed.not()) {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
@@ -61,7 +61,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
             dialogBinding.flowSuccessTitle.text = getSuccessMessage()
-            dialogBinding.appInfo.text = getConfirmationMessage(applicationRequest)
+            dialogBinding.appInfo.text = getConfirmationMessage(displayCounter)
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
                 goHome()
@@ -86,11 +86,11 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
         }
     }
 
-    private fun getConfirmationMessage(applicationRequest: ApplicationRequest): String {
+    private fun getConfirmationMessage(displayCounter: String): String {
         return if (viewModel.flowConfig.isApplication()) {
-            getString(R.string.application_confirm_msg, applicationRequest.id.toString())
+            getString(R.string.application_confirm_msg, displayCounter)
         } else if (viewModel.flowConfig.isInventory()) {
-            getString(R.string.inventory_confirm_msg, applicationRequest.id.toString())
+            getString(R.string.inventory_confirm_msg, displayCounter)
         } else {
             Constant.EMPTY_STRING
         }
@@ -127,11 +127,9 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
                                 Timber.tag(LogConstant.APP_CONFIRM)
                                     .d("application update success")
                                 requireActivity().IActivityHelper().dismiss()
-                                it.toApplicationRequest()?.let { appRequest ->
-                                    Timber.tag(LogConstant.APP_CONFIRM)
-                                        .d("application request extracted")
-                                    showApplicationSuccessful(appRequest)
-                                }
+                                Timber.tag(LogConstant.APP_CONFIRM)
+                                    .d("application display counter ${it.message} ")
+                                showApplicationSuccessful(it.message!!)
                             }
                             APPLICATION_UPDATING_FAILED -> {
                                 Timber.tag(LogConstant.APP_CONFIRM)

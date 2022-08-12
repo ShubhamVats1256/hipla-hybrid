@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
-import com.hipla.channel.common.*
+import com.hipla.channel.common.KEY_FLOW_CONFIG
+import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.KEY_UNIT
+import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentUnitListBinding
@@ -48,6 +51,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUnitListBinding.bind(view)
         viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
+        viewModel.extractArguments(arguments)
         unitListAdapter = UnitListAdapter(requireContext()) {
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
             showBookingConfirmationDialog(it)
