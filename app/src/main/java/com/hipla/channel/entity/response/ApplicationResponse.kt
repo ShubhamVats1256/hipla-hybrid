@@ -24,5 +24,6 @@ class ApplicationRecordExtraInfo(
 
 @JsonClass(generateAdapter = true)
 class ApplicationUpdateResponse(
-    val status: RecordStatus
+    val status: RecordStatus,
+    val displayCounter : Int?
 )
