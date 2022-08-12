@@ -29,7 +29,6 @@ interface HiplaApiService {
         @Query("role") role: String
     ): Response<GenerateOTPResponse>
 
-
     @POST("notification/v1/verifyAnonymousOTP")
     suspend fun verifyOtp(
         @Body otpRequestMap: Map<String, String>,

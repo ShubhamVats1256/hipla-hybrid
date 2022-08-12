@@ -143,8 +143,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
     }
 
     private fun displaySalesUserList(salesUserList: List<SalesUser>) {
-        if (salesUserList.isNotEmpty() && salesRecyclerAdapter.isListAlreadyAppended(salesUserList)
-                .not()
+        if (salesRecyclerAdapter.isListAlreadyAppended(salesUserList).not()
         ) {
             salesRecyclerAdapter.append(salesUserList)
             binding.salesRecyclerView.show()

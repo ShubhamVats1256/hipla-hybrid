@@ -46,6 +46,15 @@ class UnitListAdapter(
         }
     }
 
+
+    fun isListAlreadyAppended(tempUnitSales: List<UnitInfo>): Boolean {
+        return if (tempUnitSales.isNotEmpty()) {
+            unitInfoList.last().id == tempUnitSales.last().id
+        } else {
+            true
+        }
+    }
+
     override fun getItemCount(): Int = unitInfoList.size
 
     fun append(tempUnitList: List<UnitInfo>) {
@@ -64,7 +73,9 @@ class UnitListAdapter(
 
         init {
             binding?.unit?.setOnClickListener {
-                onItemClicked(unitInfoList[adapterPosition])
+                takeIf { unitInfoList[adapterPosition].isAvailable() }?.let {
+                    onItemClicked(unitInfoList[adapterPosition])
+                }
             }
         }
     }

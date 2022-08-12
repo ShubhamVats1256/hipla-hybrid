@@ -43,7 +43,7 @@ val apiModule = module {
             requestBuilder.header("Content-Type", "application/json")
             requestBuilder.header("Accept", "application/json")
             requestBuilder.header("Authorization", BuildConfig.TOKEN)
-            requestBuilder.header("app_code", "application")
+            //requestBuilder.header("app_code", "application")
             chain.safeProceed(requestBuilder.build())
         }.build()
     }

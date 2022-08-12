@@ -9,6 +9,7 @@ import com.hipla.channel.R
 import com.hipla.channel.common.image.setCircularImage
 import com.hipla.channel.databinding.ListItemSalesUserBinding
 import com.hipla.channel.entity.SalesUser
+import com.hipla.channel.entity.UnitInfo
 
 
 class SalesRecyclerAdapter(
@@ -36,12 +37,11 @@ class SalesRecyclerAdapter(
     override fun getItemCount(): Int = salesUserList.size
 
     fun isListAlreadyAppended(tempSalesList: List<SalesUser>): Boolean {
-        if (salesUserList.isNotEmpty()) {
-            if (salesUserList.last().id == tempSalesList.last().id) {
-                return true
-            }
+        return if (salesUserList.isNotEmpty()) {
+            salesUserList.last().id == tempSalesList.last().id
+        } else {
+            true
         }
-        return false
     }
 
     fun append(tempSalesList: List<SalesUser>) {

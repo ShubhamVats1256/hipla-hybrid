@@ -25,7 +25,10 @@ import com.hipla.channel.entity.UNIT_LIST_ERROR
 import com.hipla.channel.entity.UNIT_LIST_LOADING
 import com.hipla.channel.entity.UNIT_LIST_SUCCESS
 import com.hipla.channel.entity.UnitInfo
-import com.hipla.channel.extension.*
+import com.hipla.channel.extension.canLoadNextGridPage
+import com.hipla.channel.extension.isCurrentDestination
+import com.hipla.channel.extension.launchSafely
+import com.hipla.channel.extension.toJsonString
 import com.hipla.channel.ui.adapter.UnitListAdapter
 import timber.log.Timber
 
@@ -128,9 +131,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
     }
 
     private fun displayUnits(unitInfoList: List<UnitInfo>) {
-        if (unitInfoList.isEmpty()) {
-            requireContext().showToastErrorMessage("Units data not found")
-        } else {
+        if (unitListAdapter.isListAlreadyAppended(unitInfoList).not()) {
             unitListAdapter.append(unitInfoList)
             binding.unitRecyclerView.show()
             binding.unitListLoader.hide()
