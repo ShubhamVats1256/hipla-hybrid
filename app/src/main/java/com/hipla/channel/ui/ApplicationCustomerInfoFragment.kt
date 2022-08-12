@@ -155,10 +155,6 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
     }
 
     private fun isMandatoryCustomerInfoFilled(): Boolean {
-
-
-
-
         if (binding.customerFirstName.hasValidData().not()) {
             binding.customerFirstName.error = "Customer first name is mandatory";
             requireContext().showToastErrorMessage("Customer first name is mandatory")

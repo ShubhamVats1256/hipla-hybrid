@@ -3,6 +3,7 @@ package com.hipla.channel.viewmodel
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.hipla.channel.common.AppConfig
+import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ApiError
@@ -11,6 +12,7 @@ import com.hipla.channel.entity.api.ifSuccessful
 import com.hipla.channel.entity.response.GenerateOTPResponse
 import com.hipla.channel.extension.isApplication
 import com.hipla.channel.extension.isInventory
+import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
@@ -29,8 +31,8 @@ class SalesUserViewModel : BaseViewModel() {
     lateinit var flowConfig: FlowConfig
 
     fun extractArguments(arguments: Bundle?) {
-        flowConfig = FlowConfig.createApplicationFlowConfig()
         arguments?.let {
+            flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
             Timber.tag(LogConstant.SALES_LIST).d("flow config: $flowConfig")
         }
     }
