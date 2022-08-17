@@ -51,6 +51,22 @@ interface HiplaApiService {
         @Query("page_name") pageName: String,
     ): Response<ApplicationUpdateResponse>
 
+
+    @POST("business/v1/extra/bookUnit")
+    suspend fun createInventory(
+        @Body createApplicationRequestMap: Map<String, String>,
+        @Query("app_code") appCode: String,
+        @Query("page_name") pageName: String,
+    ): Response<ApplicationCreateResponse>
+
+    @PATCH("business/v1/extra/bookUnit/{applicationId}")
+    suspend fun updateInventory(
+        @Path("applicationId") applicationId: Int,
+        @Body createApplicationRequestMap: Map<String, String>,
+        @Query("app_code") appCode: String,
+        @Query("page_name") pageName: String,
+    ): Response<ApplicationUpdateResponse>
+
     @GET("business/v1/user/{userId}")
     suspend fun fetchUserDetails(
         @Path("userId") userId: Int,

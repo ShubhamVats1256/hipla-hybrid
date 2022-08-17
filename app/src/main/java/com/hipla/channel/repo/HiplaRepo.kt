@@ -88,6 +88,40 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
+    suspend fun updateInventory(
+        applicationRequest: ApplicationRequest,
+        pageName: String,
+        appCode: String
+    ): Resource<ApplicationUpdateResponse> {
+        return try {
+            return hiplaApiService.updateApplication(
+                applicationRequest.id,
+                applicationRequest.toUpdateApplicationRequestMap(),
+                appCode = appCode,
+                pageName = pageName,
+            ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
+
+    suspend fun createInventory(
+        applicationRequest: ApplicationRequest,
+        pageName: String,
+        appCode: String
+    ): Resource<ApplicationCreateResponse> {
+        return try {
+            return hiplaApiService.createApplication(
+                applicationRequest.toCreateApplicationRequestMap(),
+                appCode = appCode,
+                pageName = pageName
+            ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
     suspend fun updateApplication(
         applicationRequest: ApplicationRequest,
         pageName: String,

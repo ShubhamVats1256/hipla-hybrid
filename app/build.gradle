@@ -22,7 +22,7 @@ android {
         debug {
             versionNameSuffix "-debug"
             buildConfigField "boolean", "DEV_MODE", "true"
-            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io\""
+            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {

@@ -76,11 +76,20 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         launchIO {
             appEvent.tryEmit(AppEvent(APP_EVENT_APPLICATION_CREATING))
             with(
-                hiplaRepo.createApplication(
-                    applicationRequest = applicationRequest!!,
-                    pageName = AppConfig.PAGE_CREATE_APPLICATION,
-                    appCode = flowConfig.appCode
-                )
+                if(flowConfig.isApplication()) {
+                    hiplaRepo.createApplication(
+                        applicationRequest = applicationRequest!!,
+                        pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                        appCode = flowConfig.appCode
+                    )
+                } else {
+                    hiplaRepo.createInventory(
+                        applicationRequest = applicationRequest!!,
+                        pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                        appCode = flowConfig.appCode
+                    )
+                }
+
             ) {
                 ifSuccessful {
                     applicationCreateResponse = it

@@ -45,11 +45,19 @@ class ApplicationConfirmationViewModel : BaseViewModel() {
             appEvent.tryEmit(AppEvent(APPLICATION_UPDATING))
             if (applicationRequest != null) {
                 with(
-                    hiplaRepo.updateApplication(
-                        applicationRequest!!,
-                        pageName = AppConfig.PAGE_CREATE_APPLICATION,
-                        appCode = flowConfig.appCode
-                    )
+                    if(flowConfig.isApplication()) {
+                        hiplaRepo.updateApplication(
+                            applicationRequest!!,
+                            pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                            appCode = flowConfig.appCode
+                        )
+                    } else {
+                        hiplaRepo.updateInventory(
+                            applicationRequest!!,
+                            pageName = AppConfig.PAGE_CREATE_APPLICATION,
+                            appCode = flowConfig.appCode
+                        )
+                    }
                 ) {
                     ifSuccessful {
                         if (it.status.isSuccess()) {
