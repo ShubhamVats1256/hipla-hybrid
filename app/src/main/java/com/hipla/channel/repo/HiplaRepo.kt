@@ -94,7 +94,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         appCode: String
     ): Resource<ApplicationUpdateResponse> {
         return try {
-            return hiplaApiService.updateApplication(
+            return hiplaApiService.updateInventory(
                 applicationRequest.id,
                 applicationRequest.toUpdateApplicationRequestMap(),
                 appCode = appCode,
@@ -112,7 +112,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         appCode: String
     ): Resource<ApplicationCreateResponse> {
         return try {
-            return hiplaApiService.createApplication(
+            return hiplaApiService.createInventory(
                 applicationRequest.toCreateApplicationRequestMap(),
                 appCode = appCode,
                 pageName = pageName
