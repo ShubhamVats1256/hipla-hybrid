@@ -48,11 +48,7 @@ class UnitListAdapter(
 
 
     fun isListAlreadyAppended(tempUnitSales: List<UnitInfo>): Boolean {
-        return if (tempUnitSales.isNotEmpty()) {
-            unitInfoList.last().id == tempUnitSales.last().id
-        } else {
-            true
-        }
+        return unitInfoList.lastOrNull()?.id == tempUnitSales.lastOrNull()?.id
     }
 
     override fun getItemCount(): Int = unitInfoList.size
