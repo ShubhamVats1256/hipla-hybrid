@@ -204,7 +204,7 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         return if (viewModel.flowConfig.isApplication()) {
             "Payment Information"
         } else if (viewModel.flowConfig.isInventory()) {
-            "Booking for ${viewModel.unitInfo?.name}"
+            "Booking for ${viewModel.unitInfo?.name} in floor ${viewModel.unitInfo?.floorId}"
         } else {
             Constant.EMPTY_STRING
         }
