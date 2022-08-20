@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
-import com.hipla.channel.common.KEY_FLOW_CONFIG
-import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.common.KEY_UNIT
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentFloorListBinding
@@ -153,7 +150,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
                     resId = R.id.action_floorListFragment_to_unitListFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, arguments?.getString(KEY_SALES_USER_ID))
-                        putString(KEY_UNIT, floorInfo.toJsonString())
+                        putString(KEY_FLOOR, floorInfo.toJsonString())
                         putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                     }
                 )
