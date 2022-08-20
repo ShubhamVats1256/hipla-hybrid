@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="@string/floor"
+            android:text="@string/select_floor"
             android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@+id/floorRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
