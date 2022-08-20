@@ -14,11 +14,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
-import com.hipla.channel.common.*
+import com.hipla.channel.common.KEY_FLOOR
+import com.hipla.channel.common.KEY_FLOW_CONFIG
+import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentFloorListBinding
-import com.hipla.channel.entity.*
+import com.hipla.channel.entity.FloorInfo
+import com.hipla.channel.entity.UNIT_LIST_ERROR
+import com.hipla.channel.entity.UNIT_LIST_LOADING
+import com.hipla.channel.entity.UNIT_LIST_SUCCESS
 import com.hipla.channel.extension.canLoadNextGridPage
 import com.hipla.channel.extension.isCurrentDestination
 import com.hipla.channel.extension.launchSafely
@@ -30,7 +36,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private lateinit var viewModel: FloorListViewModel
     private lateinit var binding: FragmentFloorListBinding
-    private lateinit var floorListAdapter : FloorListAdapter
+    private lateinit var floorListAdapter: FloorListAdapter
 
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -83,12 +89,12 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
         }
     }
 
-    private fun loadData() = viewModel.fetchUnits()
+    private fun loadData() = viewModel.fetchFloors()
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launchSafely {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                observeUnitList()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                observeFloorList()
                 observeAppEvents()
             }
         }
@@ -96,27 +102,23 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private fun observeAppEvents() {
         viewLifecycleOwner.lifecycleScope.launchSafely {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launchSafely {
-                    viewModel.appEvent.collect {
-                        when (it.id) {
-                            UNIT_LIST_LOADING -> {
+            viewModel.appEvent.collect {
+                when (it.id) {
+                    UNIT_LIST_LOADING -> {
 
-                            }
-                            UNIT_LIST_SUCCESS -> {
+                    }
+                    UNIT_LIST_SUCCESS -> {
 
-                            }
-                            UNIT_LIST_ERROR -> {
+                    }
+                    UNIT_LIST_ERROR -> {
 
-                            }
-                        }
                     }
                 }
             }
         }
     }
 
-    private fun observeUnitList() {
+    private fun observeFloorList() {
         viewModel.floorListLiveData.observe(viewLifecycleOwner) {
             displayFloors(it)
         }

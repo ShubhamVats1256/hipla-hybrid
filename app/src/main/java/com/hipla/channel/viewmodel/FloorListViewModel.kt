@@ -1,6 +1,9 @@
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.hipla.channel.common.*
+import com.hipla.channel.common.AppConfig
+import com.hipla.channel.common.KEY_FLOW_CONFIG
+import com.hipla.channel.common.KEY_SALES_USER_ID
+import com.hipla.channel.common.LogConstant
 import com.hipla.channel.entity.API_ERROR
 import com.hipla.channel.entity.AppEvent
 import com.hipla.channel.entity.FloorInfo
@@ -8,7 +11,6 @@ import com.hipla.channel.entity.FlowConfig
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
-import com.hipla.channel.extension.toFloorInfo
 import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import com.hipla.channel.viewmodel.BaseViewModel
@@ -20,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class FloorListViewModel : BaseViewModel() {
 
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
-    private val pageSize: Int = AppConfig.PAGE_DOWNLOAD_SIZE
+    private val pageSize: Int = 1000
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
     private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
@@ -28,6 +30,7 @@ class FloorListViewModel : BaseViewModel() {
     var floorListLiveData = MutableLiveData<List<FloorInfo>>()
     lateinit var flowConfig: FlowConfig
     private var salesUserId: String? = null
+    private var floorIdToFloorInfoMap = mutableMapOf<Int, FloorInfo>()
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.let {
@@ -37,7 +40,7 @@ class FloorListViewModel : BaseViewModel() {
         }
     }
 
-    fun fetchUnits() {
+    fun fetchFloors() {
         if (canDownload()) {
             launchIO {
                 Timber.tag(LogConstant.SALES_LIST)
@@ -58,8 +61,15 @@ class FloorListViewModel : BaseViewModel() {
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("totalPage : ${it.pagination.totalPage}")
                         if (it.floorList.isNullOrEmpty().not()) {
-                            floorMasterList.addAll(it.floorList!!)
-                            floorListLiveData.postValue(it.floorList!!)
+                            val tempFloorList = mutableListOf<FloorInfo>()
+                            it.floorList!!.forEach { floorInfo ->
+                                if (floorIdToFloorInfoMap.containsKey(floorInfo.floorId).not()) {
+                                    floorIdToFloorInfoMap[floorInfo.floorId] = floorInfo
+                                    floorMasterList.add(floorInfo)
+                                    tempFloorList.add(floorInfo)
+                                }
+                            }
+                            floorListLiveData.postValue(tempFloorList)
                         }
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("loading unit list successful ${it.floorList?.size}")

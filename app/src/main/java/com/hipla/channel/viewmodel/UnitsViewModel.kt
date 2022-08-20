@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class UnitsViewModel : BaseViewModel() {
 
     private val hiplaRepo: HiplaRepo by KoinJavaComponent.inject(HiplaRepo::class.java)
-    private val pageSize: Int = AppConfig.PAGE_DOWNLOAD_SIZE
+    private val pageSize: Int = 1000
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
     private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
@@ -25,14 +25,14 @@ class UnitsViewModel : BaseViewModel() {
     var unitListLiveData = MutableLiveData<List<UnitInfo>>()
     lateinit var flowConfig: FlowConfig
     private var salesUserId: String? = null
-    lateinit var floorInfo: FloorInfo
+    lateinit var selectedFloorInfo: FloorInfo
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.let {
             salesUserId = it.getString(KEY_SALES_USER_ID)
             flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
-            floorInfo = it.getString(KEY_FLOOR)!!.toFloorInfo()!!
-            Timber.tag(LogConstant.CUSTOMER_INFO).d("floor selected: ${floorInfo.floorId}")
+            selectedFloorInfo = it.getString(KEY_FLOOR)!!.toFloorInfo()!!
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("floor selected: ${selectedFloorInfo.floorId}")
             Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
         }
     }
@@ -50,19 +50,20 @@ class UnitsViewModel : BaseViewModel() {
                         appCode = flowConfig.appCode,
                     )
                 ) {
-                    ifSuccessful {
+                    ifSuccessful { unitPageResponse ->
                         Timber.tag(LogConstant.SALES_LIST)
-                            .d("downloading unit list successful with size ${it.unitList?.size} for page ${currentPageAtomic.get()}")
-                        totalPageAtomic = AtomicInteger(it.pagination.totalPage)
+                            .d("downloading unit list successful with size ${unitPageResponse.unitList?.size} for page ${currentPageAtomic.get()}")
+                        totalPageAtomic = AtomicInteger(unitPageResponse.pagination.totalPage)
                         currentPageAtomic.getAndIncrement()
                         Timber.tag(LogConstant.SALES_LIST)
-                            .d("totalPage : ${it.pagination.totalPage}")
-                        if (it.unitList.isNullOrEmpty().not()) {
-                            unitMasterList.addAll(it.unitList!!)
-                            unitListLiveData.postValue(it.unitList!!)
+                            .d("totalPage : ${unitPageResponse.pagination.totalPage}")
+                        if (unitPageResponse.unitList.isNullOrEmpty().not()) {
+                            val unitListForSelectedFloor = unitPageResponse.unitList?.filter { it.floorId == selectedFloorInfo.floorId }
+                            unitMasterList.addAll(unitListForSelectedFloor!!)
+                            unitListLiveData.postValue(unitListForSelectedFloor!!)
                         }
                         Timber.tag(LogConstant.SALES_LIST)
-                            .d("loading unit list successful ${it.unitList?.size}")
+                            .d("loading unit list successful ${unitPageResponse.unitList?.size}")
                     }
                     ifError {
                         Timber.tag(LogConstant.SALES_LIST).e("unit api error")

@@ -55,6 +55,10 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         binding = FragmentUnitListBinding.bind(view)
         viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
         viewModel.extractArguments(arguments)
+        binding.header.text = buildString {
+            append("Units in Floor ")
+            append(viewModel.selectedFloorInfo.floorId)
+        }
         unitListAdapter = UnitListAdapter(requireContext()) {
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
             showBookingConfirmationDialog(it)

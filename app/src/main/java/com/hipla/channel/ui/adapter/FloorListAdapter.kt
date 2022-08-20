@@ -58,9 +58,7 @@ class FloorListAdapter(
 
         init {
             binding?.floor?.setOnClickListener {
-                takeIf { floorInfoList[adapterPosition].isAvailable() }?.let {
-                    onItemClicked(floorInfoList[adapterPosition])
-                }
+                onItemClicked(floorInfoList[adapterPosition])
             }
         }
     }
