@@ -20,6 +20,7 @@ import com.hipla.channel.common.KEY_UNIT
 import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
+import com.hipla.channel.databinding.FragmentFloorListBinding
 import com.hipla.channel.databinding.FragmentUnitListBinding
 import com.hipla.channel.entity.UNIT_LIST_ERROR
 import com.hipla.channel.entity.UNIT_LIST_LOADING
@@ -36,7 +37,7 @@ import timber.log.Timber
 class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private lateinit var viewModel: FloorListViewModel
-    private lateinit var binding: FragmentUnitListBinding
+    private lateinit var binding: FragmentFloorListBinding
     private lateinit var unitListAdapter: UnitListAdapter
 
     private val scrollListener: RecyclerView.OnScrollListener =
@@ -51,7 +52,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentUnitListBinding.bind(view)
+        binding = FragmentFloorListBinding.bind(view)
         viewModel = ViewModelProvider(this)[FloorListViewModel::class.java]
         viewModel.extractArguments(arguments)
         unitListAdapter = UnitListAdapter(requireContext()) {
@@ -64,7 +65,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
     }
 
     private fun setRecyclerView() {
-        binding.unitRecyclerView.run {
+        binding.floorRecyclerView.run {
             layoutManager = GridLayoutManager(
                 requireContext(), 6,
                 RecyclerView.VERTICAL,
@@ -132,8 +133,8 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
     private fun displayUnits(unitInfoList: List<UnitInfo>) {
         if (unitListAdapter.isListAlreadyAppended(unitInfoList).not()) {
             unitListAdapter.append(unitInfoList)
-            binding.unitRecyclerView.show()
-            binding.unitListLoader.hide()
+            binding.floorRecyclerView.show()
+            binding.floorListLoader.hide()
         }
     }
 
