@@ -186,7 +186,7 @@ class SalesUserFragment : Fragment(R.layout.fragment_sales_list) {
         findNavController().run {
             if (isCurrentDestination(R.id.salesUserFragment)) {
                 navigate(
-                    resId = R.id.action_SalesFragment_to_unitListFragment,
+                    resId = R.id.action_salesListFragment_to_floorListFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, salesUserId)
                         putString(KEY_FLOW_CONFIG, viewModel.flowConfig.toJsonString())

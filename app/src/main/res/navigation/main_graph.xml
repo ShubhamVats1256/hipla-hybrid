@@ -15,6 +15,11 @@
         android:label="SalesUsers" />
 
     <fragment
+        android:id="@+id/floorListFragment"
+        android:name="com.hipla.channel.ui.FloorListFragment"
+        android:label="Floor List" />
+
+    <fragment
         android:id="@+id/unitListFragment"
         android:name="com.hipla.channel.ui.UnitListFragment"
         android:label="Unit List" />
@@ -40,9 +45,14 @@
         app:popUpTo="@+id/homeFragment" />
 
     <action
-        android:id="@+id/action_SalesFragment_to_unitListFragment"
+        android:id="@+id/action_salesListFragment_to_floorListFragment"
+        app:destination="@id/floorListFragment"
+        app:popUpTo="@+id/floorListFragment" />
+
+    <action
+        android:id="@+id/action_floorListFragment_to_unitListFragment"
         app:destination="@id/unitListFragment"
-        app:popUpTo="@+id/salesUserFragment" />
+        app:popUpTo="@+id/floorListFragment" />
 
     <action
         android:id="@+id/action_unitListFragment_to_customerInfoFragment"

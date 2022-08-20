@@ -1,7 +1,6 @@
 package com.hipla.channel
 
 import android.app.Application
-import android.util.Log
 import com.hipla.channel.di.apiModule
 import com.hipla.channel.di.repoModule
 import org.koin.android.ext.koin.androidContext
