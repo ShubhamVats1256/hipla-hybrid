@@ -77,7 +77,7 @@ class ApplicationCustomerInfoFragment : Fragment(R.layout.fragment_application_c
         return if (viewModel.flowConfig.isApplication()) {
             "Application Form"
         } else if (viewModel.flowConfig.isInventory()) {
-            "Booking for ${viewModel.unitInfo?.name}"
+            "Booking for ${viewModel.unitInfo?.name} in floor ${viewModel.unitInfo?.floorId}"
         } else {
             Constant.EMPTY_STRING
         }
