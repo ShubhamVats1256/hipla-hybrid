@@ -175,6 +175,24 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
         }
     }
 
+    suspend fun fetchFloors(
+        currentPage: Int,
+        pageSize: Int,
+        pageName: String,
+        appCode: String
+    ): Resource<FloorPageResponse> {
+        return try {
+            return hiplaApiService.fetchFloors(
+                currentPage = currentPage,
+                pageSize = pageSize,
+                appCode = appCode,
+                pageName = pageName
+            ).asResource()
+        } catch (e: Exception) {
+            ResourceError(e)
+        }
+    }
+
     suspend fun fetchUserDetails(
         userId: Int,
         pageName: String,

@@ -21,24 +21,19 @@ import com.hipla.channel.common.LogConstant
 import com.hipla.channel.common.Utils.hide
 import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.FragmentFloorListBinding
-import com.hipla.channel.databinding.FragmentUnitListBinding
-import com.hipla.channel.entity.UNIT_LIST_ERROR
-import com.hipla.channel.entity.UNIT_LIST_LOADING
-import com.hipla.channel.entity.UNIT_LIST_SUCCESS
-import com.hipla.channel.entity.UnitInfo
+import com.hipla.channel.entity.*
 import com.hipla.channel.extension.canLoadNextGridPage
 import com.hipla.channel.extension.isCurrentDestination
 import com.hipla.channel.extension.launchSafely
 import com.hipla.channel.extension.toJsonString
-import com.hipla.channel.ui.adapter.UnitListAdapter
+import com.hipla.channel.ui.adapter.FloorListAdapter
 import timber.log.Timber
-
 
 class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private lateinit var viewModel: FloorListViewModel
     private lateinit var binding: FragmentFloorListBinding
-    private lateinit var unitListAdapter: UnitListAdapter
+    private lateinit var floorListAdapter : FloorListAdapter
 
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -55,9 +50,9 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
         binding = FragmentFloorListBinding.bind(view)
         viewModel = ViewModelProvider(this)[FloorListViewModel::class.java]
         viewModel.extractArguments(arguments)
-        unitListAdapter = UnitListAdapter(requireContext()) {
-            Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
-            showBookingConfirmationDialog(it)
+        floorListAdapter = FloorListAdapter(requireContext()) {
+            Timber.tag(LogConstant.UNIT).d("floor selected: ${it.floorId}")
+            showFloorConfirmationDialog(it)
         }
         setRecyclerView()
         observeViewModel()
@@ -67,11 +62,11 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
     private fun setRecyclerView() {
         binding.floorRecyclerView.run {
             layoutManager = GridLayoutManager(
-                requireContext(), 6,
+                requireContext(), 4,
                 RecyclerView.VERTICAL,
                 false
             )
-            adapter = unitListAdapter
+            adapter = floorListAdapter
             addOnScrollListener(scrollListener)
             addItemDecoration(
                 DividerItemDecoration(
@@ -85,8 +80,8 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            if (viewModel.unitMasterList.isNotEmpty()) {
-                displayUnits(viewModel.unitMasterList)
+            if (viewModel.floorMasterList.isNotEmpty()) {
+                displayFloors(viewModel.floorMasterList)
             }
         }
     }
@@ -125,40 +120,40 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
     }
 
     private fun observeUnitList() {
-        viewModel.unitListLiveData.observe(viewLifecycleOwner) {
-            displayUnits(it)
+        viewModel.floorListLiveData.observe(viewLifecycleOwner) {
+            displayFloors(it)
         }
     }
 
-    private fun displayUnits(unitInfoList: List<UnitInfo>) {
-        if (unitListAdapter.isListAlreadyAppended(unitInfoList).not()) {
-            unitListAdapter.append(unitInfoList)
+    private fun displayFloors(floorInfoList: List<FloorInfo>) {
+        if (floorListAdapter.isListAlreadyAppended(floorInfoList).not()) {
+            floorListAdapter.append(floorInfoList)
             binding.floorRecyclerView.show()
             binding.floorListLoader.hide()
         }
     }
 
-    private fun showBookingConfirmationDialog(unitInfo: UnitInfo) {
+    private fun showFloorConfirmationDialog(floorInfo: FloorInfo) {
         AlertDialog.Builder(requireContext())
-            .setTitle("${unitInfo.name} selected")
-            .setMessage("Are you sure you want to continue booking ${unitInfo.name}") // Specifying a listener allows you to take an action before dismissing the dialog.
+            .setTitle("Floor ${floorInfo.floorId} selected")
+            .setMessage("Are you sure you want to continue?") // Specifying a listener allows you to take an action before dismissing the dialog.
             .setPositiveButton(
                 android.R.string.yes
             ) { _, _ ->
-                launchUnitInfoFragment(unitInfo)
+                launchUnitInfoFragment(floorInfo)
             }
             .setNegativeButton(android.R.string.no, null)
             .show()
     }
 
-    private fun launchUnitInfoFragment(unitInfo: UnitInfo) {
+    private fun launchUnitInfoFragment(floorInfo: FloorInfo) {
         findNavController().run {
             if (isCurrentDestination(R.id.floorListFragment)) {
                 navigate(
                     resId = R.id.action_floorListFragment_to_unitListFragment,
                     args = Bundle().apply {
                         putString(KEY_SALES_USER_ID, arguments?.getString(KEY_SALES_USER_ID))
-                        putString(KEY_UNIT, unitInfo.toJsonString())
+                        putString(KEY_UNIT, floorInfo.toJsonString())
                         putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
                     }
                 )

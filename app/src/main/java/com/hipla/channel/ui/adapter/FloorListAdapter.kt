@@ -4,73 +4,62 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hipla.channel.R
-import com.hipla.channel.databinding.ListItemUnitBinding
-import com.hipla.channel.entity.UnitInfo
+import com.hipla.channel.databinding.ListItemFloorBinding
+import com.hipla.channel.entity.FloorInfo
 import com.hipla.channel.extension.isAvailable
-import com.hipla.channel.extension.isBooked
-import com.hipla.channel.extension.isHold
 
 class FloorListAdapter(
     private val context: Context,
-    private val onItemClicked: (UnitInfo) -> Unit
+    private val onItemClicked: (FloorInfo) -> Unit
 ) : RecyclerView.Adapter<FloorListAdapter.RecyclerViewHolder>() {
 
-    private val unitInfoList = mutableListOf<UnitInfo>()
+    private val floorInfoList = mutableListOf<FloorInfo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val view: View =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_unit, parent, false)
-        return RecyclerViewHolder(view, unitInfoList) {
+                .inflate(R.layout.list_item_floor, parent, false)
+        return RecyclerViewHolder(view, floorInfoList) {
             onItemClicked(it)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        unitInfoList[position].run {
-            holder.binding?.name?.text = this.name
-            if (this.isAvailable()) {
-                holder.binding?.unit?.background =
-                    ContextCompat.getDrawable(context, R.drawable.sales_unit_item_available)
-            } else if (this.isBooked()) {
-                holder.binding?.unit?.background =
-                    ContextCompat.getDrawable(context, R.drawable.sales_unit_item_booked)
-            } else if (this.isHold()) {
-                holder.binding?.unit?.background =
-                    ContextCompat.getDrawable(context, R.drawable.sales_unit_item_hold)
+        floorInfoList[position].run floorInfo@{
+            holder.binding?.name?.text = buildString {
+                append("Floor ")
+                append(this@floorInfo.floorId)
             }
         }
     }
 
-
-    fun isListAlreadyAppended(tempUnitSales: List<UnitInfo>): Boolean {
-        return unitInfoList.lastOrNull()?.id == tempUnitSales.lastOrNull()?.id
+    fun isListAlreadyAppended(tempUnitSales: List<FloorInfo>): Boolean {
+        return floorInfoList.lastOrNull()?.id == tempUnitSales.lastOrNull()?.id
     }
 
-    override fun getItemCount(): Int = unitInfoList.size
+    override fun getItemCount(): Int = floorInfoList.size
 
-    fun append(tempUnitList: List<UnitInfo>) {
-        val startPosition = unitInfoList.size
-        this.unitInfoList.addAll(tempUnitList)
-        notifyItemRangeInserted(startPosition, unitInfoList.size)
+    fun append(tempUnitList: List<FloorInfo>) {
+        val startPosition = floorInfoList.size
+        this.floorInfoList.addAll(tempUnitList)
+        notifyItemRangeInserted(startPosition, floorInfoList.size)
     }
 
     class RecyclerViewHolder(
         itemView: View,
-        unitInfoList: List<UnitInfo>,
-        onItemClicked: (UnitInfo) -> Unit
+        floorInfoList: List<FloorInfo>,
+        onItemClicked: (FloorInfo) -> Unit
     ) :
         RecyclerView.ViewHolder(itemView) {
-        val binding = DataBindingUtil.bind<ListItemUnitBinding>(itemView)
+        val binding = DataBindingUtil.bind<ListItemFloorBinding>(itemView)
 
         init {
-            binding?.unit?.setOnClickListener {
-                takeIf { unitInfoList[adapterPosition].isAvailable() }?.let {
-                    onItemClicked(unitInfoList[adapterPosition])
+            binding?.floor?.setOnClickListener {
+                takeIf { floorInfoList[adapterPosition].isAvailable() }?.let {
+                    onItemClicked(floorInfoList[adapterPosition])
                 }
             }
         }

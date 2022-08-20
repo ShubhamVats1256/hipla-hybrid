@@ -56,4 +56,8 @@
     <dimen name="unit_grid_height">96dp</dimen>
     <dimen name="unit_grid_item_name_text_size">26sp</dimen>
 
+    <dimen name="floor_grid_width">280dp</dimen>
+    <dimen name="floor_grid_height">140dp</dimen>
+    <dimen name="floor_grid_item_name_text_size">32sp</dimen>
+
 </resources>

@@ -1,16 +1,11 @@
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.hipla.channel.common.AppConfig
-import com.hipla.channel.common.KEY_FLOW_CONFIG
-import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.common.LogConstant
-import com.hipla.channel.entity.API_ERROR
-import com.hipla.channel.entity.AppEvent
-import com.hipla.channel.entity.FlowConfig
-import com.hipla.channel.entity.UnitInfo
+import com.hipla.channel.common.*
+import com.hipla.channel.entity.*
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.extension.toFloorInfo
 import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import com.hipla.channel.viewmodel.BaseViewModel
@@ -30,12 +25,15 @@ class UnitsViewModel : BaseViewModel() {
     var unitListLiveData = MutableLiveData<List<UnitInfo>>()
     lateinit var flowConfig: FlowConfig
     private var salesUserId: String? = null
+    lateinit var floorInfo: FloorInfo
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.let {
             salesUserId = it.getString(KEY_SALES_USER_ID)
             flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
-            Timber.tag(LogConstant.CUSTOMER_INFO).d("Flow config: $flowConfig")
+            floorInfo = it.getString(KEY_FLOOR)!!.toFloorInfo()!!
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("floor selected: ${floorInfo.floorId}")
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
         }
     }
 

@@ -1,16 +1,14 @@
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.hipla.channel.common.AppConfig
-import com.hipla.channel.common.KEY_FLOW_CONFIG
-import com.hipla.channel.common.KEY_SALES_USER_ID
-import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.*
 import com.hipla.channel.entity.API_ERROR
 import com.hipla.channel.entity.AppEvent
+import com.hipla.channel.entity.FloorInfo
 import com.hipla.channel.entity.FlowConfig
-import com.hipla.channel.entity.UnitInfo
 import com.hipla.channel.entity.api.ApiError
 import com.hipla.channel.entity.api.ifError
 import com.hipla.channel.entity.api.ifSuccessful
+import com.hipla.channel.extension.toFloorInfo
 import com.hipla.channel.extension.toFlowConfig
 import com.hipla.channel.repo.HiplaRepo
 import com.hipla.channel.viewmodel.BaseViewModel
@@ -26,8 +24,8 @@ class FloorListViewModel : BaseViewModel() {
     private var currentPageAtomic: AtomicInteger = AtomicInteger(1)
     private var totalPageAtomic: AtomicInteger = AtomicInteger(1)
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
-    val unitMasterList = mutableListOf<UnitInfo>()
-    var unitListLiveData = MutableLiveData<List<UnitInfo>>()
+    val floorMasterList = mutableListOf<FloorInfo>()
+    var floorListLiveData = MutableLiveData<List<FloorInfo>>()
     lateinit var flowConfig: FlowConfig
     private var salesUserId: String? = null
 
@@ -35,7 +33,7 @@ class FloorListViewModel : BaseViewModel() {
         arguments?.let {
             salesUserId = it.getString(KEY_SALES_USER_ID)
             flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
-            Timber.tag(LogConstant.CUSTOMER_INFO).d("Flow config: $flowConfig")
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
         }
     }
 
@@ -43,9 +41,9 @@ class FloorListViewModel : BaseViewModel() {
         if (canDownload()) {
             launchIO {
                 Timber.tag(LogConstant.SALES_LIST)
-                    .d("downloading unit list for page ${currentPageAtomic.get()}")
+                    .d("downloading floor list for page ${currentPageAtomic.get()}")
                 with(
-                    hiplaRepo.fetchUnits(
+                    hiplaRepo.fetchFloors(
                         currentPage = currentPageAtomic.get(),
                         pageSize = pageSize,
                         pageName = AppConfig.PAGE_UNITS,
@@ -54,23 +52,23 @@ class FloorListViewModel : BaseViewModel() {
                 ) {
                     ifSuccessful {
                         Timber.tag(LogConstant.SALES_LIST)
-                            .d("downloading unit list successful with size ${it.unitList?.size} for page ${currentPageAtomic.get()}")
+                            .d("downloading floor list successful with size ${it.floorList?.size} for page ${currentPageAtomic.get()}")
                         totalPageAtomic = AtomicInteger(it.pagination.totalPage)
                         currentPageAtomic.getAndIncrement()
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("totalPage : ${it.pagination.totalPage}")
-                        if (it.unitList.isNullOrEmpty().not()) {
-                            unitMasterList.addAll(it.unitList!!)
-                            unitListLiveData.postValue(it.unitList!!)
+                        if (it.floorList.isNullOrEmpty().not()) {
+                            floorMasterList.addAll(it.floorList!!)
+                            floorListLiveData.postValue(it.floorList!!)
                         }
                         Timber.tag(LogConstant.SALES_LIST)
-                            .d("loading unit list successful ${it.unitList?.size}")
+                            .d("loading unit list successful ${it.floorList?.size}")
                     }
                     ifError {
-                        Timber.tag(LogConstant.SALES_LIST).e("unit api error")
+                        Timber.tag(LogConstant.SALES_LIST).e("floor api error")
                         (it.throwable as? ApiError)?.run {
                             Timber.tag(LogConstant.SALES_LIST)
-                                .e("error unit list size ${this.errorList?.size}")
+                                .e("error floor list size ${this.errorList?.size}")
                             if (this.errorList?.isNotEmpty() == true) {
                                 appEvent.tryEmit(
                                     AppEvent(
@@ -80,7 +78,7 @@ class FloorListViewModel : BaseViewModel() {
                                 )
                                 Timber.tag(LogConstant.SALES_LIST).e("error")
                             }
-                            Timber.tag(LogConstant.SALES_LIST).e("downloading unit list failed")
+                            Timber.tag(LogConstant.SALES_LIST).e("downloading floor list failed")
                         }
                     }
                     isDownloading.set(false)

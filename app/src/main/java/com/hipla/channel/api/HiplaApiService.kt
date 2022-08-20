@@ -82,4 +82,12 @@ interface HiplaApiService {
         @Header("page_name") pageName: String
     ): Response<UnitPageResponse>
 
+    @GET("business/v1/unit")
+    suspend fun fetchFloors(
+        @Query("currentPage") currentPage: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("app_code") appCode: String,
+        @Header("page_name") pageName: String
+    ): Response<FloorPageResponse>
+
 }

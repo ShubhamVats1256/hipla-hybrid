@@ -43,4 +43,6 @@
     <color name="unit_hold">#FFBB54</color>
     <color name="unit_booked">#FF5B5B</color>
 
+    <color name="floor_bg">#29559E</color>
+
 </resources>

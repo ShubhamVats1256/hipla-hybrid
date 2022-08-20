@@ -276,6 +276,15 @@ fun String.toUnitInfo(): UnitInfo? {
     }
 }
 
+fun String.toFloorInfo(): FloorInfo? {
+    return try {
+        return getKoinInstance<Moshi>().adapter(FloorInfo::class.java)
+            .fromJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
 
 fun String.toApplicationServerInfo(): ApplicationCreateResponse? {
     return try {
@@ -299,6 +308,15 @@ fun UserDetails.toJsonString(): String? {
 fun UnitInfo.toJsonString(): String? {
     return try {
         getKoinInstance<Moshi>().adapter(UnitInfo::class.java).toJson(this)
+    } catch (ex: Exception) {
+        Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
+        null
+    }
+}
+
+fun FloorInfo.toJsonString(): String? {
+    return try {
+        getKoinInstance<Moshi>().adapter(FloorInfo::class.java).toJson(this)
     } catch (ex: Exception) {
         Timber.tag(LogConstant.APP_EXCEPTION).e(ex)
         null
@@ -381,5 +399,17 @@ fun UnitInfo.isBooked(): Boolean {
 }
 
 fun UnitInfo.isHold(): Boolean {
+    return this.status?.currentStatus == UNIT_HOLD
+}
+
+fun FloorInfo.isAvailable(): Boolean {
+    return this.status?.currentStatus == UNIT_AVAILABLE
+}
+
+fun FloorInfo.isBooked(): Boolean {
+    return this.status?.currentStatus == UNIT_BOOKED
+}
+
+fun FloorInfo.isHold(): Boolean {
     return this.status?.currentStatus == UNIT_HOLD
 }
