@@ -10,6 +10,8 @@ import com.hipla.channel.databinding.FragmentHomeBinding
 import com.hipla.channel.entity.FlowConfig
 import com.hipla.channel.extension.isCurrentDestination
 import com.hipla.channel.extension.toJsonString
+import com.hipla.channel.foodModule.fragment.FoodFragment
+import com.hipla.channel.foodModule.fragment.PantryFragment
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -31,7 +33,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         fragmentHomeBinding.pantryFlow.setOnClickListener {
-
+            activity?.supportFragmentManager!!.beginTransaction().replace(
+                R.id.navHost,
+                PantryFragment()
+            ).commit()
         }
     }
 

@@ -1,0 +1,77 @@
+package com.hipla.channel.foodModule.network.response
+
+import com.google.gson.annotations.SerializedName
+
+class LoginResponse(
+    @SerializedName("status") var status: String? = null,
+    @SerializedName("message") var message: String? = null,
+    @SerializedName("data") var data: Data? = Data()
+) {
+}
+
+data class Data(
+
+    @SerializedName("apiKey") var apiKey: String? = null,
+//    @SerializedName("macAddress") var macAddress: String? = null,
+//    @SerializedName("deviceId") var deviceId: String? = null,
+//    @SerializedName("deviceType") var deviceType: String? = null,
+//    @SerializedName("devicePrimaryId") var devicePrimaryId: String? = null,
+//    @SerializedName("fcmId") var fcmId: String? = null,
+//    @SerializedName("isActive") var isActive: Boolean? = null,
+//    @SerializedName("businessId") var businessId: String? = null,
+//    @SerializedName("businessName") var businessName: String? = null,
+//    @SerializedName("qrUrl") var qrUrl: String? = null,
+//    @SerializedName("businessLogo") var businessLogo: String? = null,
+    @SerializedName("deviceCategory") var deviceCategory: String? = null,
+//    @SerializedName("deviceSubCategory") var deviceSubCategory: List<String> = arrayListOf(),
+//    @SerializedName("videoUrl") var videoUrl: String? = null,
+//    @SerializedName("roomId") var roomId: String? = null,
+    @SerializedName("employeeId") var employeeId: String? = null,
+//    @SerializedName("checkoutDispenseType") var checkoutDispenseType: String? = null,
+//    @SerializedName("showSafetyVideo") var showSafetyVideo: Boolean? = null,
+//    @SerializedName("tempMeasure") var tempMeasure: Boolean? = null,
+//    @SerializedName("safetyVideoLink") var safetyVideoLink: String? = null,
+//    @SerializedName("showSafetySurvey") var showSafetySurvey: Boolean? = null,
+//    @SerializedName("webBaseUrl") var webBaseUrl: String? = null,
+//    @SerializedName("captureProfilePhoto") var captureProfilePhoto: Boolean? = null,
+//    @SerializedName("captureIdPhoto") var captureIdPhoto: Boolean? = null,
+//    @SerializedName("captureFrPhoto") var captureFrPhoto: Boolean? = null,
+//    @SerializedName("captureCheckInPhoto") var captureCheckInPhoto: Boolean? = null,
+//    @SerializedName("captureCheckInIdPhoto") var captureCheckInIdPhoto: Boolean? = null,
+//    @SerializedName("captureIdPhotoType") var captureIdPhotoType: String? = null,
+//    @SerializedName("baggageBusinessEnable") var baggageBusinessEnable: Boolean? = null,
+//    @SerializedName("searchInstantMeetingUser") var searchInstantMeetingUser: Boolean? = null,
+//    @SerializedName("searchInstantMeetingUserFields") var searchInstantMeetingUserFields: String? = null,
+//    @SerializedName("checkInSystemEnable") var checkInSystemEnable: Boolean? = null,
+//    @SerializedName("instantMeetingEnable") var instantMeetingEnable: Boolean? = null,
+//    @SerializedName("checkInVisitProfilePhoto") var checkInVisitProfilePhoto: Boolean? = null,
+//    @SerializedName("checkInVisitIdPhoto") var checkInVisitIdPhoto: Boolean? = null,
+//    @SerializedName("visitProfilePhotoWhileCheckIn") var visitProfilePhotoWhileCheckIn: Boolean? = null,
+//    @SerializedName("visitIdPhotoWhileCheckIn") var visitIdPhotoWhileCheckIn: Boolean? = null,
+//    @SerializedName("visitorPrimaryIdentifier") var visitorPrimaryIdentifier: String? = null,
+//    @SerializedName("visitorPrimaryCommunication") var visitorPrimaryCommunication: List<String> = arrayListOf(),
+//    @SerializedName("employeePrimaryCommunication") var employeePrimaryCommunication: List<String> = arrayListOf(),
+//    @SerializedName("visitorRequiredFields") var visitorRequiredFields: List<String> = arrayListOf(),
+//    @SerializedName("employeePrimaryIdentifier") var employeePrimaryIdentifier: String? = null,
+//    @SerializedName("baggageItems") var baggageItems: List<String> = arrayListOf(),
+//    @SerializedName("baggageFields") var baggageFields: List<String> = arrayListOf(),
+//    @SerializedName("deviceContactType") var deviceContactType: String? = null,
+//    @SerializedName("showHomeScreen") var showHomeScreen: Boolean? = null,
+//    @SerializedName("temperatureDelay") var temperatureDelay: Int? = null,
+//    @SerializedName("meetingRoomVideoEnable") var meetingRoomVideoEnable: Boolean? = null,
+//    @SerializedName("meetingRoomCreateMeeting") var meetingRoomCreateMeeting: Boolean? = null,
+//    @SerializedName("meetingRoomCreateMeetingParticipantAvailability") var meetingRoomCreateMeetingParticipantAvailability: Boolean? = null,
+//    @SerializedName("meetingRoomAuthenticator") var meetingRoomAuthenticator: Boolean? = null,
+//    @SerializedName("safetySurveyWhileBooking") var safetySurveyWhileBooking: Boolean? = null,
+//    @SerializedName("allowAllAnswers") var allowAllAnswers: Boolean? = null,
+//    @SerializedName("tempLog") var tempLog: Boolean? = null,
+//    @SerializedName("checkoutOTPEnable") var checkoutOTPEnable: Boolean? = null,
+//    @SerializedName("visitorAdditionalFields") var visitorAdditionalFields: List<String> = arrayListOf(),
+//    @SerializedName("addParticipantCountEnable") var addParticipantCountEnable: Boolean? = null,
+//    @SerializedName("videoOutsideRoom") var videoOutsideRoom: Boolean? = null,
+//    @SerializedName("mobileCountryCode") var mobileCountryCode: String? = null,
+//    @SerializedName("showHelp") var showHelp: Boolean? = null,
+//    @SerializedName("pantryId") var pantryId: String? = null,
+//    @SerializedName("pantryName") var pantryName: String? = null
+
+)

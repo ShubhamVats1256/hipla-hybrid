@@ -12,8 +12,8 @@ android {
         applicationId "com.hipla.channel"
         minSdk 28
         targetSdk 32
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,12 +47,21 @@ android {
         enabled = true
     }
 
+
+
 }
 
 dependencies {
 
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach{
+        kotlinOptions{
+            freeCompilerArgs +=["-Xjvm-default=all",]
+        }
+    }
+
     implementation 'androidx.core:core-ktx:1.8.0'
 
+    implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -68,9 +77,16 @@ dependencies {
     implementation 'com.google.android.gms:play-services-basement:18.1.0'
     kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+
+  //  implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+
+
+  //  implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+//    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+//
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     //koin
     implementation "io.insert-koin:koin-android:$versions.koin"
@@ -90,6 +106,10 @@ dependencies {
     implementation "com.squareup.moshi:moshi-adapters:$versions.moshi"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.moshi_converter"
     annotationProcessor  "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
