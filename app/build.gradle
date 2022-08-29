@@ -22,13 +22,13 @@ android {
         debug {
             versionNameSuffix "-debug"
             buildConfigField "boolean", "DEV_MODE", "true"
-            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {
             minifyEnabled false
             buildConfigField "boolean", "DEV_MODE", "false"
-            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

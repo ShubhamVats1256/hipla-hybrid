@@ -40,16 +40,16 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
     }
 
     private fun setupNavigation() {
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.homeFragment -> {
-//                    binding.flowTitle.hide()
-//                }
-//                else -> {
-//                    binding.flowTitle.show()
-//                }
-//            }
-//        }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.flowTitle.hide()
+                }
+                else -> {
+                    binding.flowTitle.show()
+                }
+            }
+        }
     }
 
     override fun showLoader(message: String) {
@@ -84,12 +84,12 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
     }
 
     override fun setTitle(message: String) {
-//        binding.flowTitle.text = message
-//        binding.flowTitle.show()
+        binding.flowTitle.text = message
+        binding.flowTitle.show()
     }
 
     override fun hideTitle(message: String) {
-     //   binding.flowTitle.hide()
+        binding.flowTitle.hide()
     }
 
     override fun onResume() {

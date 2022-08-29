@@ -18,6 +18,8 @@ class PantryListAdapter(val context : Context, private val pantryList: ArrayList
     private var retryPageLoad: Boolean = false
     private var errorMsg: String? = ""
 
+    //
+
     private var allPantryResponseData: MutableList<AllPantryResponseData> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == item) {
