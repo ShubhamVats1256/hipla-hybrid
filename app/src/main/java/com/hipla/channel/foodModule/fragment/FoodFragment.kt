@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hipla.channel.BuildConfig
 import com.hipla.channel.R
+import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.foodModule.adapter.FoodListAdapter
 import com.hipla.channel.foodModule.network.Networking
 import com.hipla.channel.foodModule.network.response.AllPantryResponseData
@@ -32,6 +33,7 @@ import com.hipla.channel.foodModule.repository.CommonRepository
 import com.hipla.sentinelvms.sentinelKt.foodModule.utility.PaginationScrollListener
 import com.hipla.channel.foodModule.utility.SelectedPantryData
 import com.hipla.channel.foodModule.viewmodel.AllPantryViewModel
+import com.hipla.channel.viewmodel.SalesUserViewModel
 
 
 class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragment.app.Fragment() {
@@ -44,7 +46,7 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
     private lateinit var imageBussinessLogo : ImageView
     private lateinit var sharedPreference : PrefUtils
 
-
+    private lateinit var viewModel: SalesUserViewModel
     private lateinit var pantryViewModel: PantryViewModel
     var foodListData :ArrayList<PantryData> = ArrayList()
     var selectedPantryList : ArrayList<SelectedPantryData> = ArrayList()
@@ -79,7 +81,7 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
 
         setUpUI(view)
         setAdapter()
@@ -89,6 +91,7 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
         setPaginationData()
         loadingState()
         errorObserver()
+        requireActivity().IActivityHelper().setTitle("PANTRY")
     }
 
     private fun setUpUI(view :View){

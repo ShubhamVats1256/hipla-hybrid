@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hipla.channel.BuildConfig
 import com.hipla.channel.R
+import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.foodModule.adapter.PantryListAdapter
 import com.hipla.channel.foodModule.network.NetworkService
 import com.hipla.channel.foodModule.network.Networking
@@ -24,6 +25,7 @@ import com.hipla.channel.foodModule.repository.CommonFactory
 import com.hipla.channel.foodModule.repository.CommonRepository
 import com.hipla.channel.foodModule.utils.PrefUtils
 import com.hipla.channel.foodModule.viewmodel.AllPantryViewModel
+import com.hipla.channel.viewmodel.SalesUserViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.AllPantryRequest
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.EmployeeId
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
@@ -35,7 +37,7 @@ class PantryFragment : Fragment() {
     private lateinit var pbPantry : ProgressBar
     private lateinit var parentView : ConstraintLayout
     private var pantryListData: ArrayList<AllPantryResponseData> = ArrayList()
-
+    private lateinit var viewModel: SalesUserViewModel
     private lateinit var pantryViewModel: AllPantryViewModel
     private lateinit var pantryListAdapter: PantryListAdapter
     private val searchList = listOf<String>()
@@ -68,6 +70,7 @@ class PantryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
         setUpUI(view)
         setAdapter()
 
@@ -77,6 +80,7 @@ class PantryFragment : Fragment() {
         setPaginationData()
         loadingState()
         errorObserver()
+        requireActivity().IActivityHelper().setTitle("PANTRY")
     }
 
     private fun setUpUI(view : View){

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hipla.channel.BuildConfig
 import com.hipla.channel.R
+import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.foodModule.adapter.OrderListAdapter
 import com.hipla.channel.foodModule.network.Networking
 import com.hipla.channel.foodModule.utils.PrefUtils
@@ -28,6 +29,7 @@ import com.hipla.channel.foodModule.network.NetworkService
 import com.hipla.channel.foodModule.repository.CommonFactory
 import com.hipla.channel.foodModule.repository.CommonRepository
 import com.hipla.channel.foodModule.viewmodel.OrderPlaceViewModel
+import com.hipla.channel.viewmodel.SalesUserViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.PantryRequest
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.response.OrderHistoryResponseData
@@ -41,7 +43,7 @@ class OrderHistoryFragment : Fragment() {
     private lateinit var pbHistory : ProgressBar
     private lateinit var parentView : ConstraintLayout
     var historyListData: ArrayList<OrderHistoryResponseData> = ArrayList()
-
+    private lateinit var viewModel: SalesUserViewModel
     private lateinit var orderHistoryViewModel: OrderHistoryViewModel
     private lateinit var historyListAdapter: OrderListAdapter
     private lateinit var imageBussinessLogo : ImageView
@@ -75,6 +77,7 @@ class OrderHistoryFragment : Fragment() {
         if (networkService != null) {
             setUpViewModel(networkService)
         }
+        viewModel = ViewModelProvider(this)[SalesUserViewModel::class.java]
 
         setUpUI(view)
 
@@ -84,6 +87,7 @@ class OrderHistoryFragment : Fragment() {
         setPaginationData()
         loadingState()
         errorObserver()
+        requireActivity().IActivityHelper().setTitle("PANTRY")
 
     }
 
