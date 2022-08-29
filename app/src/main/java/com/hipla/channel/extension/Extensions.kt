@@ -145,6 +145,7 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["customerLastName"] = customerLastName!!
     requestMap["customerPhoneNumber"] = customerPhoneNumber!!
     requestMap["panNumber"] = panNumber!!
+    requestMap["remark"] = remark.toString()
     requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
     requestMap["paymentProofImageUrl"] = this.paymentProofImageUrl!!
