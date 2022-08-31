@@ -158,6 +158,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
     }
 
     suspend fun fetchUnits(
+        url : String,
         currentPage: Int,
         pageSize: Int,
         pageName: String,
@@ -165,6 +166,7 @@ class HiplaRepo(private val hiplaApiService: HiplaApiService) {
     ): Resource<UnitPageResponse> {
         return try {
             return hiplaApiService.fetchUnits(
+                url = url,
                 currentPage = currentPage,
                 pageSize = pageSize,
                 appCode = appCode,

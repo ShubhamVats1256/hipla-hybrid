@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hipla.channel.BuildConfig
 import com.hipla.channel.R
 import com.hipla.channel.common.KEY_FLOW_CONFIG
 import com.hipla.channel.common.KEY_SALES_USER_ID
@@ -25,11 +26,14 @@ import com.hipla.channel.entity.UNIT_LIST_ERROR
 import com.hipla.channel.entity.UNIT_LIST_LOADING
 import com.hipla.channel.entity.UNIT_LIST_SUCCESS
 import com.hipla.channel.entity.UnitInfo
-import com.hipla.channel.extension.canLoadNextGridPage
-import com.hipla.channel.extension.isCurrentDestination
-import com.hipla.channel.extension.launchSafely
-import com.hipla.channel.extension.toJsonString
+import com.hipla.channel.extension.*
+import com.hipla.channel.foodModule.network.NetworkService
+import com.hipla.channel.foodModule.network.Networking
+import com.hipla.channel.foodModule.repository.CommonFactory
+import com.hipla.channel.foodModule.repository.CommonRepository
+import com.hipla.channel.foodModule.viewmodel.AllPantryViewModel
 import com.hipla.channel.ui.adapter.UnitListAdapter
+import com.hipla.channel.viewmodel.UnitAvailabiltyViewModel
 import timber.log.Timber
 
 
@@ -38,7 +42,9 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
     private lateinit var viewModel: UnitsViewModel
     private lateinit var binding: FragmentUnitListBinding
     private lateinit var unitListAdapter: UnitListAdapter
+    private lateinit var unitInfoToSend: UnitInfo
     private var bookingConfirmationDialog: AlertDialog? = null
+    private lateinit var unitAvailabiltyViewModel: UnitAvailabiltyViewModel
 
     private val scrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -57,15 +63,35 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         viewModel.extractArguments(arguments)
         binding.header.text = buildString {
             append("Units in Floor ")
-            append(viewModel.selectedFloorInfo.floorId)
+            append(viewModel.selectedFloorInfo.id)
         }
         unitListAdapter = UnitListAdapter(requireContext()) {
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
-            showBookingConfirmationDialog(it)
+            unitInfoToSend = it
+            unitAvailabiltyViewModel.checkUnitAvailabilty("business/v1/unit/checkstatus/"+it.id)
+            binding.unitListLoader.show()
+
+          //  showBookingConfirmationDialog(it)
+        }
+
+        val networkService = Networking.create(BuildConfig.BASE_URL,requireContext())
+
+        if (networkService != null) {
+            setUpViewModel(networkService)
         }
         setRecyclerView()
         observeViewModel()
         loadData()
+    }
+
+    private fun setUpViewModel(networkService : NetworkService){
+        unitAvailabiltyViewModel = ViewModelProvider(
+            this,
+            CommonFactory(CommonRepository(networkService))
+        )[UnitAvailabiltyViewModel::class.java]
+
+        //    pantryViewModel = ViewModelProvider(requireActivity())[AllPantryViewModel::class.java]
+
     }
 
     private fun setRecyclerView() {
@@ -95,7 +121,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         }
     }
 
-    private fun loadData() = viewModel.fetchUnits()
+    private fun loadData() = viewModel.fetchUnits("business/v1/unit/by?buildingId="+viewModel.selectedFloorInfo.id)
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launchSafely {
@@ -117,8 +143,10 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
                             }
                             UNIT_LIST_SUCCESS -> {
 
+
                             }
                             UNIT_LIST_ERROR -> {
+
 
                             }
                         }
@@ -132,6 +160,35 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         viewModel.unitListLiveData.observe(viewLifecycleOwner) {
             displayUnits(it)
         }
+
+        unitAvailabiltyViewModel.errorMessage.observe(viewLifecycleOwner) {
+            requireContext().showToastErrorMessage("Unable to fetch availability!")
+            binding.unitListLoader.hide()
+        }
+
+        unitAvailabiltyViewModel.unitAvailabiltyData.observe(viewLifecycleOwner) {
+            binding.unitListLoader.hide()
+            if (it.record.bookingStatus == "AVAILABLE"){
+                    showBookingConfirmationDialog(unitInfoToSend)
+
+            }
+            else{
+                requireContext().showToastErrorMessage(it.record.bookingStatus)
+            }
+
+
+        }
+
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            binding.unitListLoader.hide()
+            binding.ivNoMeeting.show()
+            binding.unitRecyclerView.hide()
+        }
+
+
+
+
     }
 
     private fun displayUnits(unitInfoList: List<UnitInfo>) {

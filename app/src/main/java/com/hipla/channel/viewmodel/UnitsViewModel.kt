@@ -23,27 +23,31 @@ class UnitsViewModel : BaseViewModel() {
     private var isDownloading: AtomicBoolean = AtomicBoolean(false)
     val unitMasterList = mutableListOf<UnitInfo>()
     var unitListLiveData = MutableLiveData<List<UnitInfo>>()
+    var error = MutableLiveData<String>()
     lateinit var flowConfig: FlowConfig
     private var salesUserId: String? = null
+
     lateinit var selectedFloorInfo: FloorInfo
+
 
     fun extractArguments(arguments: Bundle?) {
         arguments?.let {
             salesUserId = it.getString(KEY_SALES_USER_ID)
             flowConfig = it.getString(KEY_FLOW_CONFIG)?.toFlowConfig()!!
             selectedFloorInfo = it.getString(KEY_FLOOR)!!.toFloorInfo()!!
-            Timber.tag(LogConstant.CUSTOMER_INFO).d("floor selected: ${selectedFloorInfo.floorId}")
+            Timber.tag(LogConstant.CUSTOMER_INFO).d("floor selected: ${selectedFloorInfo.siteId}")
             Timber.tag(LogConstant.CUSTOMER_INFO).d("flow config: $flowConfig")
         }
     }
 
-    fun fetchUnits() {
+    fun fetchUnits(url : String) {
         if (canDownload()) {
             launchIO {
                 Timber.tag(LogConstant.SALES_LIST)
                     .d("downloading unit list for page ${currentPageAtomic.get()}")
                 with(
                     hiplaRepo.fetchUnits(
+                        url = url,
                         currentPage = currentPageAtomic.get(),
                         pageSize = pageSize,
                         pageName = AppConfig.PAGE_UNITS,
@@ -58,14 +62,18 @@ class UnitsViewModel : BaseViewModel() {
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("totalPage : ${unitPageResponse.pagination.totalPage}")
                         if (unitPageResponse.unitList.isNullOrEmpty().not()) {
-                            val unitListForSelectedFloor = unitPageResponse.unitList?.filter { it.floorId == selectedFloorInfo.floorId }
+                            val unitListForSelectedFloor = unitPageResponse.unitList
                             unitMasterList.addAll(unitListForSelectedFloor!!)
                             unitListLiveData.postValue(unitListForSelectedFloor!!)
                         }
+
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("loading unit list successful ${unitPageResponse.unitList?.size}")
                     }
                     ifError {
+                        error.postValue("error")
+
+
                         Timber.tag(LogConstant.SALES_LIST).e("unit api error")
                         (it.throwable as? ApiError)?.run {
                             Timber.tag(LogConstant.SALES_LIST)

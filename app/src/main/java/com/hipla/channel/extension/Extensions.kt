@@ -403,14 +403,14 @@ fun UnitInfo.isHold(): Boolean {
     return this.status?.currentStatus == UNIT_HOLD
 }
 
-fun FloorInfo.isAvailable(): Boolean {
-    return this.status?.currentStatus == UNIT_AVAILABLE
-}
-
-fun FloorInfo.isBooked(): Boolean {
-    return this.status?.currentStatus == UNIT_BOOKED
-}
-
-fun FloorInfo.isHold(): Boolean {
-    return this.status?.currentStatus == UNIT_HOLD
-}
+//fun FloorInfo.isAvailable(): Boolean {
+//    return this.status?.currentStatus == UNIT_AVAILABLE
+//}
+//
+//fun FloorInfo.isBooked(): Boolean {
+//    return this.status?.currentStatus == UNIT_BOOKED
+//}
+//
+//fun FloorInfo.isHold(): Boolean {
+//    return this.status?.currentStatus == UNIT_HOLD
+//}

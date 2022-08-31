@@ -63,8 +63,8 @@ class FloorListViewModel : BaseViewModel() {
                         if (it.floorList.isNullOrEmpty().not()) {
                             val tempFloorList = mutableListOf<FloorInfo>()
                             it.floorList!!.forEach { floorInfo ->
-                                if (floorIdToFloorInfoMap.containsKey(floorInfo.floorId).not()) {
-                                    floorIdToFloorInfoMap[floorInfo.floorId] = floorInfo
+                                if (floorIdToFloorInfoMap.containsKey(floorInfo.id).not()) {
+                                    floorIdToFloorInfoMap[floorInfo.id] = floorInfo
                                     floorMasterList.add(floorInfo)
                                     tempFloorList.add(floorInfo)
                                 }

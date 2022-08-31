@@ -54,7 +54,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
         viewModel = ViewModelProvider(this)[FloorListViewModel::class.java]
         viewModel.extractArguments(arguments)
         floorListAdapter = FloorListAdapter(requireContext()) {
-            Timber.tag(LogConstant.UNIT).d("floor selected: ${it.floorId}")
+            Timber.tag(LogConstant.UNIT).d("floor selected: ${it.siteId}")
             showFloorConfirmationDialog(it)
         }
         setRecyclerView()
@@ -134,7 +134,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private fun showFloorConfirmationDialog(floorInfo: FloorInfo) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Floor ${floorInfo.floorId} selected")
+            .setTitle("Building ${floorInfo.name} selected")
             .setMessage("Are you sure you want to continue?") // Specifying a listener allows you to take an action before dismissing the dialog.
             .setPositiveButton(
                 android.R.string.yes

@@ -66,7 +66,7 @@ class ApplicationCustomerInfoViewModel : BaseViewModel() {
         return if (flowConfig.isApplication()) {
             selectedFloorPreference?.id
         } else if (flowConfig.isInventory()) {
-            unitInfo!!.floorId
+            unitInfo!!.id
         } else {
             return -1
         }

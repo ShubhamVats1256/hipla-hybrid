@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 import com.hipla.channel.foodModule.viewmodel.*
+import com.hipla.channel.viewmodel.UnitAvailabiltyViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.OrderPlaceMeetingRoomViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.QuickSettingsViewModel
 
@@ -28,6 +29,9 @@ import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.QuickSettingsViewMo
         }
         else if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             LoginViewModel(this.repository) as T
+        }
+        else if (modelClass.isAssignableFrom(UnitAvailabiltyViewModel::class.java)) {
+            UnitAvailabiltyViewModel(this.repository) as T
         }
 
         else {

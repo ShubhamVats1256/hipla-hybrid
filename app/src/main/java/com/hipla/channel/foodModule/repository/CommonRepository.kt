@@ -9,6 +9,12 @@ class CommonRepository constructor(private val networkService: NetworkService?) 
     fun getLoginData(loginRequest: LoginRequest) =
         networkService!!.login(loginRequest)
 
+    fun checkUnitAvailabilty(url: String) =
+        networkService!!.checkUnitAvailabilty(url)
+
+
+
+
     fun getPantryData(apiKey : String, pantryRequest: AllPantryRequest, hashMap: HashMap<String,String>) =
         networkService!!.getPantryData(apiKey,pantryRequest,hashMap)
 

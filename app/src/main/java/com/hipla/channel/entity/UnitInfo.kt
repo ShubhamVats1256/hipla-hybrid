@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 data class UnitInfo(
     val id: Int,
     val name: String,
-    val floorId: Int,
+    //val floorId: Int,
     val status: UnitStatus?
 )
 
@@ -21,8 +21,8 @@ data class UnitStatus(
 data class FloorInfo(
     val id: Int,
     val name: String,
-    val floorId: Int,
-    val status: UnitStatus?
+    val siteId: Int,
+  //  val status: UnitStatus?
 )
 
 @JsonClass(generateAdapter = true)

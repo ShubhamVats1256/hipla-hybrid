@@ -1,6 +1,7 @@
 package com.hipla.channel.ui.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,8 @@ class FloorListAdapter(
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         floorInfoList[position].run floorInfo@{
             holder.binding?.name?.text = buildString {
-                append("Floor ")
-                append(this@floorInfo.floorId)
+                append("")
+                append(this@floorInfo.name)
             }
         }
     }
@@ -44,6 +45,9 @@ class FloorListAdapter(
 
     fun append(tempUnitList: List<FloorInfo>) {
         val startPosition = floorInfoList.size
+
+        Log.e("SIZE>>",startPosition.toString())
+
         this.floorInfoList.addAll(tempUnitList)
         notifyItemRangeInserted(startPosition, floorInfoList.size)
     }

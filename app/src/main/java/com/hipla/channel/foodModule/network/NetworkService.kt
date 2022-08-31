@@ -1,5 +1,6 @@
 package com.hipla.channel.foodModule.network
 
+import UnitAvailabiltyBase
 import com.hipla.channel.foodModule.network.request.LoginRequest
 import com.hipla.channel.foodModule.network.response.*
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.QuickSettingResponse
@@ -13,6 +14,10 @@ interface NetworkService {
 
     @POST(EndPoints.LOGIN)
     fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
+
+    @GET
+    fun checkUnitAvailabilty(@Url url : String): Call<UnitAvailabiltyBase>
+
 
     @POST(EndPoints.GET_ALL_PANTRY_DATA)
     fun getPantryData(@Header("apikey") key : String, @Body pantryRequest: AllPantryRequest, @HeaderMap headerMap: HashMap<String,String>): Call<AllPantryResponse>
