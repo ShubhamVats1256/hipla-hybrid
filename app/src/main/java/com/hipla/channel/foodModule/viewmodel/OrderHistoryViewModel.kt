@@ -18,6 +18,7 @@ class OrderHistoryViewModel constructor(private val repository: CommonRepository
     val historyData = MutableLiveData<OrderHistoryResponse>()
     val historyDataPagination = MutableLiveData<OrderHistoryResponse>()
     val errorMessage = MutableLiveData<String>()
+    val errorMessageHistoryData = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>()
 
     fun getHistory(
@@ -39,14 +40,14 @@ class OrderHistoryViewModel constructor(private val repository: CommonRepository
                     response.code() == 200 -> {
                         historyData.postValue(response.body())
                     }
-                    response.code() == 422 -> {
-                        errorMessage.postValue(response.message())
+
+                    response.code() == 201 -> {
+                        historyData.postValue(response.body())
                     }
-                    response.code() == 500 -> {
-                        errorMessage.postValue(response.message())
-                    }
+
+
                     else -> {
-                        errorMessage.postValue("Something Went Wrong")
+                        errorMessageHistoryData.postValue("Something Went Wrong")
                     }
                 }
                 loading.value = false

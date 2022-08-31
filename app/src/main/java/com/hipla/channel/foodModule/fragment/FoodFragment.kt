@@ -20,20 +20,19 @@ import com.hipla.channel.BuildConfig
 import com.hipla.channel.R
 import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.foodModule.adapter.FoodListAdapter
+import com.hipla.channel.foodModule.network.NetworkService
 import com.hipla.channel.foodModule.network.Networking
 import com.hipla.channel.foodModule.network.response.AllPantryResponseData
-import com.hipla.channel.foodModule.utils.PrefUtils
-import com.hipla.channel.foodModule.viewmodel.PantryViewModel
-import com.hipla.channel.foodModule.network.NetworkService
-import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.PantryRequest
-import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
 import com.hipla.channel.foodModule.network.response.PantryData
 import com.hipla.channel.foodModule.repository.CommonFactory
 import com.hipla.channel.foodModule.repository.CommonRepository
-import com.hipla.sentinelvms.sentinelKt.foodModule.utility.PaginationScrollListener
 import com.hipla.channel.foodModule.utility.SelectedPantryData
-import com.hipla.channel.foodModule.viewmodel.AllPantryViewModel
+import com.hipla.channel.foodModule.utils.PrefUtils
+import com.hipla.channel.foodModule.viewmodel.PantryViewModel
 import com.hipla.channel.viewmodel.SalesUserViewModel
+import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.PantryRequest
+import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
+import com.hipla.sentinelvms.sentinelKt.foodModule.utility.PaginationScrollListener
 
 
 class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragment.app.Fragment() {
@@ -41,10 +40,12 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
     private lateinit var btnContinue : Button
     private lateinit var btn_back : Button
     private lateinit var rvFoodList : RecyclerView
+    private lateinit var iv_no_meeting : ImageView
     private lateinit var pbFoodOrder : ProgressBar
     private lateinit var parentView : ConstraintLayout
     private lateinit var imageBussinessLogo : ImageView
     private lateinit var sharedPreference : PrefUtils
+
 
     private lateinit var viewModel: SalesUserViewModel
     private lateinit var pantryViewModel: PantryViewModel
@@ -99,8 +100,17 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
         btnContinue = view.findViewById(R.id.btn_continue)
         btn_back = view.findViewById(R.id.btn_back)
         rvFoodList = view.findViewById(R.id.rv_food_list)
+        iv_no_meeting = view.findViewById(R.id.iv_no_meeting)
         pbFoodOrder = view.findViewById(R.id.pb_food_order)
         parentView = view.findViewById(R.id.cl_food_fragment)
+
+
+        btn_back.setOnClickListener {
+            activity?.supportFragmentManager!!.beginTransaction().replace(
+                R.id.navHost,
+                PantryFragment()
+            ).commit()
+        }
 
     }
 
@@ -111,8 +121,6 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
             this,
             CommonFactory(CommonRepository(networkService))
         ).get(PantryViewModel::class.java)
-
-
     }
 
     private fun setAdapter(){
@@ -200,11 +208,7 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
             else{
                 showSnackbar("Add some item!")
             }
-
-
         }
-
-
     }
 
 
@@ -252,10 +256,13 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
     }
 
     private fun setData() {
-        pantryViewModel.pantryDetail.observe(requireActivity(), {
+        pantryViewModel.pantryDetail.observe(requireActivity()) {
             it?.let {
                 if (it.status == "success") {
                     if (it.data?.isNotEmpty()!!) {
+                        rvFoodList.visibility = View.VISIBLE
+                        iv_no_meeting.visibility = View.GONE
+
                         foodListData.clear()
                         foodListAdapter.addAll(it.data!!)
                         if (it.data!!.isNotEmpty()) {
@@ -265,12 +272,25 @@ class FoodFragment(pantryResponseData: AllPantryResponseData) : androidx.fragmen
                         }
                     } else {
                         //    showSnackbar("Data Not Found")
+                        rvFoodList.visibility = View.GONE
+                        iv_no_meeting.visibility = View.VISIBLE
                     }
                 } else {
+                    rvFoodList.visibility = View.GONE
+                    iv_no_meeting.visibility = View.VISIBLE
                     //   it.message?.let { it1 -> showSnackbar(it1) }
                 }
             }
-        })
+        }
+
+
+        pantryViewModel.errorMessagePantryDetail.observe(requireActivity()) {
+            rvFoodList.visibility = View.GONE
+            iv_no_meeting.visibility = View.VISIBLE
+
+        }
+
+
     }
 
     private fun setPaginationData() {

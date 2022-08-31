@@ -29,6 +29,7 @@ import com.hipla.channel.foodModule.network.NetworkService
 import com.hipla.channel.foodModule.repository.CommonFactory
 import com.hipla.channel.foodModule.repository.CommonRepository
 import com.hipla.channel.foodModule.viewmodel.OrderPlaceViewModel
+import com.hipla.channel.ui.HomeFragment
 import com.hipla.channel.viewmodel.SalesUserViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.PantryRequest
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
@@ -40,6 +41,7 @@ class OrderHistoryFragment : Fragment() {
 
     private lateinit var btn_back : Button
     private lateinit var rvHistoryList : RecyclerView
+    private lateinit var iv_no_meeting : ImageView
     private lateinit var pbHistory : ProgressBar
     private lateinit var parentView : ConstraintLayout
     var historyListData: ArrayList<OrderHistoryResponseData> = ArrayList()
@@ -93,12 +95,16 @@ class OrderHistoryFragment : Fragment() {
 
     private fun setUpUI(view : View){
         rvHistoryList  = view.findViewById(R.id.rv_history_list)
+        iv_no_meeting = view.findViewById(R.id.iv_no_meeting)
         pbHistory = view.findViewById(R.id.pb_history)
         parentView = view.findViewById(R.id.cl_history)
         btn_back = view.findViewById(R.id.btn_back)
 
         btn_back.setOnClickListener {
-            //  setFragment(PantryFragment())
+            activity?.supportFragmentManager!!.beginTransaction().replace(
+                R.id.navHost,
+                PantryFragment()
+            ).commit()
         }
     }
 
@@ -131,7 +137,7 @@ class OrderHistoryFragment : Fragment() {
                 }
             }
         )
-        Log.e("ORDERHISTORYLIST>>",searchList.toString())
+
 
 
         rvHistoryList.adapter = historyListAdapter
@@ -214,6 +220,10 @@ class OrderHistoryFragment : Fragment() {
             it?.let {
                 if (it.status == "success") {
                     if (it.data.isNotEmpty()) {
+
+                        rvHistoryList.visibility = View.VISIBLE
+                        iv_no_meeting.visibility = View.GONE
+
                         historyListData.clear()
                         Log.e("RESPONSEHISTORY>>", it.data[0].toString())
 
@@ -224,14 +234,22 @@ class OrderHistoryFragment : Fragment() {
                             isLastPage = true
                         }
                     } else {
+                        rvHistoryList.visibility = View.GONE
+                        iv_no_meeting.visibility = View.VISIBLE
+
                         //    showSnackbar("Data Not Found")
                     }
                 } else {
+                    rvHistoryList.visibility = View.GONE
+                    iv_no_meeting.visibility = View.VISIBLE
 
-
-                    showSnackbar(it.message)
                 }
             }
+        }
+
+        orderHistoryViewModel.errorMessageHistoryData.observe(requireActivity()) {
+            rvHistoryList.visibility = View.GONE
+            iv_no_meeting.visibility = View.VISIBLE
         }
     }
 
@@ -266,7 +284,6 @@ class OrderHistoryFragment : Fragment() {
     private fun errorObserver() {
         orderHistoryViewModel.errorMessage.observe(requireActivity(), Observer {
             it?.let {
-
                 showSnackbar(it)
             }
         })

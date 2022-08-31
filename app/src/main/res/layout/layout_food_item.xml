@@ -32,6 +32,7 @@
             android:layout_centerVertical="true"
             android:paddingStart="20dp"
             android:text="Tea"
+            android:textColor="@color/black"
 
             android:textSize="32sp" />
 

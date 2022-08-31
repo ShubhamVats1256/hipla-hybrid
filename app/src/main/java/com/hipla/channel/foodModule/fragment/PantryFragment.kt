@@ -1,12 +1,15 @@
 package com.hipla.channel.foodModule.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hipla.channel.BuildConfig
+import com.hipla.channel.MainActivity
 import com.hipla.channel.R
 import com.hipla.channel.extension.IActivityHelper
 import com.hipla.channel.foodModule.adapter.PantryListAdapter
@@ -30,15 +34,23 @@ import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.AllPantryRequ
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.EmployeeId
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.Sort
 import com.hipla.sentinelvms.sentinelKt.foodModule.utility.PaginationScrollListener
+import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.QuickSettingsViewModel
 
 class PantryFragment : Fragment() {
 
     private lateinit var rvPantryList : RecyclerView
+    private lateinit var iv_no_meeting : ImageView
+
+
+
+    private lateinit var tv_back : TextView
+
     private lateinit var pbPantry : ProgressBar
     private lateinit var parentView : ConstraintLayout
     private var pantryListData: ArrayList<AllPantryResponseData> = ArrayList()
     private lateinit var viewModel: SalesUserViewModel
     private lateinit var pantryViewModel: AllPantryViewModel
+    private lateinit var quickSettingViewModel: QuickSettingsViewModel
     private lateinit var pantryListAdapter: PantryListAdapter
     private val searchList = listOf<String>()
     private var skip: Int = 0
@@ -47,6 +59,9 @@ class PantryFragment : Fragment() {
     private var totalPages: Int = 1
     lateinit var sharedPreference : PrefUtils
     private var take: Int = 10
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,13 +95,39 @@ class PantryFragment : Fragment() {
         setPaginationData()
         loadingState()
         errorObserver()
-        requireActivity().IActivityHelper().setTitle("PANTRY")
+        requireActivity().IActivityHelper().setTitle("Pantry")
     }
 
     private fun setUpUI(view : View){
         rvPantryList  = view.findViewById(R.id.rv_pantry_list)
+        iv_no_meeting = view.findViewById(R.id.iv_no_meeting)
+
+
         pbPantry = view.findViewById(R.id.pb_pantry)
         parentView = view.findViewById(R.id.cl_pantry)
+        tv_back = view.findViewById(R.id.btn_back)
+
+        tv_back.setOnClickListener {
+//            activity?.supportFragmentManager!!.beginTransaction().replace(
+//                R.id.navHost,
+//                HomeFragment()
+//            ).commit()
+
+            val intent = Intent(activity, MainActivity::class.java)
+            intent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        or Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+            startActivity(intent)
+            //for restarting the Activity
+           // System.exit(0)
+            //for restarting the Activity
+
+
+
+        }
+
+
     }
 
     private fun setUpViewModel(networkService : NetworkService){
@@ -192,10 +233,23 @@ class PantryFragment : Fragment() {
     }
 
     private fun setData() {
+        val networkService = Networking.create(BuildConfig.BASE_URL,requireContext())
+
+        quickSettingViewModel = ViewModelProvider(
+            this,
+            CommonFactory(CommonRepository(networkService))
+        ).get(QuickSettingsViewModel::class.java)
+
+
+        quickSettingViewModel.getQuickSettings(sharedPreference.getApiKey()!!)
+
         pantryViewModel.allPantryData.observe(requireActivity()) {
             it?.let {
                 if (it.status == "success") {
                     if (it.data.isNotEmpty()) {
+                        rvPantryList.visibility = View.VISIBLE
+                        iv_no_meeting.visibility = View.GONE
+
                         pantryListData.clear()
                         pantryListAdapter.addAll(it.data)
                         if (it.data.isNotEmpty()) {
@@ -204,13 +258,32 @@ class PantryFragment : Fragment() {
                             isLastPage = true
                         }
                     } else {
+
+                        rvPantryList.visibility = View.GONE
+                        iv_no_meeting.visibility = View.VISIBLE
                         //   showSnackbar("Data Not Found")
                     }
                 } else {
+                    rvPantryList.visibility = View.GONE
+                    iv_no_meeting.visibility = View.VISIBLE
                     // showSnackbar(it.message)
                 }
             }
+
+            quickSettingViewModel.quickSettingViewModel.observe(requireActivity()) {
+                it.data.pantry?.hideStock?.let { it1 -> sharedPreference.saveHideStock(it1) }
+            }
         }
+
+
+        pantryViewModel.errorMessageGetPantryList.observe(requireActivity()) {
+            rvPantryList.visibility = View.GONE
+            iv_no_meeting.visibility = View.VISIBLE
+            }
+
+
+
+
 
         pantryViewModel.defaultPantryData.observe(requireActivity()) {
             it?.let {
@@ -262,6 +335,12 @@ class PantryFragment : Fragment() {
                 showSnackbar(it)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        quickSettingViewModel.quickSettingViewModel.removeObservers(requireActivity())
+
     }
 
     private fun showSnackbar(message: String) {

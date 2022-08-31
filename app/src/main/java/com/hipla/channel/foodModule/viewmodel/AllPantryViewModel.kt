@@ -21,45 +21,13 @@ class AllPantryViewModel constructor(private val repository: CommonRepository) :
     val allPantryData = MutableLiveData<AllPantryResponse>()
     val allPantryDataPagination = MutableLiveData<AllPantryResponse>()
     val errorMessage = MutableLiveData<String>()
+    val errorMessageGetPantryList = MutableLiveData<String>()
+
+
+
+
     val loading = MutableLiveData<Boolean>()
     val defaultPantryData = MutableLiveData<DefaultAllPantryResponse>()
-
-    fun getDefaultPantryMeetingRoom(
-        apiKey: String,
-        pantryRequest: RoomId,
-        hashMap: HashMap<String, String>
-    ) {
-        loading.value = true
-        val response = repository.getDefaultPantryMeetingRoom(apiKey, pantryRequest, hashMap)
-        response.enqueue(object : Callback<DefaultAllPantryResponse> {
-            override fun onResponse(
-                call: Call<DefaultAllPantryResponse>,
-                response: Response<DefaultAllPantryResponse>
-            ) {
-                when {
-                    response.code() == 200 -> {
-                        defaultPantryData.postValue(response.body())
-                    }
-                    response.code() == 422 -> {
-                        errorMessage.postValue(response.message())
-                    }
-                    response.code() == 500 -> {
-                        errorMessage.postValue(response.message())
-                    }
-                    else -> {
-                        errorMessage.postValue("Something Went Wrong")
-                    }
-                }
-                loading.value = false
-            }
-
-            override fun onFailure(call: Call<DefaultAllPantryResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-
-        })
-    }
 
 
 
@@ -118,14 +86,12 @@ class AllPantryViewModel constructor(private val repository: CommonRepository) :
                     response.code() == 200 -> {
                         allPantryData.postValue(response.body())
                     }
-                    response.code() == 422 -> {
-                        errorMessage.postValue(response.message())
+                    response.code() == 201 -> {
+                        allPantryData.postValue(response.body())
                     }
-                    response.code() == 500 -> {
-                        errorMessage.postValue(response.message())
-                    }
+
                     else -> {
-                        errorMessage.postValue("Something Went Wrong")
+                        errorMessageGetPantryList.postValue("Something Went Wrong")
                     }
                 }
                 loading.value = false

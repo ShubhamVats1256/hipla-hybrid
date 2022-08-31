@@ -135,7 +135,7 @@ class OrderSummaryFragment(selectedPantryList : ArrayList<SelectedPantryData>) :
         orderPlaceViewModel.orderPlaceData.observe(requireActivity()) {
             if (it.status == "success") {
                 dismiss()
-                Toast.makeText(context, "ORDERED SUCCESSFULLY!", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "ORDERED SUCCESSFULLY!", Toast.LENGTH_LONG).show()
                 activity?.supportFragmentManager?.beginTransaction()
                     ?.replace(R.id.navHost, OrderHistoryFragment())?.addToBackStack("0")?.commit()
 //                activity?.supportFragmentManager!!.beginTransaction().replace(

@@ -13,27 +13,59 @@
         android:layout_width="match_parent"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="15dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="90dp"
         app:layout_constraintBottom_toTopOf="@id/ll_btns"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 />
 
+    <ImageView
+        android:id="@+id/iv_no_meeting"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:src="@drawable/no_control_panel"
+        android:layout_marginBottom="200dp"
+        android:layout_height="match_parent"/>
+
+
     <LinearLayout
         android:id="@+id/ll_btns"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_back"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
-        android:weightSum="2"
+        android:weightSum="3"
         android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:background="@drawable/bg_add"
+            android:drawableStart="@drawable/ic_back"
+            android:drawablePadding="10dp"
+            android:minWidth="0dp"
+            android:layout_weight="1"
+            android:minHeight="0dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textColor="#003D7C"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_my_order"
@@ -42,7 +74,6 @@
             android:layout_weight="1"
             android:layout_marginEnd="10dp"
             android:background="@drawable/bg_add"
-
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingTop="10dp"
@@ -60,7 +91,6 @@
             android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
             android:background="@drawable/bg_textview"
-
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingTop="10dp"
@@ -68,33 +98,10 @@
             android:text="Continue"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="24sp"></androidx.appcompat.widget.AppCompatButton>
+            android:textSize="24sp" />
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_back"
-        android:drawableLeft="@drawable/ic_back"
-        android:drawablePadding="10dp"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:visibility="gone"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:text="Back"
-        android:textAllCaps="false"
-        android:textColor="#003D7C"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <ProgressBar
         android:id="@+id/pb_food_order"

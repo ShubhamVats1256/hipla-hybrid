@@ -1,6 +1,7 @@
 package com.hipla.channel.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -41,15 +42,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun launchSalesUserFragment(flowConfig: FlowConfig) {
-        findNavController().run {
-            if (isCurrentDestination(R.id.homeFragment)) {
-                navigate(
-                    resId = R.id.action_homeFragment_to_salesUserFragment,
-                    args = Bundle().apply {
-                        putString(KEY_FLOW_CONFIG, flowConfig.toJsonString())
-                    })
+        try {
+            findNavController().run {
+                if (isCurrentDestination(R.id.homeFragment)) {
+                    navigate(
+                        resId = R.id.action_homeFragment_to_salesUserFragment,
+                        args = Bundle().apply {
+                            putString(KEY_FLOW_CONFIG, flowConfig.toJsonString())
+                        })
+                }
             }
         }
+        catch (e : Exception){
+            Log.e("EXCEPTION>>",e.toString())
+        }
+
+
     }
 
 }

@@ -48,12 +48,12 @@ class OrderListAdapter (val context: Context,
             try {
                 if ( history.pantryOrderitems !=null){
                     history.pantryOrderitems!!.forEach { i ->
-                        arrayList.add(i.quantity.toString()+" " + i.pantryItem.name!!)
+                        arrayList.add( i.pantryItem.name!!+" "+i.quantity.toString())
                     }
 
                     val arrayAdapter: ArrayAdapter<*>
                     arrayAdapter = ArrayAdapter(context,
-                        android.R.layout.simple_list_item_1, arrayList)
+                       R.layout.custom_list_view, arrayList)
                     historyViewHolder.itemlist.adapter = arrayAdapter
                     val itemcount: Int = arrayList.size
                     val params: ViewGroup.LayoutParams =  historyViewHolder.itemlist.layoutParams

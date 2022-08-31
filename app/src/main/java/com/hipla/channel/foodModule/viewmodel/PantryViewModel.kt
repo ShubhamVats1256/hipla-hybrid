@@ -18,6 +18,8 @@ class PantryViewModel constructor(private val repository: CommonRepository) : Vi
     val pantryDetail = MutableLiveData<PantryResponse>()
     val pantryDetailPagination = MutableLiveData<PantryResponse>()
     val errorMessage = MutableLiveData<String>()
+    val errorMessagePantryDetail = MutableLiveData<String>()
+
     val loading = MutableLiveData<Boolean>()
 
     fun getPantryDetail(
@@ -36,14 +38,13 @@ class PantryViewModel constructor(private val repository: CommonRepository) : Vi
                     response.code() == 200 -> {
                         pantryDetail.postValue(response.body())
                     }
-                    response.code() == 422 -> {
-                        errorMessage.postValue(response.message())
+
+                    response.code() == 201 -> {
+                        pantryDetail.postValue(response.body())
                     }
-                    response.code() == 500 -> {
-                        errorMessage.postValue(response.message())
-                    }
+
                     else -> {
-                        errorMessage.postValue("Something Went Wrong")
+                        errorMessagePantryDetail.postValue("Something Went Wrong")
                     }
                 }
                 loading.value = false

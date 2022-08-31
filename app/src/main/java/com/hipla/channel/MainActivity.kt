@@ -17,6 +17,7 @@ import com.hipla.channel.contract.IActivityHelper
 import com.hipla.channel.databinding.ActivityMainBinding
 import com.hipla.channel.databinding.DialogLoaderBinding
 import com.hipla.channel.extension.showToastErrorMessage
+import com.hipla.channel.foodModule.utils.ExHandler
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), IActivityHelper {
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
             Context.INPUT_METHOD_SERVICE
         ) as InputMethodManager
         setupNavigation()
+
+        Thread.currentThread().uncaughtExceptionHandler = ExHandler(this, MainActivity::class.java)
+
     }
 
     private fun setupNavigation() {
