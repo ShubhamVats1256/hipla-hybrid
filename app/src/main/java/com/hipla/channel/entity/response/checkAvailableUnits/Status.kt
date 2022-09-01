@@ -12,5 +12,6 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 
 data class Status (
 
-	val statusCode : String
+	val statusCode : String,
+	val error : String
 )

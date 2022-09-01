@@ -66,6 +66,9 @@ class UnitsViewModel : BaseViewModel() {
                             unitMasterList.addAll(unitListForSelectedFloor!!)
                             unitListLiveData.postValue(unitListForSelectedFloor!!)
                         }
+                        else{
+                            error.postValue("error")
+                        }
 
                         Timber.tag(LogConstant.SALES_LIST)
                             .d("loading unit list successful ${unitPageResponse.unitList?.size}")

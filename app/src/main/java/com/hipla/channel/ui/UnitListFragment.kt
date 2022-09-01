@@ -62,8 +62,8 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
         viewModel.extractArguments(arguments)
         binding.header.text = buildString {
-            append("Units in Floor ")
-            append(viewModel.selectedFloorInfo.id)
+            append("Units in building ")
+            append(viewModel.selectedFloorInfo.name)
         }
         unitListAdapter = UnitListAdapter(requireContext()) {
             Timber.tag(LogConstant.UNIT).d("Unit selected: $it")
@@ -162,19 +162,26 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         }
 
         unitAvailabiltyViewModel.errorMessage.observe(viewLifecycleOwner) {
-            requireContext().showToastErrorMessage("Unable to fetch availability!")
+            requireContext().showToastErrorMessage(it)
             binding.unitListLoader.hide()
         }
 
         unitAvailabiltyViewModel.unitAvailabiltyData.observe(viewLifecycleOwner) {
-            binding.unitListLoader.hide()
-            if (it.record.bookingStatus == "AVAILABLE"){
-                    showBookingConfirmationDialog(unitInfoToSend)
 
+            try {
+                binding.unitListLoader.hide()
+                if (it.record.bookingStatus == "AVAILABLE"){
+                    showBookingConfirmationDialog(unitInfoToSend)
+                    unitAvailabiltyViewModel.unitAvailabiltyData.postValue(null)
+
+                }
+                else{
+                    requireContext().showToastErrorMessage(it.record.bookingStatus)
+                }
             }
-            else{
-                requireContext().showToastErrorMessage(it.record.bookingStatus)
-            }
+            catch (e :Exception){}
+
+
 
 
         }
@@ -207,6 +214,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
                 android.R.string.yes
             ) { _, _ ->
                 launchCustomerInfoFragment(unitInfo)
+                null
             }
             .setNegativeButton(android.R.string.no, null)
             .show()

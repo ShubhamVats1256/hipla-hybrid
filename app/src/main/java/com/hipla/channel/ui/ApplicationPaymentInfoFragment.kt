@@ -130,34 +130,68 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
     }
 
     private fun updateApplicationRequest() {
-        viewModel.updateApplicationRequest(
-            amountPayable = binding.amountPayable.content(),
-            chequeNo = binding.paymentRefNo.content(),
-            paymentType = getPaymentTypeFromCheckedId(),
-            remark = binding.etRemark.content()
-        ).also { appRequest ->
-            findNavController().run {
-                Timber.tag(LogConstant.CUSTOMER_INFO)
-                    .d("partner mobile no ${viewModel.getChannelPartnerPhoneNo()}")
-                if (isCurrentDestination(R.id.paymentInfoFragment)) {
-                    navigate(
-                        resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
-                        Bundle().apply {
-                            putString(
-                                KEY_APP_REQ,
-                                appRequest?.toJsonString()
-                            )
-                            putString(
-                                KEY_PARTNER,
-                                viewModel.channelPartnerDetails?.toJsonString()
-                            )
-                            putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
-                            putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
-                        }
-                    )
-                }
-            }
+         if (viewModel.flowConfig.isApplication()) {
+             viewModel.updateApplicationRequest(
+                 amountPayable = binding.amountPayable.content(),
+                 chequeNo = binding.paymentRefNo.content(),
+                 paymentType = getPaymentTypeFromCheckedId(),
+                 remark = binding.etRemark.content()
+             ).also { appRequest ->
+                 findNavController().run {
+                     Timber.tag(LogConstant.CUSTOMER_INFO)
+                         .d("partner mobile no ${viewModel.getChannelPartnerPhoneNo()}")
+                     if (isCurrentDestination(R.id.paymentInfoFragment)) {
+                         navigate(
+                             resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
+                             Bundle().apply {
+                                 putString(
+                                     KEY_APP_REQ,
+                                     appRequest?.toJsonString()
+                                 )
+                                 putString(
+                                     KEY_PARTNER,
+                                     viewModel.channelPartnerDetails?.toJsonString()
+                                 )
+                                 putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
+                                 putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                             }
+                         )
+                     }
+                 }
+             }
+        } else if (viewModel.flowConfig.isInventory()) {
+             viewModel.updateInventoryRequest(
+                 amountPayable = binding.amountPayable.content(),
+                 chequeNo = binding.paymentRefNo.content(),
+                 paymentType = getPaymentTypeFromCheckedId(),
+                 appRefereceIdd = binding.etRemark.content()
+             ).also { appRequest ->
+                 findNavController().run {
+                     Timber.tag(LogConstant.CUSTOMER_INFO)
+                         .d("partner mobile no ${viewModel.getChannelPartnerPhoneNo()}")
+                     if (isCurrentDestination(R.id.paymentInfoFragment)) {
+                         navigate(
+                             resId = R.id.action_paymentInfoFragment_to_applicationConfirmFragment,
+                             Bundle().apply {
+                                 putString(
+                                     KEY_APP_REQ,
+                                     appRequest?.toJsonString()
+                                 )
+                                 putString(
+                                     KEY_PARTNER,
+                                     viewModel.channelPartnerDetails?.toJsonString()
+                                 )
+                                 putString(KEY_UNIT, arguments?.getString(KEY_UNIT))
+                                 putString(KEY_FLOW_CONFIG, arguments?.getString(KEY_FLOW_CONFIG))
+                             }
+                         )
+                     }
+                 }
+             }
         }
+
+
+
     }
 
     private fun showOTPDialog(customerUserId: String) {
@@ -199,6 +233,15 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
 
     private fun setHeader() {
         binding.header.text = getFormTitle()
+
+        if (viewModel.flowConfig.isApplication()) {
+            binding.etRemark.hint = "Remark";
+        } else if (viewModel.flowConfig.isInventory()) {
+            binding.etRemark.hint = "Reference ID";
+        }
+
+
+
     }
 
     private fun getFormTitle(): String {
@@ -430,6 +473,19 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
             requireContext().showToastErrorMessage("Channel partner mobile number is mandatory")
             return false
         }
+
+        if (  viewModel.flowConfig.isInventory()){
+            if (binding.etRemark.hasValidData().not()) {
+                binding.etRemark.error = "Reference id is mandatory";
+                requireContext().showToastErrorMessage("Reference id is mandatory")
+                return false
+            }
+        }
+
+
+
+
+
 
 
 

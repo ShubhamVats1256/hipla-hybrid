@@ -130,18 +130,19 @@
     <EditText
         android:id="@+id/etRemark"
         android:layout_marginTop="@dimen/form_item_space"
-        android:hint="@string/channel_partner_remark"
+
         style="@style/Hipla.EditText"
-        android:maxLines="2"
+        android:maxLines="1"
+        android:layout_marginStart="16dp"
         android:layout_width="wrap_content"
         android:inputType="textCapSentences"
         android:layout_marginEnd="@dimen/form_item_space"
         android:layout_marginBottom="@dimen/form_item_space"
         app:layout_constraintStart_toEndOf="@+id/pageDivider1"
-app:layout_constraintEnd_toEndOf="parent"
 
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/paymentDate"
+
+
         />
 
     <ImageView

@@ -13,6 +13,7 @@ data class ApplicationRequest(
     var customerLastName: String? = null,
     var customerPhoneNumber: String? = null,
     var remark: String? = null,
+    var applicationReferenceId: String? = "",
     var panNumber: String? = null,
     var channelPartnerId: String? = null,
     var amountPayable: String? = null,
@@ -22,6 +23,8 @@ data class ApplicationRequest(
     var paymentProofImageUrl: String? = null,
     var floorPreferenceId: Int = -1,
     var ownerId: Int? = null,
+    var floorId: Int? = 0,
+
     var createdBy: Int? = null,
     var chequeDate: String? = null,
 )

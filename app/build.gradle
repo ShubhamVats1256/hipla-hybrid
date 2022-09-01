@@ -13,24 +13,25 @@ android {
         applicationId "com.hipla.channel"
         minSdk 28
         targetSdk 32
-        versionCode 4
-        versionName "4.0"
+        versionCode 5
+        versionName "5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     //https://api.thesentinel.io/
+    //https://mqttnginx.thesentinel.io/
     buildTypes {
         debug {
             versionNameSuffix "-debug"
             buildConfigField "boolean", "DEV_MODE", "true"
-            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
         }
         release {
             minifyEnabled false
             buildConfigField "boolean", "DEV_MODE", "false"
-            buildConfigField "String", "BASE_URL", "\"https://mqttnginx.thesentinel.io/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thesentinel.io/\""
             buildConfigField "String", "TOKEN", "\"Bearer d36fbecf-d4fa-4157-893c-76db2525cf4c\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

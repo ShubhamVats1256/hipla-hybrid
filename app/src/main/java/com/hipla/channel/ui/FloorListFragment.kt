@@ -54,7 +54,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
         viewModel = ViewModelProvider(this)[FloorListViewModel::class.java]
         viewModel.extractArguments(arguments)
         floorListAdapter = FloorListAdapter(requireContext()) {
-            Timber.tag(LogConstant.UNIT).d("floor selected: ${it.siteId}")
+            Timber.tag(LogConstant.UNIT).d("Building selected: ${it.siteId}")
             showFloorConfirmationDialog(it)
         }
         setRecyclerView()
@@ -140,6 +140,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
                 android.R.string.yes
             ) { _, _ ->
                 launchUnitInfoFragment(floorInfo)
+                null
             }
             .setNegativeButton(android.R.string.no, null)
             .show()

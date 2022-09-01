@@ -145,7 +145,9 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
     requestMap["customerLastName"] = customerLastName!!
     requestMap["customerPhoneNumber"] = customerPhoneNumber!!
     requestMap["panNumber"] = panNumber!!
+    requestMap["applicationReferenceId"] = applicationReferenceId.toString()
     requestMap["remark"] = remark.toString()
+    requestMap["floorId"] = floorId.toString()
     requestMap["channelPartnerId"] = channelPartnerId!!
     requestMap["paymentTypeById"] = paymentType.typeId.toString()
     requestMap["paymentProofImageUrl"] = this.paymentProofImageUrl!!
@@ -158,7 +160,7 @@ fun ApplicationRequest.toUpdateApplicationRequestMap(): Map<String, String> {
         requestMap["unitId"] = unitId.toString()
     }
     if (floorPreferenceId > 0) {
-        requestMap["floorId"] = floorPreferenceId.toString()
+        requestMap["unitId"] = floorPreferenceId.toString()
     }
     return requestMap
 }

@@ -83,7 +83,7 @@ interface HiplaApiService {
         @Header("page_name") pageName: String
     ): Response<UnitPageResponse>
 
-    @GET("business/v1/building?filters=[{\"siteId\": 0}]")
+    @GET("business/v1/building?filters=[{\"siteId\": 16}]")
     suspend fun fetchFloors(
         @Query("currentPage") currentPage: Int,
         @Query("pageSize") pageSize: Int,

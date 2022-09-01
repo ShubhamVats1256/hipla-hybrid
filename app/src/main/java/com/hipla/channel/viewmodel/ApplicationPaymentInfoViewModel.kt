@@ -192,6 +192,24 @@ class ApplicationPaymentInfoViewModel : BaseViewModel() {
             this.paymentDetails = chequeNo
             this.remark = remark
             this.paymentType = paymentType
+            this.floorId = 0
+            Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
+        }
+    }
+
+    fun updateInventoryRequest(
+        amountPayable: String,
+        paymentType: PaymentType,
+        chequeNo: String,
+        appRefereceIdd: String,
+    ): ApplicationRequest? {
+        return applicationRequest?.apply {
+            this.channelPartnerId = generateOTPResponse?.recordReference?.id.toString()
+            this.amountPayable = amountPayable
+            this.paymentDetails = chequeNo
+            this.applicationReferenceId = appRefereceIdd
+            this.paymentType = paymentType
+            this.floorId = 0
             Timber.tag(LogConstant.PAYMENT_INFO).d("payment details updated to application request")
         }
     }

@@ -13,6 +13,6 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 data class UnitAvailabiltyBase (
 
 //	val pagination : Pagination,
-//	val status : Status,
+	val status : Status,
 	val record : Record
 )

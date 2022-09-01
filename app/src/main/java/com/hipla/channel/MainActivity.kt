@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), IActivityHelper {
         ) as InputMethodManager
         setupNavigation()
 
-        Thread.currentThread().uncaughtExceptionHandler = ExHandler(this, MainActivity::class.java)
+     //   Thread.currentThread().uncaughtExceptionHandler = ExHandler(this, MainActivity::class.java)
 
     }
 
