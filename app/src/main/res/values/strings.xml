@@ -73,6 +73,6 @@
     <string name="application_confirm_application_no">Confirmation for Application No : %1$s\n</string>
     <string name="application_confirm_inventory_no">Confirmation for Booking of %1$s\n</string>
 
-    <string name="select_floor">Select Building</string>
+    <string name="select_floor">Select Block</string>
 
 </resources>

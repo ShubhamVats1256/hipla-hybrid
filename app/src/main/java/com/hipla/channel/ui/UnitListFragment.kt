@@ -62,7 +62,7 @@ class UnitListFragment : Fragment(R.layout.fragment_unit_list) {
         viewModel = ViewModelProvider(this)[UnitsViewModel::class.java]
         viewModel.extractArguments(arguments)
         binding.header.text = buildString {
-            append("Units in building ")
+            append("Units in block ")
             append(viewModel.selectedFloorInfo.name)
         }
         unitListAdapter = UnitListAdapter(requireContext()) {

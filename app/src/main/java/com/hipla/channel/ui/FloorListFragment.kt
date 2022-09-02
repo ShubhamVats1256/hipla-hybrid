@@ -134,7 +134,7 @@ class FloorListFragment : Fragment(R.layout.fragment_floor_list) {
 
     private fun showFloorConfirmationDialog(floorInfo: FloorInfo) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Building ${floorInfo.name} selected")
+            .setTitle("Block ${floorInfo.name} selected")
             .setMessage("Are you sure you want to continue?") // Specifying a listener allows you to take an action before dismissing the dialog.
             .setPositiveButton(
                 android.R.string.yes
