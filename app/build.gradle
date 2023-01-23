@@ -13,8 +13,8 @@ android {
         applicationId "com.hipla.channel"
         minSdk 28
         targetSdk 32
-        versionCode 5
-        versionName "5.0"
+        versionCode 6
+        versionName "6.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -111,8 +111,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$versions.moshi_converter"
     annotationProcessor  "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
-
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
+//    implementation 'com.github.Deishelon:RoundedBottomSheet:1.0.1'
 
 
     //kotlin

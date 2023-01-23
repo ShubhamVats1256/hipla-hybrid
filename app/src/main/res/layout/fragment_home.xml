@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/view_pager_bg">
@@ -26,7 +25,8 @@
             style="@style/Hipla.HomeScreenItemTitle"
             android:text="@string/application"
             app:layout_constraintBottom_toTopOf="@id/inventoryFlow"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/inventoryFlow"
@@ -40,9 +40,19 @@
             android:id="@+id/pantryFlow"
             style="@style/Hipla.HomeScreenItemTitle"
             android:text="@string/pantry"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/feedbackFlow"
             app:layout_constraintTop_toBottomOf="@id/inventoryFlow"
             tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/feedbackFlow"
+            style="@style/Hipla.HomeScreenItemTitle"
+            android:text="@string/feedback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pantryFlow"
+            tools:ignore="MissingConstraints" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

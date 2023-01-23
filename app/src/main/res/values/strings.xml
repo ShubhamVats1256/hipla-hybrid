@@ -4,6 +4,7 @@
     <string name="application">Application</string>
     <string name="inventory">Inventory</string>
     <string name="pantry">PANTRY</string>
+    <string name="feedback">FEEDBACK FORM</string>
 
     <string name="cancel">Cancel</string>
     <string name="continue_btn">Continue</string>
@@ -65,7 +66,7 @@
     <string name="channel_partner_details">Channel Partner Details</string>
 
     <string name="inventory_success">Your booking is successful</string>
-    <string name="inventory_confirm_msg">Your Booking ID : %1$s</string>
+    <string name="inventory_confirm_msg">Unit : %1$s</string>
 
     <string name="application_success">Your application is successful</string>
     <string name="application_confirm_msg">Your application No : %1$s</string>

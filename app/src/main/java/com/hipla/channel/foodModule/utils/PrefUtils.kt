@@ -11,12 +11,12 @@ class PrefUtils(val context: Context) {
         const val organizationId = "organizationId"
         const val employeeId = "employeeId"
         const val userId = "user_id"
-
+        const val referenceId = "referenceId"
         const val businessId = "businessId"
-        const val roomId = "roomId"
         const val hideStocks = "hideStock"
         const val token = "token"
         const val apikey = "api_key"
+        const val userMobileNumber = "userMobileNumber"
     }
 
     fun saveOrgId(organizationIdd: String){
@@ -25,6 +25,23 @@ class PrefUtils(val context: Context) {
         editor.commit()
     }
 
+
+
+    fun getReferenceId() : String?{
+        return sharedPref.getString(referenceId,"")
+    }
+
+    fun getUserId() : Int?{
+        return sharedPref.getInt(userId,0)
+    }
+
+
+    fun saveReferenceId(referenceIdd : String, userIdd :Int){
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putString(referenceId,referenceIdd)
+        editor.putInt(userId,userIdd)
+        editor.commit()
+    }
 
 
     fun saveHideStock(hideStock: Boolean){
@@ -76,5 +93,27 @@ class PrefUtils(val context: Context) {
         return sharedPref.getString(businessId, "")
     }
 
+    fun saveUserMobileNumber(userMobileNumberr : String){
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putString(userMobileNumber,userMobileNumberr)
+        editor.commit()
+    }
+
+    fun getUserMobileNumber(): String?{
+        return sharedPref.getString(userMobileNumber,"")
+    }
+
+
+
+    fun clearSharedPreference() {
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+
+        editor.remove(userId)
+        editor.remove(referenceId)
+        editor.remove(userMobileNumber)
+
+
+        editor.commit()
+    }
 
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 import com.hipla.channel.foodModule.viewmodel.*
+import com.hipla.channel.viewmodel.FeedbackViewmodel
+import com.hipla.channel.viewmodel.GenerateOtpViewmodel
 import com.hipla.channel.viewmodel.UnitAvailabiltyViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.OrderPlaceMeetingRoomViewModel
 import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.QuickSettingsViewModel
@@ -33,6 +35,15 @@ import com.hipla.sentinelvms.sentinelKt.foodModule.viewmodel.QuickSettingsViewMo
         else if (modelClass.isAssignableFrom(UnitAvailabiltyViewModel::class.java)) {
             UnitAvailabiltyViewModel(this.repository) as T
         }
+        else if (modelClass.isAssignableFrom(FeedbackViewmodel::class.java)) {
+            FeedbackViewmodel(this.repository) as T
+        }
+        else if (modelClass.isAssignableFrom(GenerateOtpViewmodel::class.java)) {
+            GenerateOtpViewmodel(this.repository) as T
+        }
+
+
+
 
         else {
             throw IllegalArgumentException("ViewModel Not Found")

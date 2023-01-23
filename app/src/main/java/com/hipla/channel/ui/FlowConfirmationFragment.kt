@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.hipla.channel.R
 import com.hipla.channel.common.Constant
 import com.hipla.channel.common.LogConstant
+import com.hipla.channel.common.Utils.hide
+import com.hipla.channel.common.Utils.show
 import com.hipla.channel.databinding.DialogApplicationSuccessfulBinding
 import com.hipla.channel.databinding.FragmentFlowConfirmBinding
 import com.hipla.channel.entity.*
@@ -60,8 +62,20 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
             val dialogBinding =
                 DialogApplicationSuccessfulBinding.inflate(requireActivity().layoutInflater)
             dialogBuilder.setView(dialogBinding.root)
-            dialogBinding.flowSuccessTitle.text = getSuccessMessage()
-            dialogBinding.appInfo.text = getConfirmationMessage(displayCounter)
+
+
+             if (viewModel.flowConfig.isInventory()) {
+                 dialogBinding.appInfo.hide()
+                 dialogBinding.flowSuccessTitle.text = "Unit : "+viewModel.unitInfo?.name
+
+            }
+            else{
+                 dialogBinding.appInfo.show()
+                 dialogBinding.appInfo.text = getConfirmationMessage(displayCounter)
+                 dialogBinding.flowSuccessTitle.text = getSuccessMessage()
+            }
+
+
             dialogBinding.close.setOnClickListener {
                 applicationSuccessDialog?.dismiss()
                 goHome()
@@ -80,7 +94,7 @@ class FlowConfirmationFragment : Fragment(R.layout.fragment_flow_confirm) {
         return if (viewModel.flowConfig.isApplication()) {
             getString(R.string.application_success)
         } else if (viewModel.flowConfig.isInventory()) {
-            getString(R.string.inventory_success)
+            getString(R.string.inventory_confirm_msg)
         } else {
             Constant.EMPTY_STRING
         }

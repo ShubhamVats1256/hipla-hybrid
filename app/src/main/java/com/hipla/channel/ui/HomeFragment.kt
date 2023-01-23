@@ -39,6 +39,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 PantryFragment()
             ).commit()
         }
+
+        fragmentHomeBinding.feedbackFlow.setOnClickListener {
+            activity?.supportFragmentManager!!.beginTransaction().replace(
+                R.id.navHost,
+                DashboardFragement()
+            ).commit()
+        }
+
+
     }
 
     private fun launchSalesUserFragment(flowConfig: FlowConfig) {

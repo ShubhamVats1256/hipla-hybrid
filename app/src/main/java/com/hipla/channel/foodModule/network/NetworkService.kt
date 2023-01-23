@@ -1,6 +1,8 @@
 package com.hipla.channel.foodModule.network
 
 import UnitAvailabiltyBase
+import com.hipla.channel.entity.PushOtpRequest
+import com.hipla.channel.entity.response.*
 import com.hipla.channel.foodModule.network.request.LoginRequest
 import com.hipla.channel.foodModule.network.response.*
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.QuickSettingResponse
@@ -48,4 +50,15 @@ interface NetworkService {
 
     @POST(EndPoints.GET_HISTORY)
     fun getHistory(@Header("apikey") key : String, @Body pantryRequest: PantryRequest, @HeaderMap headerMap: HashMap<String,String>): Call<OrderHistoryResponse>
+
+
+    @POST(EndPoints.SUBMIT_FEEDBACK_QUESTIONS)
+    fun submitFeedbackQuestions(@Header("Authorization") token : String,@Body questionRequest: QuestionRequest): Call<QuestionSubmitResponse>
+
+    @POST(EndPoints.GENERATE_OTP)
+    fun generateOtp( @Body uploadUserBase: GenerateOtpRequestBase): Call<GeterateOtpRespBase>
+
+    @POST(EndPoints.VERIFY_OTP)
+    fun pushOtp( @Body pushOtpRequest: PushOtpRequest): Call<VerifyOtpRespBase>
+
 }

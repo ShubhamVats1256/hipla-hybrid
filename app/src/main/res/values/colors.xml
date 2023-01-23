@@ -10,7 +10,7 @@
     <color name="text_color_light_black">#333333</color>
 
     <color name="blue_light">#DFE9FC</color>
-
+    <color name="azure">#2D59A8</color>
     <!-- application flow-->
     <color name="sales_grid_item_bg">#FFFFFF</color>
     <color name="sales_grid_item_border">#A0B9E8</color>

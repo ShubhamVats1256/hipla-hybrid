@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_pantry"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Hipla.ChannelPartnerHeader"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center"
+      android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:text="We Strive To Provide Effective And Efficient Service. Please Let Us Know If We Are Measuring Up."
+        android:textSize="23sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="50dp"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:layout_marginEnd="@dimen/form_item_space"
+
+        android:background="@drawable/outer_border"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How Do You Rate Response Time Of Sales?"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+
+            />
+
+
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#024CAF50"
+                android:orientation="horizontal"
+                app:layout_constraintVertical_bias="0.24000001">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/primary_dark"
+                    android:text="Excellent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="21sp"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/primary_dark"
+                    android:text="Satisfactory"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="21sp"
+                    android:layout_marginStart="20dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Not Satisfactory"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="21sp"
+                    android:layout_marginStart="20dp"
+                    android:buttonTint="@color/primary_dark"
+          />
+
+
+            </RadioGroup>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+          
+            
+            android:background="#003D7C"/>
+
+        <TextView
+            android:id="@+id/tv_question_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How Do You Rate Response Time Of CRM?"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+
+            android:orientation="horizontal"
+
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_two_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:buttonTint="@color/primary_dark"
+                android:text="Excellent"
+                />
+
+            <RadioButton
+                android:id="@+id/radioqyes_two_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary_dark"
+                android:text="Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+               />
+
+            <RadioButton
+                android:id="@+id/radioqyes_two_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Not Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+               />
+
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+          
+            
+            android:background="#003D7C"/>
+
+        <TextView
+            android:id="@+id/tv_question_three"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_height="wrap_content"
+            android:text="How Would You Rate Sample Flats?"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+            android:orientation="horizontal"
+
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_three_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:buttonTint="@color/primary_dark"
+                android:text="Excellent"
+                />
+
+            <RadioButton
+                android:id="@+id/radioqyes_three_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary_dark"
+                android:text="Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+            />
+
+            <RadioButton
+                android:id="@+id/radioqyes_three_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Not Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:buttonTint="@color/primary_dark"
+             />
+
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#003D7C"/>
+
+
+        <TextView
+            android:id="@+id/tv_question_four"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_height="wrap_content"
+            android:text="How Would You Rate The Overall Brand Whiteland Corporation?"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+            android:orientation="horizontal"
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_four_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:buttonTint="@color/primary_dark"
+                android:text="Excellent"
+               />
+
+            <RadioButton
+                android:id="@+id/radioqyes_four_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary_dark"
+                android:text="Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+              />
+
+            <RadioButton
+                android:id="@+id/radioqyes_four_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Not Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+                />
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:background="@drawable/outer_border"
+            android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:id="@+id/tv_question_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How Do You Rate Whiteland Projects?"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+            android:orientation="horizontal"
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_five_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excellent"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:checked="true"
+                android:buttonTint="@color/primary_dark"
+                 />
+
+            <RadioButton
+                android:id="@+id/radioqyes_five_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+                 />
+
+            <RadioButton
+                android:id="@+id/radioqyes_five_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Not Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+                 />
+
+
+        </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#003D7C"/>
+
+
+        <TextView
+            android:id="@+id/tv_question_six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How Do You Rate Our Hospitality?"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+            android:orientation="horizontal"
+
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_six_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excellent"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:checked="true"
+                android:buttonTint="@color/primary_dark"
+                 />
+
+            <RadioButton
+                android:id="@+id/radioqyes_six_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+               />
+
+            <RadioButton
+                android:id="@+id/radioqyes_six_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Not Satisfactory"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+                />
+
+
+        </RadioGroup>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+              
+                
+                android:background="#003D7C"/>
+        <TextView
+            android:id="@+id/tv_question_seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Would You Recommend Us To Your Friends And Family?"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+
+            />
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#024CAF50"
+
+            android:orientation="horizontal"
+
+            app:layout_constraintVertical_bias="0.24000001">
+
+            <RadioButton
+                android:id="@+id/radioqyes_seven_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:checked="true"
+                android:buttonTint="@color/primary_dark"
+                />
+
+            <RadioButton
+                android:id="@+id/radioqyes_seven_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="21sp"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/primary_dark"
+               />
+
+
+        </RadioGroup>
+        </LinearLayout>
+        <EditText
+            android:id="@+id/etSuggestion"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:hint="Any Suggestions?"
+            android:gravity="start"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:background="@drawable/et_bg"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:maxLines="1"
+            android:padding="20dp"
+            android:textColor="@color/black"
+            android:textSize="23sp" />
+
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/Hipla.ChannelPartnerHeader"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:textColor="@color/azure"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="We Thank You For Your Time And Effort To Provide Us Your Valuable Feedback."
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_btns"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+
+
+        <TextView
+            android:id="@+id/continueBtn"
+            style="@style/PrimaryButton"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backBtn"
+            />
+
+        <TextView
+            android:id="@+id/backBtn"
+            style="@style/SecondaryButton"
+            android:layout_marginEnd="@dimen/form_item_space"
+            android:text="Cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/continueBtn"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ProgressBar
+        android:id="@+id/pb_pantry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#003D7C"
+        android:indeterminateTint="#003D7C"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+    android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>

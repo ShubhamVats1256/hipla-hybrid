@@ -8,6 +8,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -235,9 +236,12 @@ class ApplicationPaymentInfoFragment : Fragment(R.layout.fragment_application_pa
         binding.header.text = getFormTitle()
 
         if (viewModel.flowConfig.isApplication()) {
-            binding.etRemark.hint = "Remark";
+            binding.etRemark.hint = "Remark"
         } else if (viewModel.flowConfig.isInventory()) {
-            binding.etRemark.hint = "Reference ID";
+            binding.etRemark.hint = "Reference ID"
+            binding.etRemark.inputType = InputType.TYPE_CLASS_NUMBER
+
+
         }
 
 

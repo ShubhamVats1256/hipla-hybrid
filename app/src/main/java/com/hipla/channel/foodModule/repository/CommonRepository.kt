@@ -1,5 +1,8 @@
 package com.hipla.channel.foodModule.repository
 
+import com.hipla.channel.entity.PushOtpRequest
+import com.hipla.channel.entity.response.GenerateOtpRequestBase
+import com.hipla.channel.entity.response.QuestionRequest
 import com.hipla.channel.foodModule.network.request.LoginRequest
 import com.hipla.channel.foodModule.network.NetworkService
 import com.hipla.sentinelvms.sentinelKt.foodModule.network.request.*
@@ -45,5 +48,18 @@ class CommonRepository constructor(private val networkService: NetworkService?) 
 
     fun getHistory(apiKey : String, pantryRequest: PantryRequest, hashMap: HashMap<String,String>) =
         networkService!!.getHistory(apiKey,pantryRequest,hashMap)
+
+
+    fun submitFeedbackQuestions(token : String,questionRequest: QuestionRequest) =
+        networkService!!.submitFeedbackQuestions(token,questionRequest)
+
+    fun generateOtp(generateOtpRequestBase: GenerateOtpRequestBase) =
+        networkService!!.
+        generateOtp(generateOtpRequestBase)
+
+    fun pushOtp(pushOtpRequest: PushOtpRequest) =
+        networkService!!.
+        pushOtp(pushOtpRequest)
+
 
 }
